@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Charon — MCP Authorization Gateway · Lethe remembers, Charon carries</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#070604; --bg2:#0d0a06; --ink:#f5efe4; --dim:#a3988a; --faint:#5c5344;
+    --gold:#d9a441; --gold-hi:#e8c98a; --gold-soft:rgba(217,164,65,.12); --line:#2a2214; --serif:'Cormorant Garamond',serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;overflow-x:hidden}
+  ::selection{background:var(--gold);color:#1a1204}
+
+  /* ---------- nav ---------- */
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+    padding:18px 40px;background:rgba(7,6,4,.55);backdrop-filter:blur(14px);border-bottom:1px solid rgba(217,164,65,.08)}
+  .logo{font-weight:700;font-size:20px;letter-spacing:-.02em;text-decoration:none;color:var(--ink)}
+  .logo i{font-style:normal;color:var(--gold)}
+  .navlinks{display:flex;gap:32px;align-items:center}
+  .navlinks a{color:var(--dim);text-decoration:none;font-size:13px;letter-spacing:.08em;transition:color .25s}
+  .navlinks a:hover{color:var(--gold)}
+  .navlinks a.here{color:var(--gold)}
+  .cta{border:1px solid var(--gold);color:var(--gold)!important;padding:9px 20px;font-size:12px!important;letter-spacing:.15em!important;text-transform:uppercase;transition:all .25s}
+  .cta:hover{background:var(--gold);color:#1a1204!important;box-shadow:0 0 28px rgba(217,164,65,.4)}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px}
+  #crossing{position:absolute;inset:0;width:100%;height:100%}
+  .hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 55% at 50% 42%,transparent 30%,var(--bg) 100%);pointer-events:none}
+  .hero-inner{position:relative;z-index:2}
+  .glyph{font-family:var(--serif);font-size:15px;letter-spacing:.55em;color:var(--gold);margin-bottom:26px;text-shadow:0 0 24px rgba(217,164,65,.8)}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(56px,10vw,138px);line-height:.98;letter-spacing:-.01em}
+  h1 .fade{background:linear-gradient(180deg,var(--ink) 40%,rgba(217,164,65,.25));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .tagline{margin-top:8px;font-size:13px;letter-spacing:.45em;text-transform:uppercase;color:var(--dim)}
+  .lede{margin:34px auto 0;max-width:640px;font-size:18px;line-height:1.75;color:#c2b6a3;font-weight:300}
+  .lede b{color:var(--ink);font-weight:500}
+  .btnrow{margin-top:44px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+  .btn{font-size:13px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:16px 34px;transition:all .3s}
+  .btn-p{background:var(--gold);color:#1a1204;font-weight:600;box-shadow:0 0 40px rgba(217,164,65,.3)}
+  .btn-p:hover{box-shadow:0 0 70px rgba(217,164,65,.55);transform:translateY(-2px)}
+  .btn-s{border:1px solid var(--faint);color:var(--dim)}
+  .btn-s:hover{border-color:var(--gold);color:var(--gold)}
+  .scrollhint{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);z-index:2;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.4em;color:var(--faint);text-transform:uppercase;animation:bob 2.6s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,8px)}}
+
+  section{padding:130px 24px;position:relative}
+  .wrap{max-width:1140px;margin:0 auto}
+  .seclabel{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.4em;color:var(--gold);text-transform:uppercase;margin-bottom:22px;display:flex;align-items:center;gap:14px}
+  .seclabel::before{content:'';width:36px;height:1px;background:var(--gold)}
+  h2{font-family:var(--serif);font-weight:400;font-size:clamp(38px,5.4vw,64px);line-height:1.08;margin-bottom:26px}
+  h2 em{font-style:italic;color:var(--gold)}
+
+  /* ---------- myth ---------- */
+  .myth-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:80px;align-items:center}
+  .myth-copy p{color:var(--dim);line-height:1.85;font-size:16px;margin-bottom:22px;font-weight:300}
+  .myth-copy p b{color:var(--ink);font-weight:500}
+  .myth-copy .greek-inline{font-family:var(--serif);color:var(--gold);font-size:1.15em}
+  blockquote{border-left:1px solid var(--gold);padding:6px 0 6px 24px;margin:34px 0;font-family:var(--serif);font-size:22px;font-style:italic;line-height:1.5;color:var(--ink)}
+  blockquote span{display:block;margin-top:10px;font-family:'JetBrains Mono',monospace;font-style:normal;font-size:10px;letter-spacing:.3em;color:var(--faint);text-transform:uppercase}
+  .vessel{background:linear-gradient(160deg,var(--bg2),#060403);border:1px solid var(--line);padding:40px;position:relative;overflow:hidden}
+  .vessel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+  .vessel .vt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);letter-spacing:.2em;margin-bottom:22px}
+  .boat{font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;color:var(--gold);white-space:pre;text-shadow:0 0 12px rgba(217,164,65,.5)}
+  .vessel p{margin-top:22px;color:var(--dim);font-size:14px;line-height:1.7}
+
+  /* ---------- three fares ---------- */
+  .figures{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line);border:1px solid var(--line)}
+  .fig{background:var(--bg);padding:48px 36px;transition:background .3s}
+  .fig:hover{background:var(--bg2)}
+  .fig .gk{font-family:var(--serif);font-size:15px;letter-spacing:.35em;color:var(--gold);margin-bottom:18px}
+  .fig h3{font-family:var(--serif);font-size:30px;font-weight:500;margin-bottom:6px}
+  .fig .role{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--faint);text-transform:uppercase;margin-bottom:20px}
+  .fig p{color:var(--dim);font-size:14px;line-height:1.8;font-weight:300}
+  .fig .scopes{margin-top:18px;list-style:none}
+  .fig .scopes li{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold-hi);padding:4px 0;letter-spacing:.04em}
+  .fig .scopes li.no{color:var(--faint);text-decoration:line-through}
+
+  /* ---------- how it works ---------- */
+  .how-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+  .step{display:flex;gap:26px;padding:26px 0;border-bottom:1px solid var(--line)}
+  .step:first-child{padding-top:0}
+  .stepnum{font-family:var(--serif);font-size:34px;color:var(--gold);min-width:52px;line-height:1;opacity:.85}
+  .step h4{font-size:17px;font-weight:600;margin-bottom:8px}
+  .step p{color:var(--dim);font-size:14px;line-height:1.75;font-weight:300}
+  .step code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-soft);padding:2px 7px}
+  .jsoncard{position:sticky;top:110px;background:#0a0805;border:1px solid var(--line);box-shadow:0 40px 80px rgba(0,0,0,.5)}
+  .jsonhead{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);letter-spacing:.15em}
+  .jsonhead .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold);display:inline-block;margin-right:8px;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  pre{padding:26px 24px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.75;overflow-x:auto;color:#cbb693}
+  .k{color:var(--gold)} .s{color:#9fd6e0} .b{color:#c792ea}
+  .jsonfoot{padding:14px 20px;border-top:1px solid var(--line);font-size:12px;color:var(--faint);font-family:'JetBrains Mono',monospace}
+
+  /* ---------- features ---------- */
+  .featgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line);border:1px solid var(--line)}
+  .feat{background:var(--bg);padding:42px 34px;position:relative;overflow:hidden;transition:background .3s}
+  .feat:hover{background:var(--bg2)}
+  .feat::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--gold);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+  .feat:hover::after{width:100%}
+  .feat .ico{font-family:var(--serif);font-size:26px;color:var(--gold);margin-bottom:20px}
+  .feat h4{font-size:17px;font-weight:600;margin-bottom:10px}
+  .feat p{color:var(--dim);font-size:14px;line-height:1.75;font-weight:300}
+  .feat code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold)}
+
+  /* ---------- price of passage ---------- */
+  .fares{max-width:900px;margin:0 auto}
+  .fare-row{display:grid;grid-template-columns:210px 1fr 190px;gap:22px;align-items:center;padding:20px 0;border-bottom:1px solid var(--line)}
+  .fare-row .fn{font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.06em;color:var(--ink)}
+  .fare-row .fd{color:var(--dim);font-size:13px;font-weight:300;line-height:1.5}
+  .fare-row .ft{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.25em;color:var(--faint);text-transform:uppercase;text-align:right}
+  .fare-row.rare .fn{color:var(--gold)}
+  .fare-row.rare .ft{color:var(--gold)}
+  .quote-outro{text-align:center;margin-top:90px;font-family:var(--serif);font-style:italic;font-size:clamp(22px,3vw,30px);line-height:1.55;color:#c2b6a3;max-width:720px;margin-left:auto;margin-right:auto}
+  .quote-outro span{display:block;margin-top:18px;font-family:'JetBrains Mono',monospace;font-style:normal;font-size:10px;letter-spacing:.35em;color:var(--faint);text-transform:uppercase}
+
+  /* ---------- install ---------- */
+  .install{text-align:center}
+  .cmdrow{max-width:820px;margin:56px auto 0;display:grid;gap:14px}
+  .cmd{display:flex;align-items:center;gap:18px;background:#080604;border:1px solid var(--line);padding:20px 24px;text-align:left;transition:border-color .3s;text-decoration:none;color:inherit}
+  .cmd:hover{border-color:var(--gold)}
+  .cmd .cl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.25em;color:var(--faint);text-transform:uppercase;min-width:150px}
+  .cmd code{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--gold);overflow-x:auto;white-space:nowrap}
+  .cmd code b{color:var(--ink);font-weight:400}
+
+  footer{border-top:1px solid var(--line);padding:56px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
+  footer .fl{font-weight:700;font-size:18px}
+  footer .fl i{font-style:normal;color:var(--gold)}
+  footer a{color:var(--faint);text-decoration:none;font-size:13px;margin-left:28px;transition:color .25s}
+  footer a:hover{color:var(--gold)}
+  footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);letter-spacing:.15em}
+
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+  .reveal.on{opacity:1;transform:none}
+
+  @media(max-width:900px){
+    .myth-grid,.how-grid{grid-template-columns:1fr;gap:56px}
+    .figures,.featgrid{grid-template-columns:1fr}
+    .navlinks a:not(.cta){display:none}
+    .fare-row{grid-template-columns:1fr;gap:6px;padding:16px 0}
+    .fare-row .ft{text-align:left}
+    .jsoncard{position:static}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">Lethe<i>.</i></a>
+  <div class="navlinks">
+    <a href="index.html">Lethe</a>
+    <a href="charon.html" class="here">Charon</a>
+    <a href="charon.html#myth">The myth</a>
+    <a href="charon.html#how">How it works</a>
+    <a href="docs.html">Docs</a>
+    <a href="https://github.com/openlethe/charon">GitHub</a>
+    <a class="cta" href="charon.html#install">Get started</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <canvas id="crossing"></canvas>
+  <div class="hero-inner">
+    <div class="glyph">Χ Ά Ρ Ω Ν</div>
+    <h1><span class="fade">No coin,</span><br><span class="fade">no crossing.</span></h1>
+    <div class="tagline">MCP Authorization Gateway</div>
+    <p class="lede">Agents never touch Lethe directly. <b>Charon checks every credential, scopes every principal, and ferries each reviewed change across.</b> Nothing reaches shared memory unpaid — unscoped, unreviewed, or unsigned.</p>
+    <div class="btnrow">
+      <a class="btn btn-p" href="#install">Deploy the ferryman</a>
+      <a class="btn btn-s" href="https://github.com/openlethe/charon">View on GitHub</a>
+    </div>
+  </div>
+  <div class="scrollhint">Embark</div>
+</header>
+
+<!-- MYTH -->
+<section id="myth">
+  <div class="wrap myth-grid">
+    <div class="myth-copy reveal">
+      <div class="seclabel">The myth</div>
+      <h2>The ferryman who<br>asks for <em>an obol.</em></h2>
+      <p>In the old stories, the dead reached the river and found <span class="greek-inline">Χάρων — Charon</span> waiting with his skiff. The crossing was never free: one obol, placed with the dead for exactly this purpose. Those who could not pay wandered the shore — present, but never across.</p>
+      <p>Every agent that reaches Charon is asked the same question. The modern obol is a credential: an OAuth authorization with S256 PKCE, or an audience-bound Obol token. <b>No credential, no crossing — the shore is all an unauthenticated client will ever see.</b></p>
+      <blockquote>Payment was never about the coin. It was proof the crossing was intended, accounted, and allowed.<span>Why the gateway exists</span></blockquote>
+    </div>
+    <div class="vessel reveal">
+      <div class="vt">charon · v0.1.0-beta · :18484 oauth · :18486 obol</div>
+      <div class="boat">$ charon obol mint principal_8f3a…
+
+  Obol minted successfully
+  ID:        obol_9c2e…
+  Principal: principal_8f3a…
+  Audience:  http://127.0.0.1:18486
+  Expires:   7d
+  Token:     obol_····················</div>
+      <p>The obol is the fare: minted for one principal, bound to one gateway, digest-stored, revocable. The token value is shown once — then never again.</p>
+    </div>
+  </div>
+</section>
+
+<!-- THREE FARES -->
+<section>
+  <div class="wrap">
+    <div class="seclabel reveal">The three fares</div>
+    <h2 class="reveal">Every passenger pays<br>a <em>different price.</em></h2>
+    <div class="figures reveal" style="margin-top:56px">
+      <div class="fig">
+        <div class="gk">ΣΥΓΓΡΑΦΕΎΣ</div>
+        <h3>The Author</h3>
+        <div class="role">propose profile</div>
+        <p>Writes durable memory on refs it owns, then asks for a crossing. Can never review or merge its own work — the ferryman refuses on principle.</p>
+        <ul class="scopes">
+          <li>memory.read · search · thread</li>
+          <li>memory.branch · commit · propose</li>
+          <li class="no">memory.review · merge · write</li>
+        </ul>
+      </div>
+      <div class="fig">
+        <div class="gk">ΚΡΙΤΉΣ</div>
+        <h3>The Reviewer</h3>
+        <div class="role">review profile</div>
+        <p>The independent check. Inspects the exact changeset, binds its verdict to that snapshot, and only then steers the merge into protected shared memory.</p>
+        <ul class="scopes">
+          <li>memory.read · search · thread</li>
+          <li>memory.review · merge · proposal.review</li>
+          <li class="no">memory.branch · commit · write</li>
+        </ul>
+      </div>
+      <div class="fig">
+        <div class="gk">ΑΝΑΓΝΏΣΤΗΣ</div>
+        <h3>The Reader</h3>
+        <div class="role">readonly profile</div>
+        <p>Travels light. Reads accepted memory at exact heads — never touches the cargo, never steers. Wildcard grants stop at the shoreline: read-only.</p>
+        <ul class="scopes">
+          <li>memory.read · search · thread</li>
+          <li class="no">branch · commit · propose</li>
+          <li class="no">review · merge · write</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section id="how" style="background:var(--bg2)">
+  <div class="wrap how-grid">
+    <div>
+      <div class="seclabel reveal">How it works</div>
+      <h2 class="reveal">Every crossing,<br><em>accounted for.</em></h2>
+      <div style="margin-top:48px">
+        <div class="step reveal"><div class="stepnum">01</div><div><h4>Connect through the gateway</h4><p>MCP clients — ChatGPT, Claude, OpenClaw — connect to Charon, never to Lethe. Lethe Git stays loopback-only on <code>:18485</code>.</p></div></div>
+        <div class="step reveal"><div class="stepnum">02</div><div><h4>Pay the obol</h4><p>OAuth authorization-code with mandatory S256 PKCE on <code>:18484</code>, or an audience-bound Obol on <code>:18486</code>. Tokens resolve to a principal with exact project grants and scopes.</p></div></div>
+        <div class="step reveal"><div class="stepnum">03</div><div><h4>Authors write on owned refs</h4><p>Changesets commit with compare-and-swap and idempotency keys. Every operation is semantically validated at Charon — and again at Lethe before it becomes immutable history.</p></div></div>
+        <div class="step reveal"><div class="stepnum">04</div><div><h4>Independent review, always</h4><p>A different principal must approve. Self-review and self-merge are denied in code — <code>denied: self review</code>, <code>denied: self approval</code>. Verdicts bind to the exact proposal snapshot.</p></div></div>
+        <div class="step reveal"><div class="stepnum">05</div><div><h4>The signed crossing</h4><p>Approved merges get a <code>memory-git-merge/v2</code> envelope: HMAC-signed, 2-minute TTL, single-use nonce, bound to project, ref, heads, and proposal digest. Lethe verifies independently and consumes the nonce with the CAS — replays are rejected forever.</p></div></div>
+        <div class="step reveal" style="border-bottom:none"><div class="stepnum">06</div><div><h4>The ledger remembers</h4><p>Every mutation is audit-logged fail-closed — intent recorded before the write. <code>charon ledger verify</code> re-walks the hash chain whenever you want proof.</p></div></div>
+      </div>
+    </div>
+    <div class="jsoncard reveal">
+      <div class="jsonhead"><span><span class="dot"></span>MERGE AUTHORIZATION · memory-git-merge/v2</span><span>single-use</span></div>
+<pre>{
+  <span class="k">"version"</span>: <span class="s">"memory-git-merge/v2"</span>,
+  <span class="k">"project"</span>: <span class="s">"my-project"</span>,
+  <span class="k">"ref"</span>: <span class="s">"refs/shared/main"</span>,
+  <span class="k">"expected_head"</span>: <span class="s">"cs_9f2a…"</span>,
+  <span class="k">"new_head"</span>: <span class="s">"cs_41bd…"</span>,
+  <span class="k">"proposal_id"</span>: <span class="s">"prop_77c1…"</span>,
+  <span class="k">"proposal_digest"</span>: <span class="s">"sha256:8d3e…"</span>,
+  <span class="k">"reviewer"</span>: <span class="s">"principal_2a7f…"</span>,
+  <span class="k">"merger"</span>: <span class="s">"principal_2a7f…"</span>,
+  <span class="k">"strategy"</span>: <span class="s">"fast-forward"</span>,
+  <span class="k">"expires_at"</span>: <span class="s">"+2m"</span>,
+  <span class="k">"nonce"</span>: <span class="s">"16b·random·single-use"</span>
+}</pre>
+      <div class="jsonfoot">// HMAC-SHA256 · Lethe consumes the nonce atomically with the CAS</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="wrap">
+    <div class="seclabel reveal">The gate</div>
+    <h2 class="reveal">What the ferryman<br><em>enforces.</em></h2>
+    <div class="featgrid reveal" style="margin-top:56px">
+      <div class="feat"><div class="ico">Α</div><h4>Owned refs & CAS</h4><p>Agents commit only to refs they own — <code>refs/agents/*</code>, <code>refs/sessions/*</code>, <code>refs/topics/*</code>. Compare-and-swap on every write; conflicts surface, never silently lose work.</p></div>
+      <div class="feat"><div class="ico">Π</div><h4>Protected shared memory</h4><p><code>refs/shared/*</code> rejects direct commits from everyone. The only path in is a reviewed, signed merge. There is no back door, in either codebase.</p></div>
+      <div class="feat"><div class="ico">Κ</div><h4>Independent review</h4><p>Approval must come from a non-originator principal and stay current — a later objection flips the outcome to blocked. Stale approvals die with the snapshot they reviewed.</p></div>
+      <div class="feat"><div class="ico">Ν</div><h4>Replay-proof merges</h4><p>Single-use nonces, short expiry, expected-head CAS, proposal-digest binding. A captured authorization is worthless — even if the ref cycles back to the same head.</p></div>
+      <div class="feat"><div class="ico">Μ</div><h4>Exact context projection</h4><p><code>memory_context_at</code> reconstructs accepted memory at an exact ref head, with optional manifest pinning. Readers get precisely what was approved — nothing unmerged leaks in.</p></div>
+      <div class="feat"><div class="ico">Λ</div><h4>Fail-closed audit ledger</h4><p>Hash-chained, MAC'd entries written before the mutation they describe. If the ledger can't write, neither can you. Anchor and verify it any time.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICE OF PASSAGE -->
+<section style="background:var(--bg2)">
+  <div class="wrap">
+    <div class="seclabel reveal">The price of passage</div>
+    <h2 class="reveal">What each scope<br><em>buys.</em></h2>
+    <p class="reveal" style="color:var(--dim);max-width:600px;line-height:1.8;font-weight:300;margin-bottom:64px">Scopes are the fares of the underworld, set per principal per project. Mutations demand an exact project grant — a wildcard buys the view, never the helm.</p>
+    <div class="fares reveal">
+      <div class="fare-row"><div class="fn">memory.read</div><div class="fd">The shoreline. Read accepted history, context, and refs.</div><div class="ft">every passenger</div></div>
+      <div class="fare-row"><div class="fn">memory.search</div><div class="fd">The shallows. Search accepted memory across granted projects.</div><div class="ft">every passenger</div></div>
+      <div class="fare-row"><div class="fn">memory.branch</div><div class="fd">A skiff of your own. Create owned agent, session, or topic refs.</div><div class="ft">authors</div></div>
+      <div class="fare-row"><div class="fn">memory.commit</div><div class="fd">Cargo space. CAS changesets onto refs you own.</div><div class="ft">authors</div></div>
+      <div class="fare-row"><div class="fn">memory.propose</div><div class="fd">A seat on the ferry. Ask for a crossing into protected memory.</div><div class="ft">authors</div></div>
+      <div class="fare-row"><div class="fn">memory.review</div><div class="fd">The lantern. Inspect cargo and record a binding verdict.</div><div class="ft">reviewers</div></div>
+      <div class="fare-row rare"><div class="fn">memory.merge</div><div class="fd">The helm. Steer an approved crossing into refs/shared/*.</div><div class="ft">reviewers · rarest fare</div></div>
+      <div class="fare-row rare"><div class="fn">memory.write</div><div class="fd">The master's key. Trusted direct operations — still ledgered.</div><div class="ft">operators only</div></div>
+    </div>
+    <div class="quote-outro reveal">"Lethe remembers. Charon carries."<span>The project in one line</span></div>
+  </div>
+</section>
+
+<!-- INSTALL -->
+<section id="install" class="install" style="background:var(--bg2)">
+  <div class="wrap">
+    <div class="seclabel reveal" style="justify-content:center">Get started</div>
+    <h2 class="reveal">The ferry leaves<br><em>in two commands.</em></h2>
+    <p class="reveal" style="color:var(--dim);margin-top:16px;font-weight:300">Lethe Git first, then Charon. Credentials are generated, never hardcoded.</p>
+    <div class="cmdrow reveal">
+      <div class="cmd"><span class="cl">1 · Lethe Git</span><code><b>$</b> sh scripts/prepare-local-memory-git-env.sh && docker compose -f docker-compose.git.yml --env-file .env.git up -d</code></div>
+      <div class="cmd"><span class="cl">2 · Charon</span><code><b>$</b> ./setup.sh <span style="color:var(--faint)"># keys, principals, obols, both gateways</span></code></div>
+      <div class="cmd"><span class="cl">3 · Connect an agent</span><code><b>$</b> openclaw mcp add charon --url http://127.0.0.1:18486/mcp --transport streamable-http --header "Authorization=Bearer ${TOKEN}"</code></div>
+      <a class="cmd" href="docs.html"><span class="cl">Documentation</span><code><b>→</b> docs.html — tools, scopes, API, harnesses</code></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fl">Lethe<i>.</i></div>
+  <div>
+    <a href="https://github.com/openlethe/charon" style="margin-left:0">GitHub</a>
+    <a href="index.html">Lethe</a>
+    <a href="docs.html">Docs</a>
+    <a href="index.html#pricing">Pricing</a>
+  </div>
+  <div class="fc">openlethe.com · 2026</div>
+</footer>
+
+<script>
+// ---- the crossing: a lantern-lit ferry on a golden current ----
+const cv = document.getElementById('crossing'), cx = cv.getContext('2d');
+let W,H,wake=[],glints=[];
+function resize(){ W=cv.width=cv.offsetWidth; H=cv.height=cv.offsetHeight; }
+resize(); addEventListener('resize',resize);
+for(let i=0;i<34;i++) glints.push({x:Math.random(),y:.55+Math.random()*.4,ph:Math.random()*Math.PI*2,s:.6+Math.random()*1.4});
+let t=0;
+const ferry={x:-.15};
+function waterY(x,tt){ return .66 + Math.sin(x*5+tt)*.015 + Math.sin(x*11-tt*1.3)*.008; }
+function draw(){
+  t+=.008;
+  cx.clearRect(0,0,W,H);
+  // golden current bands
+  for(let b=0;b<5;b++){
+    cx.beginPath();
+    const base=.6+b*.07;
+    for(let x=0;x<=1.001;x+=.01){
+      const y=base+Math.sin(x*6+t+b*2)*.012+Math.sin(x*13-t*1.4+b)*.007;
+      x===0?cx.moveTo(x*W,y*H):cx.lineTo(x*W,y*H);
+    }
+    cx.strokeStyle=`rgba(217,164,65,${.045+b*.013})`;
+    cx.lineWidth=1.2;
+    cx.stroke();
+  }
+  // obol glints on the water
+  for(const g of glints){
+    const a=.12+.3*Math.abs(Math.sin(t*1.6+g.ph));
+    cx.beginPath();
+    cx.arc(g.x*W,(g.y+Math.sin(g.x*6+t)*.012)*H,g.s,0,7);
+    cx.fillStyle=`rgba(232,201,138,${a})`;
+    cx.fill();
+  }
+  // ferry crossing, right to left, slow
+  ferry.x-=.00055; if(ferry.x<-.18){ferry.x=1.18;wake.length=0;}
+  const fx=ferry.x*W, fy=waterY(ferry.x,t)*H;
+  // wake particles
+  if(Math.random()<.6) wake.push({x:fx+44,y:fy+4,life:1,drift:.4+Math.random()*.5});
+  for(let i=wake.length-1;i>=0;i--){
+    const w=wake[i]; w.x+=w.drift; w.life-=.006;
+    if(w.life<=0){wake.splice(i,1);continue;}
+    cx.beginPath(); cx.arc(w.x,w.y,1.1,0,7);
+    cx.fillStyle=`rgba(217,164,65,${w.life*.35})`; cx.fill();
+  }
+  // hull
+  cx.beginPath();
+  cx.moveTo(fx-52,fy); cx.lineTo(fx+52,fy);
+  cx.lineTo(fx+34,fy+13); cx.lineTo(fx-36,fy+13); cx.closePath();
+  cx.fillStyle='rgba(20,15,7,.95)'; cx.fill();
+  cx.strokeStyle='rgba(217,164,65,.5)'; cx.lineWidth=1; cx.stroke();
+  // hooded figure + pole
+  cx.beginPath(); cx.moveTo(fx+2,fy-2); cx.lineTo(fx+2,fy-26); cx.stroke();
+  cx.beginPath(); cx.arc(fx-6,fy-16,7,Math.PI,0); cx.lineTo(fx+1,fy-2); cx.lineTo(fx-13,fy-2); cx.closePath();
+  cx.fillStyle='rgba(20,15,7,.95)'; cx.fill(); cx.stroke();
+  // lantern glow at the bow
+  const lg=cx.createRadialGradient(fx-40,fy-14,0,fx-40,fy-14,46);
+  lg.addColorStop(0,'rgba(232,201,138,.85)'); lg.addColorStop(.25,'rgba(217,164,65,.28)'); lg.addColorStop(1,'rgba(217,164,65,0)');
+  cx.fillStyle=lg; cx.beginPath(); cx.arc(fx-40,fy-14,46,0,7); cx.fill();
+  cx.beginPath(); cx.arc(fx-40,fy-14,2.2,0,7); cx.fillStyle='#e8c98a'; cx.fill();
+  requestAnimationFrame(draw);
+}
+draw();
+
+// ---- reveals ----
+const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('on'); }),{threshold:.18});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
