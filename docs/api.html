@@ -95,15 +95,19 @@ footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--fai
 <div class="grp"><div class="gt">Project</div>
 <a href="migration.html">Migration &amp; Upgrading</a>
 <a href="faq.html">FAQ</a>
+<div class="grp"><div class="gt">Deep Dive</div>
+<a href="memory-git-v1.html">Protocol · memory_git/v1</a>
+<a href="memory-context-bridge.html">Context Projection</a>
+<a href="observability.html">Observability</a>
 </div>
 </aside>
 <main>
 <div class="kick">Lethe docs · HTTP API Reference</div>
-<h1>HTTP API Reference</h1>
+<h1 id="http-api-reference">HTTP API Reference</h1>
 <p>All routes require <code>Authorization: Bearer $LETHE_API_KEY</code> when a key is
 configured (strict Bearer parsing). Without a key, trusted peers
 (<code>LETHE_TRUST</code>) are admitted.</p>
-<h2>Memory Git API — git/hybrid mode</h2>
+<h2 id="memory-git-api-githybrid-mode">Memory Git API — git/hybrid mode</h2>
 <p>Base: <code>/api/memory</code></p>
 <table>
 <thead>
@@ -155,7 +159,7 @@ configured (strict Bearer parsing). Without a key, trusted peers
 </tr>
 </tbody>
 </table>
-<h2>Legacy session API — legacy/hybrid mode</h2>
+<h2 id="legacy-session-api-legacyhybrid-mode">Legacy session API — legacy/hybrid mode</h2>
 <p>Base: <code>/api</code></p>
 <table>
 <thead>
@@ -199,7 +203,7 @@ configured (strict Bearer parsing). Without a key, trusted peers
 </tr>
 </tbody>
 </table>
-<h2>Errors</h2>
+<h2 id="errors">Errors</h2>
 <p>Named, stable error classes: <code>400</code> validation (closed payload keys, size
 caps, unknown ref, malformed envelope), <code>401</code> bearer, <code>403</code> protected-ref
 direct write / invalid merge authorization, <code>404</code> unknown object, <code>409</code>

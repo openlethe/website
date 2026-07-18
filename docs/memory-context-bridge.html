@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Deployment &amp; Ops — Lethe Docs</title>
+<title>Context Projection — Lethe Docs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -85,7 +85,7 @@ footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--fai
 <div class="grp"><div class="gt">Platform</div>
 <a href="architecture.html">Architecture</a>
 <a href="configuration.html">Configuration</a>
-<a href="deployment.html" class="on">Deployment &amp; Ops</a>
+<a href="deployment.html">Deployment &amp; Ops</a>
 <a href="docker-compose.html">Compose Variations</a>
 <div class="grp"><div class="gt">Reference</div>
 <a href="api.html">HTTP API Reference</a>
@@ -97,102 +97,127 @@ footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--fai
 <a href="faq.html">FAQ</a>
 <div class="grp"><div class="gt">Deep Dive</div>
 <a href="memory-git-v1.html">Protocol · memory_git/v1</a>
-<a href="memory-context-bridge.html">Context Projection</a>
+<a href="memory-context-bridge.html" class="on">Context Projection</a>
 <a href="observability.html">Observability</a>
 </div>
 </aside>
 <main>
-<div class="kick">Lethe docs · Deployment &amp; Ops</div>
-<h1 id="deployment-operations">Deployment &amp; Operations</h1>
-<h2 id="production-checklist">Production checklist</h2>
-<ul>
-<li>[ ] Pin an exact image tag (<code>ghcr.io/openlethe/lethe:&lt;version&gt;</code>), not <code>latest</code>.</li>
-<li>[ ] <code>LETHE_API_KEY</code> set (required for any non-loopback bind), generated with <code>openssl rand -hex 32</code>.</li>
-<li>[ ] Git mode: <code>CHARON_MERGE_HMAC_KEY</code> set and identical on Lethe and Charon.</li>
-<li>[ ] Data on bind-mounted host directories owned by UID 1000 — never named volumes for persistent data.</li>
-<li>[ ] <code>LETHE_TRUST=loopback</code> unless you have a reason to widen it; never expose the port beyond loopback without a key.</li>
-<li>[ ] Backup schedule in place; restore rehearsed (see below).</li>
-<li>[ ] Metrics scraped (<code>GET /api/metrics</code>) and alerts wired (<a href="observability.html">observability.md</a>).</li>
-</ul>
-<h2 id="ports-and-exposure">Ports and exposure</h2>
-<table>
-<thead>
-<tr>
-<th>Port</th>
-<th>Service</th>
-<th>Exposure guidance</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>18483</code></td>
-<td>legacy/hybrid Lethe</td>
-<td>loopback, or behind a reverse proxy with the API key</td>
-</tr>
-<tr>
-<td><code>18485</code></td>
-<td>Memory Git</td>
-<td><strong>loopback only</strong> — reach it through Charon from agents</td>
-</tr>
-<tr>
-<td><code>18484</code></td>
-<td>Charon primary (OAuth)</td>
-<td>the only agent-facing port worth tunneling (HTTPS)</td>
-</tr>
-<tr>
-<td><code>18486</code></td>
-<td>Charon reviewer (Obol)</td>
-<td>loopback only</td>
-</tr>
-</tbody>
-</table>
-<h2 id="upgrading">Upgrading</h2>
-<ol>
-<li>Back up the database (<code>sqlite3 &lt;db&gt; ".backup backups/lethe-&lt;date&gt;.db"</code> and <code>PRAGMA integrity_check;</code>).</li>
-<li>Read the release notes; schema migrations are additive and automatic on startup.</li>
-<li>Pull the new pinned tag and recreate the container.</li>
-<li>Watch startup logs: migration lines, then health <code>200</code>/<code>401</code> as expected.</li>
-<li>Rollback: previous image tag + restore the pre-upgrade backup.</li>
-</ol>
-<p>Current migration path: v0.3.x → v0.4.0 via automatic additive migration
-008. Memory Git runs on separate tables and does not migrate legacy events;
-see <a href="migration.html">migration.md</a>.</p>
-<h2 id="backup-and-restore">Backup and restore</h2>
-<p><strong>Backup (no downtime):</strong></p>
-<pre><code class="language-bash">sqlite3 /path/to/lethe.db &quot;.backup backups/lethe-$(date +%Y%m%d-%H%M).db&quot;
-sqlite3 backups/lethe-*.db &quot;PRAGMA integrity_check;&quot;
+<div class="kick">Lethe docs · Context Projection</div>
+<h1 id="memory-git-context-bridge">Memory Git Context Bridge</h1>
+<p>Status: implemented and locally tested on <code>v0.4-local-staging</code>
+Projection contract: <code>memory-context/v1</code></p>
+<h2 id="purpose">Purpose</h2>
+<p>This bridge makes accepted Memory Git history affect model context. The canonical
+input is the exact head of <code>refs/shared/main</code>, not every event in the legacy
+event table and not an unmerged agent branch.</p>
+<h2 id="data-flow">Data flow</h2>
+<pre><code>legacy events at legacy-root creation ─┐
+                                      ├─ deterministic projection at head
+accepted changeset DAG on shared/main ─┘
+                         │
+                         ├─ apply add/correct/supersede/duplicate/deprecation
+                         ├─ rank active memories against the current prompt
+                         └─ create exact input manifest
+                                      │
+                                      v
+OpenClaw context engine ─ accepted memory + session summary + recent events
+                                      │
+                                      v
+assembly ledger ─ manifest ID + head changeset ID + token counts
 </code></pre>
-<p><strong>Restore:</strong> stop the container, replace the database file, start with
-<code>LETHE_RECOVERY_READONLY=1</code>, validate with <code>sqlite3 &lt;db&gt; "PRAGMA integrity_check;"</code>,
-then clear the flag.</p>
-<p><strong>Charon side:</strong> the policy database has its own backup/restore runbook in
-<a href="https://github.com/openlethe/charon/blob/main/docs/operations.md">Charon's operations guide</a>,
-including coordinated two-database backup and <code>charon reconcile</code>.</p>
-<h2 id="container-hardening-as-shipped">Container hardening (as shipped)</h2>
-<p>Non-root UID 1000, <code>cap_drop: ALL</code>, read-only root filesystem,
-<code>no-new-privileges</code>, PID/memory/CPU limits, and a token-free healthcheck
-(<code>/api/health</code> answers 401 with a key set, 200 without). Compose references
-live in <a href="docker-compose.html">docker-compose.md</a>.</p>
-<h2 id="observability">Observability</h2>
+<h2 id="frozen-legacy-baseline">Frozen legacy baseline</h2>
+<p>Migration <code>010_memory_context_bridge.sql</code> adds
+<code>memory_legacy_baselines</code>. The first legacy root freezes every project event
+whose creation time is at or before the root changeset. Events written directly
+after the root are not silently accepted into Memory Git. They must be
+represented by an accepted semantic operation.</p>
+<p>Existing databases are repaired lazily: when the legacy root is next ensured or
+projected, Lethe reconstructs the baseline using the root creation timestamp and
+stores the exact IDs.</p>
+<h2 id="projection-semantics">Projection semantics</h2>
+<p><code>BuildMemoryContext</code> walks the complete changeset DAG from roots to the pinned
+head in deterministic parent order and applies:</p>
 <ul>
-<li><code>GET /api/health</code>, <code>/readyz</code> — liveness/readiness (auth-aware).</li>
-<li><code>GET /api/metrics</code> — Prometheus metrics for both modes; SLOs and alert
-  thresholds in <a href="observability.html">observability.md</a>.</li>
-<li>Logs are structured per request; secret values are never logged.</li>
+<li><code>add_memory</code>: creates or replaces an active semantic memory.</li>
+<li><code>correct_memory</code>: overlays the target while retaining immutable history. A
+  distinct resulting ID retires the target and creates the replacement.</li>
+<li><code>supersede_memory</code>: retires the target and optionally creates a replacement.</li>
+<li><code>mark_duplicate</code>: removes the duplicate from active context.</li>
+<li><code>propose_deprecation</code>: keeps the memory active and marks the proposal.</li>
+<li><code>attach_evidence</code> / <code>attach_verification</code>: attach metadata to the target.</li>
+<li><code>add_relationship</code>: records an accepted relationship.</li>
 </ul>
-<h2 id="failure-behavior-to-expect">Failure behavior to expect</h2>
-<p>Lethe fails closed. Common named errors:</p>
+<p>Historical heads are allowed only when they are reachable from the named ref.
+This prevents an unmerged branch head from being presented as accepted shared
+memory.</p>
+<p>Selection is deterministic. Query token overlap ranks first, then most recently
+changed active memories, then memory ID. The hard maximum is 100 memories.</p>
+<h2 id="api">API</h2>
+<h3 id="retrieve-without-creating-a-manifest">Retrieve without creating a manifest</h3>
+<pre><code class="language-http">GET /api/memory/{project}/context?ref=refs%2Fshared%2Fmain&amp;head={optional}&amp;query={optional}&amp;limit=20
+Authorization: Bearer {LETHE_API_KEY}
+</code></pre>
+<h3 id="retrieve-and-pin-an-input-manifest">Retrieve and pin an input manifest</h3>
+<pre><code class="language-http">POST /api/memory/{project}/context
+Authorization: Bearer {LETHE_API_KEY}
+Content-Type: application/json
+
+{
+  &quot;ref_name&quot;: &quot;refs/shared/main&quot;,
+  &quot;head_changeset_id&quot;: &quot;&quot;,
+  &quot;query&quot;: &quot;current user prompt&quot;,
+  &quot;limit&quot;: 12,
+  &quot;session_id&quot;: &quot;stable-session-key&quot;,
+  &quot;actor_id&quot;: &quot;example-agent&quot;,
+  &quot;create_manifest&quot;: true
+}
+</code></pre>
+<p>The response includes <code>manifest_id</code>, <code>head_changeset_id</code>,
+<code>projection_version</code>, selected memories, and unresolved conflict IDs. Direct
+<code>POST /api/memory/manifests</code> calls accept either a stable session key or the
+canonical Lethe session ID; the server stores the canonical ID so later assembly
+validation is exact.</p>
+<h2 id="openclaw-assembly">OpenClaw assembly</h2>
+<p>The context engine requests a projected view on every model assembly, drops
+whole low-ranked memories until the final rendered text fits the remaining token
+budget, and only then creates the exact input manifest. It injects accepted
+project memory before the session summary and bounded recent events. The
+assembly ledger records:</p>
 <ul>
-<li>startup: <code>LETHE_API_KEY is required</code> (non-loopback bind without a key),
-  merge-key missing in git mode, unsupported storage durability</li>
-<li>request: <code>401</code> (bad/missing bearer), <code>403</code> (protected ref written
-  directly, merge authorization invalid), <code>409</code> (CAS conflict — reread and
-  retry), <code>400</code> (validation: closed payload keys, size caps, unknown ref)</li>
+<li><code>memory_manifest_id</code></li>
+<li><code>memory_head_changeset_id</code></li>
+<li><code>accepted_estimated_tokens</code></li>
+<li>the existing summary and recent-event items</li>
 </ul>
-<p>A <code>409</code> on a changeset or merge is never corruption — it is the
-compare-and-swap working. Reread the current head, reconcile, resubmit with
-a new idempotency key.</p>
-<div class="pn"><a class="p" href="configuration.html">← Configuration</a><a class="n" href="docker-compose.html">Compose Variations →</a></div>
+<p>Authentication and transport failures are rate-limited warnings rather than
+silent failures. Normal agent execution continues if Lethe is unavailable.</p>
+<h2 id="charon-surface">Charon surface</h2>
+<p>Charon exposes <code>memory_context_at</code>. It requires <code>memory.read</code>, enforces
+project grants, allows shared refs, and restricts non-shared refs to the
+principal's owned agent/session/topic namespace. Callers with an exact project
+grant plus <code>memory.commit</code> or <code>memory.write</code> receive an exact input manifest;
+read-only wildcard callers get a non-mutating projection. Every call is recorded
+in Charon's audit ledger.</p>
+<h2 id="verification">Verification</h2>
+<p>The automated suite covers:</p>
+<ul>
+<li>a frozen legacy baseline;</li>
+<li>exclusion of post-root unversioned events;</li>
+<li>accepted add/correct/supersede/duplicate behavior;</li>
+<li>historical reconstruction;</li>
+<li>rejection of unmerged heads under <code>refs/shared/main</code>;</li>
+<li>API-created manifests and assembly linkage;</li>
+<li>OpenClaw injection and manifest/head reporting;</li>
+<li>Charon project/ref policy;</li>
+<li>full-branch-delta conflict detection.</li>
+</ul>
+<p>Run:</p>
+<pre><code class="language-bash">go test ./...
+go test -race ./...
+go vet ./...
+(cd plugin &amp;&amp; npm test)
+</code></pre>
+<div class="pn"><a class="p" href="memory-git-v1.html">← Protocol · memory_git/v1</a><a class="n" href="observability.html">Observability →</a></div>
 </main>
 </div>
 <footer>

@@ -95,11 +95,15 @@ footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--fai
 <div class="grp"><div class="gt">Project</div>
 <a href="migration.html">Migration &amp; Upgrading</a>
 <a href="faq.html" class="on">FAQ</a>
+<div class="grp"><div class="gt">Deep Dive</div>
+<a href="memory-git-v1.html">Protocol · memory_git/v1</a>
+<a href="memory-context-bridge.html">Context Projection</a>
+<a href="observability.html">Observability</a>
 </div>
 </aside>
 <main>
 <div class="kick">Lethe docs · FAQ</div>
-<h1>FAQ</h1>
+<h1 id="faq">FAQ</h1>
 <p><strong>Is Lethe an OpenClaw component?</strong>
 No. Lethe is a general-purpose memory platform for any AI agent. The
 OpenClaw plugin is one integration — recommended for OpenClaw users, never
@@ -112,7 +116,7 @@ in SQLite. There are no <code>.git</code> directories and no filesystem reposito
 <p><strong>Which mode should I run?</strong>
 OpenClaw → legacy. Durable or shared memory for anything else → git (add
 Charon when memory is shared or leaves loopback). Both or migrating →
-hybrid. See <a href="runtime-modes.md">runtime-modes.md</a>.</p>
+hybrid. See <a href="runtime-modes.html">runtime-modes.md</a>.</p>
 <p><strong>Do I need Charon?</strong>
 Not for a single local agent — the bearer-key API is enough. You want
 Charon when several agents share memory, when memory is reviewed before
@@ -130,7 +134,7 @@ file. Nothing leaves your infrastructure unless you tunnel it yourself.</p>
 You generate them (<code>openssl rand -hex 32</code>, <code>./lethe keygen</code>, or
 <code>scripts/prepare-local-memory-git-env.sh</code>). They live in mode-0600 <code>.env</code>
 files, are never committed, never stored in the database, and are distinct
-per purpose. Details: <a href="configuration.md">configuration.md</a>.</p>
+per purpose. Details: <a href="configuration.html">configuration.md</a>.</p>
 <p><strong>What happens on restart?</strong>
 Everything persists: sessions, events, changesets, refs, manifests, and
 consumed merge nonces (so replay protection survives restarts). The one
@@ -145,11 +149,11 @@ cycled back to the same head.</p>
 Yes — that is the designed center of the system: one Lethe Git, one Charon,
 a propose-profile principal per writing agent, an independent reviewer
 principal, and accepted memory landing on <code>refs/shared/main</code> only through
-review. See <a href="integrations.md#multi-agent-one-memory-backend">integrations.md</a>.</p>
+review. See <a href="integrations.html#multi-agent-one-memory-backend">integrations.md</a>.</p>
 <p><strong>Is there a hosted/SaaS version?</strong>
 Lethe is self-hosted by design. The container and the source are the
 product.</p>
-<div class="pn"><a class="p" href="migration.html">← Migration &amp; Upgrading</a></div>
+<div class="pn"><a class="p" href="migration.html">← Migration &amp; Upgrading</a><a class="n" href="memory-git-v1.html">Protocol · memory_git/v1 →</a></div>
 </main>
 </div>
 <footer>

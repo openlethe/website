@@ -95,12 +95,16 @@ footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--fai
 <div class="grp"><div class="gt">Project</div>
 <a href="migration.html" class="on">Migration &amp; Upgrading</a>
 <a href="faq.html">FAQ</a>
+<div class="grp"><div class="gt">Deep Dive</div>
+<a href="memory-git-v1.html">Protocol · memory_git/v1</a>
+<a href="memory-context-bridge.html">Context Projection</a>
+<a href="observability.html">Observability</a>
 </div>
 </aside>
 <main>
 <div class="kick">Lethe docs · Migration &amp; Upgrading</div>
-<h1>Migration &amp; Upgrading</h1>
-<h2>Version migrations</h2>
+<h1 id="migration-upgrading">Migration &amp; Upgrading</h1>
+<h2 id="version-migrations">Version migrations</h2>
 <p>Schema migrations are additive and run automatically at startup. The
 supported path today:</p>
 <ul>
@@ -110,7 +114,7 @@ supported path today:</p>
 <p>Always back up before upgrading (<code>sqlite3 &lt;db&gt; ".backup &lt;out&gt;.db"</code> +
 <code>PRAGMA integrity_check;</code>), pin image tags, and keep the previous tag plus
 the pre-upgrade backup as the rollback path.</p>
-<h2>Legacy events ↔ Memory Git</h2>
+<h2 id="legacy-events-memory-git">Legacy events ↔ Memory Git</h2>
 <p>The two memory systems are separate tables with separate histories.
 Migrating to Memory Git <strong>does not</strong> rewrite or import legacy events:</p>
 <ul>
@@ -119,10 +123,10 @@ Migrating to Memory Git <strong>does not</strong> rewrite or import legacy event
 <li>Later direct event writes never silently become accepted shared memory —
   memory enters <code>refs/shared/main</code> only through changesets, proposals, and
   reviewed merges.</li>
-<li>Run <a href="runtime-modes.md#hybrid-mode">hybrid mode</a> during transition so both
+<li>Run <a href="runtime-modes.html#hybrid-mode">hybrid mode</a> during transition so both
   surfaces stay available while clients move over.</li>
 </ul>
-<h2>Moving an existing deployment to Memory Git</h2>
+<h2 id="moving-an-existing-deployment-to-memory-git">Moving an existing deployment to Memory Git</h2>
 <ol>
 <li>Keep the legacy instance running (its data is unaffected).</li>
 <li>Start a git-mode instance with a <strong>fresh</strong> data directory — never point
@@ -136,7 +140,7 @@ Migrating to Memory Git <strong>does not</strong> rewrite or import legacy event
 <li>Retire the legacy instance when its sessions close out, or keep it for
    session continuity alongside (hybrid).</li>
 </ol>
-<h2>Upgrading the deployment shape</h2>
+<h2 id="upgrading-the-deployment-shape">Upgrading the deployment shape</h2>
 <ul>
 <li>Single-container users keep one port (<code>18483</code>) and one data directory;
   nothing else changes.</li>
@@ -146,7 +150,7 @@ Migrating to Memory Git <strong>does not</strong> rewrite or import legacy event
   keys; the merge key must match Lethe's. The full sequence is in
   <a href="https://github.com/openlethe/charon/blob/main/docs/full-run.md">Charon's full-run guide</a>.</li>
 </ul>
-<h2>Rollback</h2>
+<h2 id="rollback">Rollback</h2>
 <ol>
 <li>Stop the container.</li>
 <li>Restore the pre-upgrade backup over the data file.</li>

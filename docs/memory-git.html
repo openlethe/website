@@ -95,17 +95,21 @@ footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--fai
 <div class="grp"><div class="gt">Project</div>
 <a href="migration.html">Migration &amp; Upgrading</a>
 <a href="faq.html">FAQ</a>
+<div class="grp"><div class="gt">Deep Dive</div>
+<a href="memory-git-v1.html">Protocol · memory_git/v1</a>
+<a href="memory-context-bridge.html">Context Projection</a>
+<a href="observability.html">Observability</a>
 </div>
 </aside>
 <main>
 <div class="kick">Lethe docs · Memory Git</div>
-<h1>Memory Git</h1>
+<h1 id="memory-git">Memory Git</h1>
 <p>Memory Git is Lethe's versioned memory system: durable, reviewable,
 branchable memory for any AI agent. It borrows Git's semantics — refs,
 changesets, branching, merging, immutable history — and applies them to
 memory records. <strong>It is not filesystem Git</strong>: no <code>.git</code> directory, no blobs
 of source code; the objects are semantic memory records.</p>
-<h2>What it enables</h2>
+<h2 id="what-it-enables">What it enables</h2>
 <ul>
 <li><strong>Persistent AI memory</strong> — knowledge that survives sessions, restarts,
   and model changes, reconstructed exactly at a changeset head.</li>
@@ -122,7 +126,7 @@ of source code; the objects are semantic memory records.</p>
 <li><strong>Versioned context</strong> — read memory at any exact head, optionally pinned
   in a context manifest.</li>
 </ul>
-<h2>The objects</h2>
+<h2 id="the-objects">The objects</h2>
 <table>
 <thead>
 <tr>
@@ -157,7 +161,7 @@ of source code; the objects are semantic memory records.</p>
 </tr>
 </tbody>
 </table>
-<h2>The everyday flow</h2>
+<h2 id="the-everyday-flow">The everyday flow</h2>
 <ol>
 <li><strong>Orient</strong> — read accepted memory: <code>memory_context_at</code> on
    <code>refs/shared/main</code>.</li>
@@ -176,23 +180,23 @@ of source code; the objects are semantic memory records.</p>
 <p>Retrying the identical request with the same idempotency key returns the
 original changeset exactly once; a changed request under a reused key fails
 closed instead of silently discarding work.</p>
-<h2>Using it without OpenClaw</h2>
+<h2 id="using-it-without-openclaw">Using it without OpenClaw</h2>
 <p>Memory Git needs nothing OpenClaw-specific. Direct over HTTP:</p>
 <pre><code class="language-bash">curl -H &quot;Authorization: Bearer $LETHE_API_KEY&quot; \
   http://127.0.0.1:18485/api/memory/&lt;project&gt;/refs
 </code></pre>
 <p>Or via MCP through <a href="https://github.com/openlethe/charon">Charon</a> for scoped,
-reviewed access — see <a href="integrations.md">integrations.md</a> for
+reviewed access — see <a href="integrations.html">integrations.md</a> for
 ChatGPT, Claude Code, Cursor, and generic MCP setups, and the
 <a href="https://github.com/openlethe/charon/blob/main/docs/full-run.md">full governed walkthrough</a>.</p>
-<h2>Further reading</h2>
+<h2 id="further-reading">Further reading</h2>
 <ul>
-<li><a href="memory-git-v1.md">memory-git-v1.md</a> — the full protocol: changeset model,
+<li><a href="memory-git-v1.html">memory-git-v1.md</a> — the full protocol: changeset model,
   merge shapes, conflict lifecycle, envelope fields, durability and recovery</li>
-<li><a href="memory-context-bridge.md">memory-context-bridge.md</a> — the
+<li><a href="memory-context-bridge.html">memory-context-bridge.md</a> — the
   <code>memory-context/v1</code> projection and manifest API</li>
-<li><a href="runtime-modes.md">runtime-modes.md</a> — when to run git vs legacy vs hybrid</li>
-<li><a href="api.md">api.md</a> — the Memory Git HTTP routes</li>
+<li><a href="runtime-modes.html">runtime-modes.md</a> — when to run git vs legacy vs hybrid</li>
+<li><a href="api.html">api.md</a> — the Memory Git HTTP routes</li>
 </ul>
 <div class="pn"><a class="p" href="runtime-modes.html">← Runtime Modes</a><a class="n" href="legacy-mode.html">Legacy Mode →</a></div>
 </main>

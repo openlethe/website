@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protocol · memory_git/v1 — Lethe Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05070a;--bg2:#080d12;--ink:#e8f2f5;--dim:#7d99a3;--faint:#41565e;--cyan:#39d0e8;--cyan-soft:rgba(57,208,232,.12);--line:#12242c;--serif:'Cormorant Garamond',serif;--gold:#d9a441;--gold-soft:rgba(217,164,65,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;overflow-x:hidden;font-size:15px;line-height:1.65}
+::selection{background:var(--cyan);color:#04141a}
+nav.top{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:rgba(5,7,10,.55);backdrop-filter:blur(14px);border-bottom:1px solid rgba(57,208,232,.08)}
+.logo{font-weight:700;font-size:20px;letter-spacing:-.02em;text-decoration:none;color:var(--ink)}
+.logo i{font-style:normal;color:var(--cyan)}
+.navlinks{display:flex;gap:32px;align-items:center}
+.navlinks a{color:var(--dim);text-decoration:none;font-size:13px;letter-spacing:.08em;transition:color .25s}
+.navlinks a:hover{color:var(--cyan)}
+.navlinks a.here{color:var(--cyan)}
+.cta{border:1px solid var(--cyan);color:var(--cyan)!important;padding:9px 20px;font-size:12px!important;letter-spacing:.15em!important;text-transform:uppercase;text-decoration:none;transition:all .25s}
+.cta:hover{background:var(--cyan);color:#04141a!important}
+.wiki{display:grid;grid-template-columns:270px minmax(0,1fr);gap:64px;max-width:1320px;margin:0 auto;padding:110px 32px 60px}
+aside{position:sticky;top:96px;align-self:start;max-height:calc(100vh - 126px);overflow-y:auto;padding-right:14px;scrollbar-width:thin}
+aside .grp{margin-bottom:26px}
+aside .gt{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--faint);text-transform:uppercase;margin-bottom:10px}
+aside a{display:block;color:var(--dim);text-decoration:none;font-size:13px;padding:5px 0 5px 16px;border-left:1px solid var(--line);transition:all .2s;line-height:1.4}
+aside a:hover{color:var(--cyan)}
+aside a.on{color:var(--cyan);border-left-color:var(--cyan)}
+main{min-width:0;max-width:860px}
+main h1{font-family:var(--serif);font-weight:400;font-size:clamp(32px,4.5vw,46px);line-height:1.1;margin:14px 0 18px}
+main h2{font-family:var(--serif);font-weight:400;font-size:clamp(24px,3vw,32px);line-height:1.15;margin:40px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
+main h2:first-of-type{border-top:none;padding-top:0}
+main h3{font-size:18px;font-weight:600;margin:28px 0 8px}
+main p{color:var(--dim);margin:12px 0;font-weight:300}
+main b,main strong{color:var(--ink);font-weight:500}
+main a{color:var(--cyan)}
+main ul,main ol{color:var(--dim);margin:12px 0 16px 22px;font-weight:300}
+main li{margin:6px 0}
+main code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);background:var(--cyan-soft);padding:2px 7px;border-radius:4px}
+main pre{background:#03080a;border:1px solid var(--line);border-radius:6px;padding:18px 20px;overflow-x:auto;margin:16px 0}
+main pre code{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.8;color:#9fc3cd;background:none;padding:0}
+main table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+main th{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--faint);text-align:left;padding:11px 12px;border-bottom:1px solid var(--line)}
+main td{padding:11px 12px;border-bottom:1px solid var(--line);color:var(--dim);line-height:1.55;vertical-align:top;font-weight:300}
+main td code{white-space:nowrap}
+main tr:hover td{background:rgba(57,208,232,.03)}
+main blockquote{border-left:2px solid var(--gold);padding:8px 0 8px 18px;margin:16px 0;color:var(--dim);font-weight:300}
+main hr{border:none;border-top:1px solid var(--line);margin:28px 0}
+.kick{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.28em;color:var(--cyan);text-transform:uppercase}
+.pn{display:flex;justify-content:space-between;gap:16px;margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-size:13px}
+.pn a{color:var(--dim);text-decoration:none}
+.pn a:hover{color:var(--cyan)}
+.pn .n{margin-left:auto}
+footer{border-top:1px solid var(--line);padding:40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-top:40px}
+footer .fl{font-weight:700;font-size:18px}
+footer .fl i{font-style:normal;color:var(--cyan)}
+footer a{color:var(--faint);text-decoration:none;font-size:13px;margin-left:24px;transition:color .25s}
+footer a:hover{color:var(--cyan)}
+footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);letter-spacing:.15em}
+@media(max-width:1000px){.wiki{grid-template-columns:1fr;gap:0;padding-top:100px}aside{position:static;max-height:none;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}aside .grp{margin:0}aside .gt{display:none}aside a{border:1px solid var(--line);padding:6px 12px;font-size:12px}.navlinks a:not(.cta){display:none}}
+</style>
+</head>
+<body>
+<nav class="top">
+  <a class="logo" href="../index.html">Lethe<i>.</i></a>
+  <div class="navlinks">
+    <a href="../index.html">Lethe</a>
+    <a href="../charon.html">Charon</a>
+    <a href="index.html" class="here">Docs</a>
+    <a href="https://github.com/openlethe/lethe">GitHub</a>
+    <a class="cta" href="installation.html">Get started</a>
+  </div>
+</nav>
+<div class="wiki">
+<aside>
+<div class="grp"><div class="gt">Start</div>
+<a href="overview.html">Overview</a>
+<a href="installation.html">Installation</a>
+<a href="runtime-modes.html">Runtime Modes</a>
+<div class="grp"><div class="gt">Memory Systems</div>
+<a href="memory-git.html">Memory Git</a>
+<a href="legacy-mode.html">Legacy Mode</a>
+<div class="grp"><div class="gt">Platform</div>
+<a href="architecture.html">Architecture</a>
+<a href="configuration.html">Configuration</a>
+<a href="deployment.html">Deployment &amp; Ops</a>
+<a href="docker-compose.html">Compose Variations</a>
+<div class="grp"><div class="gt">Reference</div>
+<a href="api.html">HTTP API Reference</a>
+<div class="grp"><div class="gt">Integrations</div>
+<a href="openclaw.html">OpenClaw</a>
+<a href="integrations.html">Client Integrations</a>
+<div class="grp"><div class="gt">Project</div>
+<a href="migration.html">Migration &amp; Upgrading</a>
+<a href="faq.html">FAQ</a>
+<div class="grp"><div class="gt">Deep Dive</div>
+<a href="memory-git-v1.html" class="on">Protocol · memory_git/v1</a>
+<a href="memory-context-bridge.html">Context Projection</a>
+<a href="observability.html">Observability</a>
+</div>
+</aside>
+<main>
+<div class="kick">Lethe docs · Protocol · memory_git/v1</div>
+<h1 id="memory-git-v1-local-design">Memory Git V1 — Local Design</h1>
+<p>Status: implemented and locally verified; live rollout requires container/plugin restart
+Date: 2026-07-14
+Constraint: no external publish, no production deploy, no history rewrite.</p>
+<h2 id="goal">Goal</h2>
+<p>Permission-aware, Git-inspired versioning above Lethe's immutable event history,
+integrated with Charon's existing proposal workflow.</p>
+<h2 id="non-goals">Non-goals</h2>
+<ul>
+<li>Actual Git repository storage</li>
+<li>A second proposal system</li>
+<li>In-place edits of accepted memory</li>
+<li>Offline clone/pull/push protocol (V1)</li>
+<li>Rewriting pre-Memory-Git event IDs</li>
+</ul>
+<h2 id="layering">Layering</h2>
+<pre><code>MCP client / local CLI
+        |
+        v
+     Charon
+  auth · scopes · proposals · audit · MCP tools
+        |
+        | private upstream (LETHE_API_KEY)
+        v
+      Lethe
+  immutable events · changesets · refs · diffs · checkout
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Concern</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Immutable memory objects</td>
+<td>Lethe <code>events</code></td>
+</tr>
+<tr>
+<td>Changesets + ops + digests</td>
+<td>Lethe <code>memory_changesets*</code></td>
+</tr>
+<tr>
+<td>Project-scoped refs / CAS</td>
+<td>Lethe <code>memory_refs</code></td>
+</tr>
+<tr>
+<td>Semantic diff computation</td>
+<td>Lethe</td>
+</tr>
+<tr>
+<td>Context manifests (pin)</td>
+<td>Lethe <code>memory_manifests</code></td>
+</tr>
+<tr>
+<td>Conflicts</td>
+<td>Lethe <code>memory_conflicts</code> + Charon review</td>
+</tr>
+<tr>
+<td>Merge proposals / approval</td>
+<td>Charon <code>proposals</code> (extended)</td>
+</tr>
+<tr>
+<td>Principal scopes / project grants</td>
+<td>Charon</td>
+</tr>
+<tr>
+<td>Hash-chained audit</td>
+<td>Charon ledger</td>
+</tr>
+<tr>
+<td>Idempotency</td>
+<td>Charon (tool) + Lethe (changeset key)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="required-refs">Required refs</h2>
+<p>All refs are project-scoped. Primary key is <code>(project_id, ref_name)</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Ref</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>refs/shared/main</code></td>
+<td>Accepted canonical project memory</td>
+</tr>
+<tr>
+<td><code>refs/agents/&lt;actor_id&gt;/main</code></td>
+<td>Agent working branch</td>
+</tr>
+<tr>
+<td><code>refs/sessions/&lt;actor_id&gt;/&lt;session_id&gt;</code></td>
+<td>Session-isolated work</td>
+</tr>
+<tr>
+<td><code>refs/topics/&lt;topic_id&gt;</code></td>
+<td>Topic/thread branch</td>
+</tr>
+<tr>
+<td><code>refs/repos/&lt;repo&gt;/&lt;branch&gt;</code></td>
+<td>Optional DevSpace association</td>
+</tr>
+</tbody>
+</table>
+<p>Protected: <code>refs/shared/*</code> requires merge/review scope. Models may commit to
+agent/session/topic refs they own; they may only <em>propose</em> merges into shared.</p>
+<h2 id="changeset-model">Changeset model</h2>
+<p>Immutable record:</p>
+<ul>
+<li><code>changeset_id</code> (UUIDv7)</li>
+<li><code>schema_version</code> (<code>memory_git/v1</code>)</li>
+<li><code>project_id</code></li>
+<li><code>ref_name</code> (branch that created it)</li>
+<li><code>parent_ids</code> (1+ for merge)</li>
+<li>author principal / persona / actor</li>
+<li>surface / model / environment (optional)</li>
+<li>session_id / topic_id (optional)</li>
+<li>context_manifest_id (optional)</li>
+<li>message</li>
+<li>created_at</li>
+<li>idempotency_key (unique per project+principal)</li>
+<li>ordered semantic operations</li>
+<li>evidence / artifact refs</li>
+<li>verification records</li>
+<li>integrity_digest (SHA-256 over canonical JSON)</li>
+</ul>
+<h3 id="semantic-operations-v1">Semantic operations (V1)</h3>
+<table>
+<thead>
+<tr>
+<th>Op</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>add_memory</code></td>
+<td>Append new accepted-or-proposed memory object</td>
+</tr>
+<tr>
+<td><code>add_relationship</code></td>
+<td>Link two memory objects</td>
+</tr>
+<tr>
+<td><code>correct_memory</code></td>
+<td>Correcting overlay (does not erase target)</td>
+</tr>
+<tr>
+<td><code>supersede_memory</code></td>
+<td>Mark target superseded by new memory</td>
+</tr>
+<tr>
+<td><code>mark_duplicate</code></td>
+<td>Duplicate detection record</td>
+</tr>
+<tr>
+<td><code>propose_deprecation</code></td>
+<td>Soft deprecation proposal</td>
+</tr>
+<tr>
+<td><code>attach_evidence</code></td>
+<td>Evidence attachment</td>
+</tr>
+<tr>
+<td><code>attach_verification</code></td>
+<td>Verification attachment</td>
+</tr>
+</tbody>
+</table>
+<p>Operations reference Lethe event IDs when materializing accepted memory.
+Branch commits may stage ops before merge materializes events on shared.</p>
+<h3 id="semantic-validation-memory_gitv1">Semantic validation (memory_git/v1)</h3>
+<p>Lethe validates every operation before it can enter immutable,
+integrity-digested history (Charon validates the same structure client-side
+first). Ops apply sequentially: a later op may target memory introduced by an
+earlier op in the same changeset. Contract:</p>
+<ul>
+<li><code>add_memory</code>: non-empty trimmed <code>content</code>; <code>kind</code> in
+  <code>observation|fact|decision|task|flag|record</code> when present; <code>visibility</code> in
+  <code>private|internal|shared|public</code> when present; <code>confidence</code> in [0,1] when
+  present; <code>tags</code> is an array of non-empty strings when present; an explicit
+  resulting identity must not collide with an active memory at the parent.</li>
+<li><code>correct_memory</code>: <code>target_event_id</code> required and must exist at the parent
+  state; payload carries at least one correction field; <code>resulting_event_id</code>
+  differs from the target when present.</li>
+<li><code>supersede_memory</code>: target exists; no self-supersede; a lower-trust
+  inference (<code>source_trust</code> = <code>inference</code>/<code>model_inference</code>) cannot replace a
+  <code>user_approved</code> target.</li>
+<li><code>mark_duplicate</code>: duplicate and canonical targets both required, distinct,
+  and existing at the parent.</li>
+<li><code>add_relationship</code>: from/to required, distinct (self-relations are not
+  allowed), existing; non-empty <code>kind</code>.</li>
+<li><code>propose_deprecation</code>: target exists; non-empty <code>reason</code>.</li>
+<li><code>attach_evidence</code> / <code>attach_verification</code>: with a target, the target must
+  exist. Without a target the op is a merge/review attestation marker and
+  requires non-empty <code>summary</code> plus one provenance field (<code>reviewer</code>,
+  <code>proposal_id</code>, <code>source_changeset_id</code>, <code>rejected_from</code>, <code>cherrypicked_from</code>,
+  <code>left_branch</code>, <code>right_branch</code>).</li>
+</ul>
+<p>Payloads are additionally bounded and closed:</p>
+<ul>
+<li>Canonical JSON per op payload ≤ 64 KiB; <code>content</code> ≤ 16 KiB;
+  <code>summary</code>/<code>reason</code>/<code>note</code> ≤ 4 KiB; other string fields and the op-level ID
+  channels ≤ 1 KiB; ≤ 64 tags of ≤ 128 bytes each.</li>
+<li>Each op type has a closed payload key set (see <code>allowedPayloadKeys</code> in
+  <code>internal/db/memory_git_validation.go</code>, derived from the projector, the
+  conflict detector, and the merge/review attestation flow); unknown keys are
+  rejected by name.</li>
+<li>Identifier channels must agree when more than one names the same identity
+  (e.g. <code>target_event_id</code> vs <code>payload.duplicate_id</code>, <code>resulting_event_id</code> vs
+  <code>payload.memory_id</code>/<code>event_id</code>, <code>from_memory_id</code>/<code>to_memory_id</code>). Equal
+  values are normalized; disagreement is rejected.</li>
+</ul>
+<p>All identities are project-local by construction; cross-project targets fail.</p>
+<h2 id="legacy-baseline">Legacy baseline</h2>
+<p>Existing events remain readable. On first Memory Git use for a project:</p>
+<ol>
+<li>Create synthetic root changeset <code>legacy-root</code> with empty ops.</li>
+<li>Point <code>refs/shared/main</code> at it if no ref exists.</li>
+<li>Optionally attach a baseline snapshot listing known event IDs as evidence
+   only — do not rewrite event rows.</li>
+</ol>
+<h2 id="ref-safety">Ref safety</h2>
+<ul>
+<li>Updates use compare-and-swap: <code>UPDATE ... WHERE head_changeset_id = ?expected</code></li>
+<li>Concurrent CAS miss → <code>409 conflict</code> with current head (never silent discard)</li>
+<li>Divergence is explicit: caller must rebase, multi-parent merge, or reject</li>
+<li>Models cannot set arbitrary ref pointers; only service paths with scope</li>
+<li>Generic branch creation and changeset/ref advance reject protected refs at the
+  store boundary. Protected advances use a separate Charon-signed merge CAS.</li>
+<li>The protected merge signature uses the purpose-specific
+  <code>CHARON_MERGE_HMAC_KEY</code>, separate from <code>LETHE_API_KEY</code> (legacy
+  <code>CHARON_HMAC_KEY</code> is still accepted as a fallback); Lethe verifies project,
+  ref, expected/new heads, proposal ID, and reviewer principal before
+  applying CAS.</li>
+</ul>
+<h2 id="semantic-diff">Semantic diff</h2>
+<p>Deterministic report from base → target:</p>
+<ul>
+<li>memories added</li>
+<li>corrections proposed</li>
+<li>records superseded</li>
+<li>relationships added</li>
+<li>decisions changed</li>
+<li>tasks/flags changed</li>
+<li>duplicates detected</li>
+<li>permissions/visibility affected</li>
+<li>evidence added/removed</li>
+<li>unresolved conflicts</li>
+</ul>
+<p>When both records share a lineage via supersede/correct, label as
+<strong>temporal update</strong>. When two accepted facts conflict without lineage, label as
+<strong>direct contradiction</strong>.</p>
+<h2 id="merge-conflicts">Merge / conflicts</h2>
+<p>Charon proposals gain optional Memory Git fields:</p>
+<ul>
+<li><code>kind = merge_request | changeset | memory</code> (existing memory/checkpoint remain)</li>
+<li><code>base_changeset_id</code>, <code>head_changeset_id</code></li>
+<li><code>target_ref</code></li>
+<li><code>selected_ops_json</code> (cherry-pick)</li>
+<li><code>conflict_ids_json</code></li>
+<li><code>review_findings_json</code></li>
+</ul>
+<p>Supported merge shapes:</p>
+<ul>
+<li>fast-forward</li>
+<li>reviewed multi-parent merge changeset</li>
+<li>cherry-pick selected ops</li>
+<li>reject with history preserved</li>
+<li>cancel / expire</li>
+<li>review comments / findings</li>
+</ul>
+<p>Conflict detectors (V1 minimum):</p>
+<ol>
+<li>Incompatible accepted facts, same scope + valid time</li>
+<li>Contradicts protected accepted decision</li>
+<li>Duplicate semantic content</li>
+<li>Stale base / non-fast-forward</li>
+<li>Private → broader scope information flow</li>
+<li>User-approved memory replaced by lower-trust inference</li>
+<li>Project / topic / actor / namespace boundary violations</li>
+</ol>
+<p>Never auto-resolve substantive conflicts by "newest wins".</p>
+<h3 id="conflict-detection-purity-and-lifecycle">Conflict detection purity and lifecycle</h3>
+<p>Conflict <strong>analysis is pure</strong>: <code>POST /api/memory/{project}/conflicts/detect</code>
+never writes; repeated analysis returns identical results with no side
+effects. Conflicts persist only as part of an explicit proposal operation
+(<code>POST /conflicts/persist</code>), bound to their proposal (<code>proposal_id</code>).</p>
+<p>Conflict identity is <strong>deterministic</strong> — a SHA-256 digest of project, base,
+left, right, type, and the affected semantic identity — so equivalent
+retries, replays, and re-detections converge on one row instead of
+duplicating. Resolving the canonical row retires every equivalent blocker at
+once (<code>POST /conflicts/{id}/resolve</code>).</p>
+<p>Lifecycle: <code>open → resolved | rejected | superseded | canceled</code>
+(<code>deferred</code> optional). Canceling or rejecting a proposal retires its
+conflicts (<code>POST /conflicts/retire</code>); a landed merge marks them superseded.
+Accepted-context reconstruction exposes only <code>open</code> conflicts relevant to the
+exact requested head — abandoned-proposal conflicts can no longer pollute
+manifests or withhold memory.</p>
+<h3 id="protected-merge-authorization-memory-git-mergev2">Protected-merge authorization (memory-git-merge/v2)</h3>
+<p>Every protected-ref movement requires a Charon-signed, <strong>single-use,
+expiring</strong> envelope: version, project, ref, expected head, new head, proposal
+ID, proposal-state digest, reviewer and merger principals, merge strategy
+(<code>fast_forward</code> | <code>merge_commit</code> | <code>cherry_pick</code>), issued-at, expiry (short;
+≤15m enforced), a cryptographic nonce, and a key ID — HMAC-SHA256 over the
+canonical envelope bytes.</p>
+<p>Lethe verifies the signature against the key the envelope names (rotation
+overlap via <code>CHARON_MERGE_HMAC_KEYS</code>), validates every field against the
+request, enforces expiry and clock tolerance, then <strong>atomically consumes the
+nonce with the protected-ref CAS</strong> in one transaction — a captured
+authorization can never be replayed, even if the ref later cycles back to the
+same head. Lethe independently enforces the merge shape and the new head's
+project, and writes a durable advancement record
+(<code>memory_protected_ref_advances</code>) for reconciliation.</p>
+<p>Keys: merge HMAC material is purpose-specific (<code>CHARON_MERGE_HMAC_KEY</code> /
+<code>CHARON_MERGE_HMAC_KEYS</code> with key IDs). The generic <code>CHARON_HMAC_KEY</code>
+fallback is formally deprecated (startup warning) and must not be used in
+production.</p>
+<h2 id="revert-checkout">Revert / checkout</h2>
+<ul>
+<li>Revert = new correcting changeset (<code>correct_memory</code> / <code>supersede_memory</code>)</li>
+<li>Checkout = resolve project ref at changeset ID or timestamp</li>
+<li>Manifest pins make historical reconstruction exact</li>
+<li>Redaction remains separate privileged privacy path</li>
+</ul>
+<h2 id="manifests">Manifests</h2>
+<p>Input manifest pins:</p>
+<ul>
+<li>project</li>
+<li>memory ref</li>
+<li>head changeset ID</li>
+<li>exact selected memory IDs</li>
+<li>inclusion / exclusion reasons</li>
+</ul>
+<p>Output manifest records:</p>
+<ul>
+<li>base changeset</li>
+<li>resulting session changeset</li>
+<li>proposed target ref</li>
+<li>unresolved conflicts</li>
+<li>merge proposal ID if created</li>
+</ul>
+<h2 id="mcp-cli-charon-surface">MCP / CLI (Charon surface)</h2>
+<table>
+<thead>
+<tr>
+<th>Tool / command</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>memory_status</code></td>
+<td>Project ref heads + principal capabilities</td>
+</tr>
+<tr>
+<td><code>memory_log</code></td>
+<td>Changeset log for a ref</td>
+</tr>
+<tr>
+<td><code>memory_show</code></td>
+<td>Show one changeset</td>
+</tr>
+<tr>
+<td><code>memory_branch_create</code></td>
+<td>Create branch from expected head</td>
+</tr>
+<tr>
+<td><code>memory_diff</code></td>
+<td>Semantic diff</td>
+</tr>
+<tr>
+<td><code>memory_changeset_create</code></td>
+<td>Commit to authorized non-protected ref</td>
+</tr>
+<tr>
+<td><code>memory_merge_propose</code></td>
+<td>Proposal into protected/shared</td>
+</tr>
+<tr>
+<td><code>memory_merge_review</code></td>
+<td>Attach findings / comments</td>
+</tr>
+<tr>
+<td><code>memory_merge</code></td>
+<td>Approve + apply (privileged)</td>
+</tr>
+<tr>
+<td><code>memory_revert_propose</code></td>
+<td>Propose correcting revert</td>
+</tr>
+<tr>
+<td><code>memory_context_at</code></td>
+<td>Reconstruct accepted view</td>
+</tr>
+<tr>
+<td><code>memory_ref_list</code></td>
+<td>List refs in authorized projects</td>
+</tr>
+</tbody>
+</table>
+<p>CLI aliases (when present): <code>lethe memory status|log|diff|branch|show|merge</code>
+are thin clients over the same APIs. Prefer Charon for policy-bound access.</p>
+<h2 id="scopes-charon">Scopes (Charon)</h2>
+<table>
+<thead>
+<tr>
+<th>Scope</th>
+<th>Capability</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>memory.search</code> / <code>memory.read</code></td>
+<td>Read accepted memory + diffs of authorized refs</td>
+</tr>
+<tr>
+<td><code>memory.branch</code></td>
+<td>Create agent/session/topic branches</td>
+</tr>
+<tr>
+<td><code>memory.commit</code></td>
+<td>Commit to owned non-protected refs</td>
+</tr>
+<tr>
+<td><code>memory.propose</code></td>
+<td>Create merge/revert proposals</td>
+</tr>
+<tr>
+<td><code>memory.review</code></td>
+<td>Attach review findings</td>
+</tr>
+<tr>
+<td><code>memory.merge</code></td>
+<td>Approve/apply merges into protected refs</td>
+</tr>
+<tr>
+<td><code>memory.write</code></td>
+<td>Trusted direct writes (operators only)</td>
+</tr>
+</tbody>
+</table>
+<p>ChatGPT default: read + branch + commit(owned) + propose. No self-merge.</p>
+<h2 id="implementation-order">Implementation order</h2>
+<ol>
+<li>Lethe schema + store + unit tests (changesets, refs CAS, ops, legacy root)</li>
+<li>Semantic diff + conflict detection pure packages</li>
+<li>Lethe HTTP API for memory-git endpoints</li>
+<li>Charon proposal extension + scopes + MCP tools</li>
+<li>Manifest pin/read integration with assemblies</li>
+<li>Acceptance test harness (disposable DBs, two principals)</li>
+<li>Local CLI thin wrappers</li>
+</ol>
+<h2 id="implemented-context-bridge">Implemented context bridge</h2>
+<p>The <code>memory-context/v1</code> projector now freezes the legacy event baseline,
+reconstructs an exact ref/head, applies semantic overlays, rejects heads that
+are not reachable from the named ref, and creates input manifests for selected
+memories. OpenClaw injects the manifest-pinned accepted view and records its
+manifest/head in the assembly ledger. Charon exposes the same operation as
+<code>memory_context_at</code> with project and ref-ownership policy.</p>
+<p>Conflict detection now evaluates the complete changeset delta from the declared
+base, rather than only the two tip changesets.</p>
+<p>Operational details and verification commands are in
+<a href="memory-context-bridge.html"><code>memory-context-bridge.md</code></a>.</p>
+<h2 id="durability-and-recovery">Durability and recovery</h2>
+<p>Durability policy: WAL + <code>synchronous=FULL</code> + <code>foreign_keys=ON</code> +
+<code>busy_timeout</code> + WAL autocheckpoint (env-tunable via <code>LETHE_SQLITE_*</code>);
+verified at startup — unsupported storage fails closed. Committed
+transactions survive process and container kills (tested); clean shutdown
+checkpoints the WAL. RPO is the transaction boundary; storage must honor
+fsync.</p>
+<p>Coordinated backup/restore: <code>charon backup</code> snapshots both databases with a
+manifest; after restore, run in recovery read-only mode
+(<code>LETHE_RECOVERY_READONLY=1</code>, <code>CHARON_RECOVERY_READONLY=1</code>), then
+<code>charon reconcile</code> plus <code>lethe verify-chain &lt;project&gt;</code>; only lift read-only
+after a clean report.</p>
+<p>Transport: loopback-only trust by default; non-loopback binds require
+<code>LETHE_API_KEY</code>; Charon requires HTTPS, a Unix socket, or loopback HTTP for
+its upstream. Network locality is never principal identity.</p>
+<h2 id="acceptance">Acceptance</h2>
+<p>See parent Memory Git V1 acceptance checklist (16 steps). Definition of done:</p>
+<p>Multiple authorized models can branch from the same accepted memory, commit
+isolated attributed changesets, compare semantic differences, propose reviewed
+merges, preserve conflicts and rejected work, revert without deleting history,
+and reproduce the exact memory state used by any session manifest.</p>
+<div class="pn"><a class="p" href="faq.html">← FAQ</a><a class="n" href="memory-context-bridge.html">Context Projection →</a></div>
+</main>
+</div>
+<footer>
+  <div class="fl">Lethe<i>.</i></div>
+  <div>
+    <a href="https://github.com/openlethe/lethe" style="margin-left:0">GitHub</a>
+    <a href="../index.html">Lethe</a>
+    <a href="../charon.html">Charon</a>
+  </div>
+  <div class="fc">openlethe.com · 2026</div>
+</footer>
+</body>
+</html>

@@ -95,11 +95,15 @@ footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--fai
 <div class="grp"><div class="gt">Project</div>
 <a href="migration.html">Migration &amp; Upgrading</a>
 <a href="faq.html">FAQ</a>
+<div class="grp"><div class="gt">Deep Dive</div>
+<a href="memory-git-v1.html">Protocol · memory_git/v1</a>
+<a href="memory-context-bridge.html">Context Projection</a>
+<a href="observability.html">Observability</a>
 </div>
 </aside>
 <main>
 <div class="kick">Lethe docs · Configuration</div>
-<h1>Configuration</h1>
+<h1 id="configuration">Configuration</h1>
 <p>Lethe is configured with environment variables (or the equivalent CLI flags
 for a source run). Write <code>.env</code> by hand — no script is required. Rules that
 apply everywhere:</p>
@@ -111,7 +115,7 @@ apply everywhere:</p>
 <li>The server validates configuration at startup and fails closed with a
   named error.</li>
 </ul>
-<h2>Core</h2>
+<h2 id="core">Core</h2>
 <table>
 <thead>
 <tr>
@@ -129,7 +133,7 @@ apply everywhere:</p>
 <tr>
 <td><code>LETHE_MODE</code></td>
 <td><code>legacy</code></td>
-<td><code>legacy</code>, <code>git</code>, or <code>hybrid</code>. See <a href="runtime-modes.md">runtime-modes.md</a>.</td>
+<td><code>legacy</code>, <code>git</code>, or <code>hybrid</code>. See <a href="runtime-modes.html">runtime-modes.md</a>.</td>
 </tr>
 <tr>
 <td><code>LETHE_TRUST</code></td>
@@ -158,7 +162,7 @@ apply everywhere:</p>
 </tr>
 </tbody>
 </table>
-<h2>Memory Git authorization</h2>
+<h2 id="memory-git-authorization">Memory Git authorization</h2>
 <table>
 <thead>
 <tr>
@@ -190,7 +194,7 @@ apply everywhere:</p>
 </tr>
 </tbody>
 </table>
-<h2>Durability and recovery</h2>
+<h2 id="durability-and-recovery">Durability and recovery</h2>
 <table>
 <thead>
 <tr>
@@ -222,7 +226,7 @@ apply everywhere:</p>
 </tr>
 </tbody>
 </table>
-<h2>Legacy assemblies</h2>
+<h2 id="legacy-assemblies">Legacy assemblies</h2>
 <table>
 <thead>
 <tr>
@@ -244,11 +248,11 @@ apply everywhere:</p>
 </tr>
 </tbody>
 </table>
-<h2>CLI equivalents (source run)</h2>
+<h2 id="cli-equivalents-source-run">CLI equivalents (source run)</h2>
 <p><code>--api-key</code>, <code>--api-port</code>, <code>--api-url</code>, <code>--db</code>, <code>--mode</code>, <code>--trust</code>,
 <code>--assembly-retention-days</code>, <code>--assembly-max-per-session</code>. <code>./lethe keygen</code>
 prints a fresh <code>LETHE_API_KEY=lethe_&lt;64 hex&gt;</code>.</p>
-<h2>Charon</h2>
+<h2 id="charon">Charon</h2>
 <p>Charon has its own environment (<code>CHARON_OBOL_HMAC_KEY</code>,
 <code>CHARON_OAUTH_HMAC_KEY</code>, <code>CHARON_MERGE_HMAC_KEY</code>, OAuth, upstream, limits,
 ledger, recovery). The full annotated reference is

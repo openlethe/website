@@ -95,16 +95,20 @@ footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--fai
 <div class="grp"><div class="gt">Project</div>
 <a href="migration.html">Migration &amp; Upgrading</a>
 <a href="faq.html">FAQ</a>
+<div class="grp"><div class="gt">Deep Dive</div>
+<a href="memory-git-v1.html">Protocol · memory_git/v1</a>
+<a href="memory-context-bridge.html">Context Projection</a>
+<a href="observability.html">Observability</a>
 </div>
 </aside>
 <main>
 <div class="kick">Lethe docs · Compose Variations</div>
-<h1>Docker Compose Variations</h1>
+<h1 id="docker-compose-variations">Docker Compose Variations</h1>
 <p>Reference Compose files for the supported deployments. All of them share the
 hardened baseline: non-root UID 1000, <code>cap_drop: ALL</code>, read-only root
 filesystem, <code>no-new-privileges</code>, resource limits, bind-mounted data,
 token-free healthcheck.</p>
-<h2>Variation A — Legacy only (session memory)</h2>
+<h2 id="variation-a-legacy-only-session-memory">Variation A — Legacy only (session memory)</h2>
 <pre><code class="language-yaml">services:
   lethe:
     image: ghcr.io/openlethe/lethe:latest
@@ -119,7 +123,7 @@ token-free healthcheck.</p>
     volumes:
       - ${LETHE_DATA_DIR:-./lethe-data}:/data
 </code></pre>
-<h2>Variation B — Memory Git only</h2>
+<h2 id="variation-b-memory-git-only">Variation B — Memory Git only</h2>
 <p>Ships in the repo as <code>docker-compose.git.yml</code>:</p>
 <pre><code class="language-yaml">services:
   lethe-git:
@@ -140,7 +144,7 @@ token-free healthcheck.</p>
 </code></pre>
 <p>Pair it with <code>scripts/prepare-local-memory-git-env.sh</code> to generate
 <code>.env.git</code> (mode 0600) with both keys.</p>
-<h2>Variation C — Hybrid, single instance</h2>
+<h2 id="variation-c-hybrid-single-instance">Variation C — Hybrid, single instance</h2>
 <p>Both memory systems in one process on the familiar port — the "one
 container, everything" layout:</p>
 <pre><code class="language-yaml">services:
@@ -160,7 +164,7 @@ container, everything" layout:</p>
 </code></pre>
 <p>One database, both table sets, one port. The sessions dashboard is at
 <code>/ui/dashboard</code>, the Memory Git browser at <code>/ui/memory</code>.</p>
-<h2>Variation D — Governed stack (Lethe Git + Charon)</h2>
+<h2 id="variation-d-governed-stack-lethe-git-charon">Variation D — Governed stack (Lethe Git + Charon)</h2>
 <p>Two services per role; Charon's Compose pulls its published image. Lethe Git
 stays loopback-only; agents meet Charon, never Lethe.</p>
 <pre><code class="language-yaml">services:
@@ -207,7 +211,7 @@ volumes:
 <p>The authoritative versions of the Charon services (with full hardening:
 non-root 10001, <code>cap_drop: ALL</code>, read-only FS, limits) live in the
 <a href="https://github.com/openlethe/charon/blob/main/docker-compose.yml">charon repository</a>.</p>
-<h2>Rules of thumb</h2>
+<h2 id="rules-of-thumb">Rules of thumb</h2>
 <ul>
 <li>Bind mounts for data, owned by UID 1000; named volumes only for Charon's
   policy DB (created automatically).</li>

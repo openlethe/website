@@ -95,18 +95,22 @@ footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--fai
 <div class="grp"><div class="gt">Project</div>
 <a href="migration.html">Migration &amp; Upgrading</a>
 <a href="faq.html">FAQ</a>
+<div class="grp"><div class="gt">Deep Dive</div>
+<a href="memory-git-v1.html">Protocol · memory_git/v1</a>
+<a href="memory-context-bridge.html">Context Projection</a>
+<a href="observability.html">Observability</a>
 </div>
 </aside>
 <main>
 <div class="kick">Lethe docs · Client Integrations</div>
-<h1>Integrations</h1>
+<h1 id="integrations">Integrations</h1>
 <p>Lethe works with any agent that can call HTTP or MCP. These are the
 supported patterns; none of them require OpenClaw.</p>
-<h2>ChatGPT (remote, via Charon OAuth)</h2>
+<h2 id="chatgpt-remote-via-charon-oauth">ChatGPT (remote, via Charon OAuth)</h2>
 <p>ChatGPT connects to Charon's primary gateway over HTTPS and completes an
 S256 PKCE flow gated by an operator-held pairing key.</p>
 <ol>
-<li>Deploy the governed stack (<a href="docker-compose.md#variation-d--governed-stack-lethe-git--charon">docker-compose.md</a>).</li>
+<li>Deploy the governed stack (<a href="docker-compose.html#variation-d--governed-stack-lethe-git--charon">docker-compose.md</a>).</li>
 <li>Tunnel <code>127.0.0.1:18484</code> to a public HTTPS URL; set <code>CHARON_PUBLIC_URL</code>
    to it and allow ChatGPT in <code>CHARON_OAUTH_REDIRECT_URIS</code>.</li>
 <li>Restart Charon and copy the current pairing key from the startup banner
@@ -115,7 +119,7 @@ S256 PKCE flow gated by an operator-held pairing key.</p>
 </ol>
 <p>Tokens are capped to <code>memory.read · search · thread.read · propose</code> by
 default; review/merge never come over OAuth.</p>
-<h2>Claude Code / Claude (MCP)</h2>
+<h2 id="claude-code-claude-mcp">Claude Code / Claude (MCP)</h2>
 <p>Any streamable-HTTP MCP client can connect to Charon's Obol gateway:</p>
 <pre><code class="language-json">{
   &quot;mcpServers&quot;: {
@@ -130,11 +134,11 @@ default; review/merge never come over OAuth.</p>
 <p>Mint the Obol through the Obol listener (tokens are audience-bound):</p>
 <pre><code class="language-bash">docker compose exec charon-reviewer charon obol mint --expires 7d &lt;principal-id&gt;
 </code></pre>
-<h2>Cursor / VS Code agents</h2>
+<h2 id="cursor-vs-code-agents">Cursor / VS Code agents</h2>
 <p>Same pattern as Claude: register the MCP server with the streamable-HTTP
 URL and the Obol bearer in the editor's MCP settings. The agent gets the 13
 Memory Git tools with its principal's scopes.</p>
-<h2>Generic MCP client (incl. OpenClaw as a client)</h2>
+<h2 id="generic-mcp-client-incl-openclaw-as-a-client">Generic MCP client (incl. OpenClaw as a client)</h2>
 <pre><code class="language-bash">TOKEN=$(grep -oE 'Token: obol_[A-Za-z0-9_-]+' secrets/author-obol.txt | sed 's/Token: //')
 openclaw mcp add charon-author \
   --url http://127.0.0.1:18486/mcp \
@@ -143,13 +147,13 @@ openclaw mcp add charon-author \
 </code></pre>
 <p>Run the author and the reviewer as <strong>separate</strong> agents with separate
 credentials — review independence is the point of the system.</p>
-<h2>Direct HTTP (backend services)</h2>
+<h2 id="direct-http-backend-services">Direct HTTP (backend services)</h2>
 <p>No MCP client? The typed API is enough:</p>
 <pre><code class="language-bash">curl -H &quot;Authorization: Bearer $LETHE_API_KEY&quot; \
   http://127.0.0.1:18485/api/memory/&lt;project&gt;/refs
 </code></pre>
-<p>See <a href="api.md">api.md</a> for the full route table.</p>
-<h2>Multi-agent, one memory backend</h2>
+<p>See <a href="api.html">api.md</a> for the full route table.</p>
+<h2 id="multi-agent-one-memory-backend">Multi-agent, one memory backend</h2>
 <p>The pattern that makes Lethe more than a notepad:</p>
 <ol>
 <li>One Lethe Git + one Charon deployment.</li>

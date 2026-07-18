@@ -95,16 +95,20 @@ footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--fai
 <div class="grp"><div class="gt">Project</div>
 <a href="migration.html">Migration &amp; Upgrading</a>
 <a href="faq.html">FAQ</a>
+<div class="grp"><div class="gt">Deep Dive</div>
+<a href="memory-git-v1.html">Protocol · memory_git/v1</a>
+<a href="memory-context-bridge.html">Context Projection</a>
+<a href="observability.html">Observability</a>
 </div>
 </aside>
 <main>
 <div class="kick">Lethe docs · Overview</div>
-<h1>Overview</h1>
+<h1 id="overview">Overview</h1>
 <p>Lethe is a self-hosted persistent memory platform for AI agents. It runs as a
 single container with an embedded SQLite store, exposes a typed HTTP API, and
 — through <a href="https://github.com/openlethe/charon">Charon</a> — a scoped MCP
 surface for agents.</p>
-<h2>The problem</h2>
+<h2 id="the-problem">The problem</h2>
 <p>Agents forget. Between sessions, between restarts, between models, every
 conversation rebuilds context from nothing. Lethe provides two ways out of
 that loop, selectable per deployment (or combined):</p>
@@ -117,7 +121,7 @@ that loop, selectable per deployment (or combined):</p>
    preferences, collaborative and multi-agent shared memory — written
    through review, never overwritten silently.</li>
 </ol>
-<h2>What Lethe is not</h2>
+<h2 id="what-lethe-is-not">What Lethe is not</h2>
 <ul>
 <li><strong>Not a chatlog store.</strong> Records are semantic — decisions, facts, tasks,
   flags, outcomes — with confidence scores and provenance, not raw transcripts.</li>
@@ -130,7 +134,7 @@ that loop, selectable per deployment (or combined):</p>
   changesets, branching, merging, immutable history — applied to memory
   records. There are no <code>.git</code> directories involved.</li>
 </ul>
-<h2>Who uses it</h2>
+<h2 id="who-uses-it">Who uses it</h2>
 <ul>
 <li><strong>Single-agent setups</strong> — ChatGPT, Claude, Claude Code, Cursor, a local
   IDE assistant, each with durable memory of their own.</li>
@@ -140,7 +144,7 @@ that loop, selectable per deployment (or combined):</p>
 <li><strong>OpenClaw users</strong> — the OpenClaw plugin (legacy mode) provides automatic
   context injection as a first-class integration.</li>
 </ul>
-<h2>Design principles</h2>
+<h2 id="design-principles">Design principles</h2>
 <ul>
 <li><strong>Exact over approximate.</strong> Accepted memory is reconstructed at an exact
   changeset head. Readers get precisely what was reviewed — nothing more.</li>
@@ -153,7 +157,7 @@ that loop, selectable per deployment (or combined):</p>
   <code>synchronous=FULL</code>, operator-generated credentials, no required external
   services.</li>
 </ul>
-<h2>The ecosystem</h2>
+<h2 id="the-ecosystem">The ecosystem</h2>
 <pre><code class="language-text">ChatGPT / Claude / Claude Code / Cursor / IDE assistants / MCP clients
                 |
                 |  OAuth (S256 PKCE) or Obol
@@ -169,12 +173,12 @@ OpenClaw (optional) — plugin injects session memory automatically (legacy mode
 <p>Lethe works without Charon (direct bearer-key API access) and without
 OpenClaw (any MCP client or plain HTTP client). Charon is the recommended
 gateway once memory is shared between agents or exposed beyond loopback.</p>
-<h2>Next steps</h2>
+<h2 id="next-steps">Next steps</h2>
 <ul>
-<li><a href="installation.md">Install Lethe</a></li>
-<li><a href="runtime-modes.md">Choose a runtime mode</a></li>
-<li><a href="memory-git.md">Learn Memory Git</a></li>
-<li><a href="integrations.md">Connect your agent</a></li>
+<li><a href="installation.html">Install Lethe</a></li>
+<li><a href="runtime-modes.html">Choose a runtime mode</a></li>
+<li><a href="memory-git.html">Learn Memory Git</a></li>
+<li><a href="integrations.html">Connect your agent</a></li>
 </ul>
 <div class="pn"><a class="n" href="installation.html">Installation →</a></div>
 </main>

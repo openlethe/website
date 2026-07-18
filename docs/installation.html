@@ -95,20 +95,24 @@ footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--fai
 <div class="grp"><div class="gt">Project</div>
 <a href="migration.html">Migration &amp; Upgrading</a>
 <a href="faq.html">FAQ</a>
+<div class="grp"><div class="gt">Deep Dive</div>
+<a href="memory-git-v1.html">Protocol · memory_git/v1</a>
+<a href="memory-context-bridge.html">Context Projection</a>
+<a href="observability.html">Observability</a>
 </div>
 </aside>
 <main>
 <div class="kick">Lethe docs · Installation</div>
-<h1>Installation</h1>
+<h1 id="installation">Installation</h1>
 <p>Lethe ships as a single non-root container image
 (<code>ghcr.io/openlethe/lethe</code>) and as Go source. Docker is the recommended
 install for almost everyone.</p>
-<h2>Requirements</h2>
+<h2 id="requirements">Requirements</h2>
 <ul>
 <li>Docker with Compose v2 (container install), or Go 1.25+ (source build)</li>
 <li><code>openssl</code> (for generating keys)</li>
 </ul>
-<h2>Quick start (legacy mode)</h2>
+<h2 id="quick-start-legacy-mode">Quick start (legacy mode)</h2>
 <pre><code class="language-bash"># The image runs as UID 1000 and keeps state in /data. On Linux, create the
 # bind-mount directory with the right ownership first (one-time):
 install -d -o 1000 -g 1000 &quot;$PWD/lethe-data&quot; 2&gt;/dev/null || {
@@ -127,7 +131,7 @@ curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:18483/api/health
 <pre><code class="language-bash">docker run --rm ghcr.io/openlethe/lethe:latest keygen
 # or: openssl rand -hex 32
 </code></pre>
-<h2>Git mode (Memory Git)</h2>
+<h2 id="git-mode-memory-git">Git mode (Memory Git)</h2>
 <pre><code class="language-bash">sh scripts/prepare-local-memory-git-env.sh      # writes .env.git (mode 0600)
 docker compose -f docker-compose.git.yml --env-file .env.git up -d
 curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:18485/api/health   # 401 = enforcing
@@ -135,35 +139,35 @@ curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:18485/api/health   # 4
 <p>The script generates <code>LETHE_API_KEY</code> and <code>CHARON_MERGE_HMAC_KEY</code> without
 printing them. Git mode binds <code>127.0.0.1:18485</code> and uses its own data
 directory — never point it at an existing OpenLethe data directory.</p>
-<h2>Hybrid mode (both surfaces in one instance)</h2>
+<h2 id="hybrid-mode-both-surfaces-in-one-instance">Hybrid mode (both surfaces in one instance)</h2>
 <pre><code class="language-bash">docker run -d --name lethe-hybrid \
   -p 127.0.0.1:18483:18483 \
   -v &quot;$PWD/lethe-data:/data&quot; \
   -e LETHE_MODE=hybrid \
   ghcr.io/openlethe/lethe:latest
 </code></pre>
-<h2>Source build</h2>
+<h2 id="source-build">Source build</h2>
 <pre><code class="language-bash">git clone https://github.com/openlethe/lethe.git
 cd lethe
 go build -o lethe ./cmd/lethe
 ./lethe keygen
 ./lethe --db ./lethe.db --http 127.0.0.1:18483
 </code></pre>
-<h2>Image tags</h2>
+<h2 id="image-tags">Image tags</h2>
 <ul>
 <li><code>ghcr.io/openlethe/lethe:latest</code> — current stable main build (multi-arch,
   non-root UID 1000)</li>
 <li><code>ghcr.io/openlethe/lethe:0.4.0-beta.1</code> — pinned beta release</li>
 </ul>
 <p>Production deployments should pin an exact version tag and review the
-release notes before upgrading; see <a href="deployment.md">deployment.md</a> and
-<a href="migration.md">migration.md</a>.</p>
-<h2>Where to next</h2>
+release notes before upgrading; see <a href="deployment.html">deployment.md</a> and
+<a href="migration.html">migration.md</a>.</p>
+<h2 id="where-to-next">Where to next</h2>
 <ul>
-<li><a href="runtime-modes.md">Choose a runtime mode</a></li>
-<li><a href="docker-compose.md">Compose variations</a></li>
-<li><a href="configuration.md">Configure environment variables</a></li>
-<li><a href="integrations.md">Connect an agent</a></li>
+<li><a href="runtime-modes.html">Choose a runtime mode</a></li>
+<li><a href="docker-compose.html">Compose variations</a></li>
+<li><a href="configuration.html">Configure environment variables</a></li>
+<li><a href="integrations.html">Connect an agent</a></li>
 </ul>
 <div class="pn"><a class="p" href="overview.html">← Overview</a><a class="n" href="runtime-modes.html">Runtime Modes →</a></div>
 </main>

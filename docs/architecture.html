@@ -95,12 +95,16 @@ footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--fai
 <div class="grp"><div class="gt">Project</div>
 <a href="migration.html">Migration &amp; Upgrading</a>
 <a href="faq.html">FAQ</a>
+<div class="grp"><div class="gt">Deep Dive</div>
+<a href="memory-git-v1.html">Protocol · memory_git/v1</a>
+<a href="memory-context-bridge.html">Context Projection</a>
+<a href="observability.html">Observability</a>
 </div>
 </aside>
 <main>
 <div class="kick">Lethe docs · Architecture</div>
-<h1>Architecture</h1>
-<h2>Components</h2>
+<h1 id="architecture">Architecture</h1>
+<h2 id="components">Components</h2>
 <pre><code class="language-text">                 agents
    ChatGPT · Claude · Claude Code · Cursor · IDE assistants · MCP clients
                 |
@@ -123,7 +127,7 @@ footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--fai
 <p>Lethe runs fine without Charon (direct bearer-key API). Charon is required
 only when you want scoped principals, review separation, and
 replay-protected merges enforced in front of the store.</p>
-<h2>The boundary</h2>
+<h2 id="the-boundary">The boundary</h2>
 <ul>
 <li><strong>Lethe owns the truth</strong>: changesets, refs, the CAS, context projection,
   manifests, conflicts, and (in legacy mode) sessions, events, checkpoints,
@@ -135,7 +139,7 @@ replay-protected merges enforced in front of the store.</p>
 <li><strong>OpenClaw is a client, not a component</strong>: the plugin automates session
   memory in legacy mode. It is optional and never required for Memory Git.</li>
 </ul>
-<h2>Data model</h2>
+<h2 id="data-model">Data model</h2>
 <p>One embedded SQLite database per instance (WAL mode, <code>synchronous=FULL</code>,
 busy timeout enforced, startup-verified durability):</p>
 <table>
@@ -162,7 +166,7 @@ busy timeout enforced, startup-verified durability):</p>
 <p>Git mode is served from its own data directory by convention
 (<code>docker-compose.git.yml</code>, port <code>18485</code>) so it never touches an existing
 OpenLethe store. Hybrid mode serves both systems from one database.</p>
-<h2>Modes and surfaces</h2>
+<h2 id="modes-and-surfaces">Modes and surfaces</h2>
 <table>
 <thead>
 <tr>
@@ -185,8 +189,8 @@ OpenLethe store. Hybrid mode serves both systems from one database.</p>
 </tr>
 </tbody>
 </table>
-<p>Details: <a href="runtime-modes.md">runtime-modes.md</a> · <a href="api.md">api.md</a>.</p>
-<h2>Security posture</h2>
+<p>Details: <a href="runtime-modes.html">runtime-modes.md</a> · <a href="api.html">api.md</a>.</p>
+<h2 id="security-posture">Security posture</h2>
 <ul>
 <li><strong>Fail closed everywhere</strong>: missing keys, mismatched merge keys, malformed
   operations, stale bases, replayed authorizations — all hard errors.</li>
@@ -202,7 +206,7 @@ OpenLethe store. Hybrid mode serves both systems from one database.</p>
 <li><strong>Hardened image</strong>: non-root UID 1000, <code>cap_drop: ALL</code>, read-only root
   filesystem, <code>no-new-privileges</code>, resource limits, token-free healthcheck.</li>
 </ul>
-<h2>Availability and recovery</h2>
+<h2 id="availability-and-recovery">Availability and recovery</h2>
 <ul>
 <li>Write-ahead logging with <code>synchronous=FULL</code>; the server runs recovery on
   startup and can boot read-only (<code>LETHE_RECOVERY_READONLY</code>) until
@@ -210,8 +214,8 @@ OpenLethe store. Hybrid mode serves both systems from one database.</p>
 <li>Coordinated backups via <code>sqlite3 .backup</code> (zero downtime) or the Charon
   backup CLI; restores are validated before mutations resume.</li>
 <li>Upgrades pin image tags; rollback is an image tag plus the previous
-  database backup. See <a href="deployment.md">deployment.md</a> and
-  <a href="migration.md">migration.md</a>.</li>
+  database backup. See <a href="deployment.html">deployment.md</a> and
+  <a href="migration.html">migration.md</a>.</li>
 </ul>
 <div class="pn"><a class="p" href="legacy-mode.html">← Legacy Mode</a><a class="n" href="configuration.html">Configuration →</a></div>
 </main>

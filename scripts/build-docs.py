@@ -33,6 +33,9 @@ TOPICS = [
     ("integrations",   "integrations.md",   "Client Integrations",   "Integrations"),
     ("migration",      "migration.md",      "Migration & Upgrading", "Project"),
     ("faq",            "faq.md",            "FAQ",                   "Project"),
+    ("memory-git-v1",  "memory-git-v1.md",  "Protocol · memory_git/v1", "Deep Dive"),
+    ("memory-context-bridge", "memory-context-bridge.md", "Context Projection", "Deep Dive"),
+    ("observability",  "observability.md",  "Observability",         "Deep Dive"),
 ]
 
 STYLE = """
@@ -158,8 +161,12 @@ def page(slug, title, body):
 """
 
 def render(md_text):
+    # Repo-relative doc links (foo.md, foo.md#frag) become on-site .html
+    # links; absolute URLs are left alone.
+    md_text = re.sub(r"\]\((?!https?://)([A-Za-z0-9_./-]+)\.md(#[A-Za-z0-9_-]+)?\)",
+                     lambda m: f"]({m.group(1)}.html{m.group(2) or ''})", md_text)
     return markdown.markdown(
-        md_text, extensions=["tables", "fenced_code", "sane_lists"]
+        md_text, extensions=["tables", "fenced_code", "sane_lists", "toc"]
     )
 
 def main():
