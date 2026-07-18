@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Overview — Lethe Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05070a;--bg2:#080d12;--ink:#e8f2f5;--dim:#7d99a3;--faint:#41565e;--cyan:#39d0e8;--cyan-soft:rgba(57,208,232,.12);--line:#12242c;--serif:'Cormorant Garamond',serif;--gold:#d9a441;--gold-soft:rgba(217,164,65,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;overflow-x:hidden;font-size:15px;line-height:1.65}
+::selection{background:var(--cyan);color:#04141a}
+nav.top{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:rgba(5,7,10,.55);backdrop-filter:blur(14px);border-bottom:1px solid rgba(57,208,232,.08)}
+.logo{font-weight:700;font-size:20px;letter-spacing:-.02em;text-decoration:none;color:var(--ink)}
+.logo i{font-style:normal;color:var(--cyan)}
+.navlinks{display:flex;gap:32px;align-items:center}
+.navlinks a{color:var(--dim);text-decoration:none;font-size:13px;letter-spacing:.08em;transition:color .25s}
+.navlinks a:hover{color:var(--cyan)}
+.navlinks a.here{color:var(--cyan)}
+.cta{border:1px solid var(--cyan);color:var(--cyan)!important;padding:9px 20px;font-size:12px!important;letter-spacing:.15em!important;text-transform:uppercase;text-decoration:none;transition:all .25s}
+.cta:hover{background:var(--cyan);color:#04141a!important}
+.wiki{display:grid;grid-template-columns:270px minmax(0,1fr);gap:64px;max-width:1320px;margin:0 auto;padding:110px 32px 60px}
+aside{position:sticky;top:96px;align-self:start;max-height:calc(100vh - 126px);overflow-y:auto;padding-right:14px;scrollbar-width:thin}
+aside .grp{margin-bottom:26px}
+aside .gt{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--faint);text-transform:uppercase;margin-bottom:10px}
+aside a{display:block;color:var(--dim);text-decoration:none;font-size:13px;padding:5px 0 5px 16px;border-left:1px solid var(--line);transition:all .2s;line-height:1.4}
+aside a:hover{color:var(--cyan)}
+aside a.on{color:var(--cyan);border-left-color:var(--cyan)}
+main{min-width:0;max-width:860px}
+main h1{font-family:var(--serif);font-weight:400;font-size:clamp(32px,4.5vw,46px);line-height:1.1;margin:14px 0 18px}
+main h2{font-family:var(--serif);font-weight:400;font-size:clamp(24px,3vw,32px);line-height:1.15;margin:40px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
+main h2:first-of-type{border-top:none;padding-top:0}
+main h3{font-size:18px;font-weight:600;margin:28px 0 8px}
+main p{color:var(--dim);margin:12px 0;font-weight:300}
+main b,main strong{color:var(--ink);font-weight:500}
+main a{color:var(--cyan)}
+main ul,main ol{color:var(--dim);margin:12px 0 16px 22px;font-weight:300}
+main li{margin:6px 0}
+main code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);background:var(--cyan-soft);padding:2px 7px;border-radius:4px}
+main pre{background:#03080a;border:1px solid var(--line);border-radius:6px;padding:18px 20px;overflow-x:auto;margin:16px 0}
+main pre code{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.8;color:#9fc3cd;background:none;padding:0}
+main table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+main th{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--faint);text-align:left;padding:11px 12px;border-bottom:1px solid var(--line)}
+main td{padding:11px 12px;border-bottom:1px solid var(--line);color:var(--dim);line-height:1.55;vertical-align:top;font-weight:300}
+main td code{white-space:nowrap}
+main tr:hover td{background:rgba(57,208,232,.03)}
+main blockquote{border-left:2px solid var(--gold);padding:8px 0 8px 18px;margin:16px 0;color:var(--dim);font-weight:300}
+main hr{border:none;border-top:1px solid var(--line);margin:28px 0}
+.kick{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.28em;color:var(--cyan);text-transform:uppercase}
+.pn{display:flex;justify-content:space-between;gap:16px;margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-size:13px}
+.pn a{color:var(--dim);text-decoration:none}
+.pn a:hover{color:var(--cyan)}
+.pn .n{margin-left:auto}
+footer{border-top:1px solid var(--line);padding:40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-top:40px}
+footer .fl{font-weight:700;font-size:18px}
+footer .fl i{font-style:normal;color:var(--cyan)}
+footer a{color:var(--faint);text-decoration:none;font-size:13px;margin-left:24px;transition:color .25s}
+footer a:hover{color:var(--cyan)}
+footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);letter-spacing:.15em}
+@media(max-width:1000px){.wiki{grid-template-columns:1fr;gap:0;padding-top:100px}aside{position:static;max-height:none;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}aside .grp{margin:0}aside .gt{display:none}aside a{border:1px solid var(--line);padding:6px 12px;font-size:12px}.navlinks a:not(.cta){display:none}}
+</style>
+</head>
+<body>
+<nav class="top">
+  <a class="logo" href="../index.html">Lethe<i>.</i></a>
+  <div class="navlinks">
+    <a href="../index.html">Lethe</a>
+    <a href="../charon.html">Charon</a>
+    <a href="index.html" class="here">Docs</a>
+    <a href="https://github.com/openlethe/lethe">GitHub</a>
+    <a class="cta" href="installation.html">Get started</a>
+  </div>
+</nav>
+<div class="wiki">
+<aside>
+<div class="grp"><div class="gt">Start</div>
+<a href="overview.html" class="on">Overview</a>
+<a href="installation.html">Installation</a>
+<a href="runtime-modes.html">Runtime Modes</a>
+<div class="grp"><div class="gt">Memory Systems</div>
+<a href="memory-git.html">Memory Git</a>
+<a href="legacy-mode.html">Legacy Mode</a>
+<div class="grp"><div class="gt">Platform</div>
+<a href="architecture.html">Architecture</a>
+<a href="configuration.html">Configuration</a>
+<a href="deployment.html">Deployment &amp; Ops</a>
+<a href="docker-compose.html">Compose Variations</a>
+<div class="grp"><div class="gt">Reference</div>
+<a href="api.html">HTTP API Reference</a>
+<div class="grp"><div class="gt">Integrations</div>
+<a href="openclaw.html">OpenClaw</a>
+<a href="integrations.html">Client Integrations</a>
+<div class="grp"><div class="gt">Project</div>
+<a href="migration.html">Migration &amp; Upgrading</a>
+<a href="faq.html">FAQ</a>
+</div>
+</aside>
+<main>
+<div class="kick">Lethe docs · Overview</div>
+<h1>Overview</h1>
+<p>Lethe is a self-hosted persistent memory platform for AI agents. It runs as a
+single container with an embedded SQLite store, exposes a typed HTTP API, and
+— through <a href="https://github.com/openlethe/charon">Charon</a> — a scoped MCP
+surface for agents.</p>
+<h2>The problem</h2>
+<p>Agents forget. Between sessions, between restarts, between models, every
+conversation rebuilds context from nothing. Lethe provides two ways out of
+that loop, selectable per deployment (or combined):</p>
+<ol>
+<li><strong>Session memory (legacy mode)</strong> — continuity for a single agent: what
+   happened, what was decided, what is still open, resumable after any
+   interruption.</li>
+<li><strong>Versioned memory (git mode)</strong> — durable knowledge with history:
+   project knowledge, architecture decisions, implementation notes, durable
+   preferences, collaborative and multi-agent shared memory — written
+   through review, never overwritten silently.</li>
+</ol>
+<h2>What Lethe is not</h2>
+<ul>
+<li><strong>Not a chatlog store.</strong> Records are semantic — decisions, facts, tasks,
+  flags, outcomes — with confidence scores and provenance, not raw transcripts.</li>
+<li><strong>Not a vector database.</strong> Retrieval is exact: by session, by ref, by head.
+  No embeddings are required and none are tuned for you.</li>
+<li><strong>Not a hosted service.</strong> Lethe runs on your infrastructure, with your
+  keys, in one non-root container. Nothing leaves your network unless you
+  tunnel it deliberately.</li>
+<li><strong>Not filesystem Git.</strong> Memory Git borrows Git's <em>semantics</em> — refs,
+  changesets, branching, merging, immutable history — applied to memory
+  records. There are no <code>.git</code> directories involved.</li>
+</ul>
+<h2>Who uses it</h2>
+<ul>
+<li><strong>Single-agent setups</strong> — ChatGPT, Claude, Claude Code, Cursor, a local
+  IDE assistant, each with durable memory of their own.</li>
+<li><strong>Multi-agent setups</strong> — several agents writing to owned branches, one
+  reviewed shared memory on <code>refs/shared/main</code>, with Charon enforcing who
+  may write, review, and merge.</li>
+<li><strong>OpenClaw users</strong> — the OpenClaw plugin (legacy mode) provides automatic
+  context injection as a first-class integration.</li>
+</ul>
+<h2>Design principles</h2>
+<ul>
+<li><strong>Exact over approximate.</strong> Accepted memory is reconstructed at an exact
+  changeset head. Readers get precisely what was reviewed — nothing more.</li>
+<li><strong>Review before acceptance.</strong> Shared memory moves only through proposal,
+  independent review, and a signed, single-use merge authorization.</li>
+<li><strong>Fail closed.</strong> Missing keys, mismatched keys, malformed operations,
+  stale bases, and replayed authorizations are all hard errors, never silent
+  degradation.</li>
+<li><strong>One container, your keys.</strong> Non-root image, embedded SQLite with WAL and
+  <code>synchronous=FULL</code>, operator-generated credentials, no required external
+  services.</li>
+</ul>
+<h2>The ecosystem</h2>
+<pre><code class="language-text">ChatGPT / Claude / Claude Code / Cursor / IDE assistants / MCP clients
+                |
+                |  OAuth (S256 PKCE) or Obol
+                v
+             Charon        — authorization, scopes, review, protected merges
+                |
+                |  private typed API (bearer)
+                v
+              Lethe        — canonical persistent memory (legacy + Memory Git)
+
+OpenClaw (optional) — plugin injects session memory automatically (legacy mode)
+</code></pre>
+<p>Lethe works without Charon (direct bearer-key API access) and without
+OpenClaw (any MCP client or plain HTTP client). Charon is the recommended
+gateway once memory is shared between agents or exposed beyond loopback.</p>
+<h2>Next steps</h2>
+<ul>
+<li><a href="installation.md">Install Lethe</a></li>
+<li><a href="runtime-modes.md">Choose a runtime mode</a></li>
+<li><a href="memory-git.md">Learn Memory Git</a></li>
+<li><a href="integrations.md">Connect your agent</a></li>
+</ul>
+<div class="pn"><a class="n" href="installation.html">Installation →</a></div>
+</main>
+</div>
+<footer>
+  <div class="fl">Lethe<i>.</i></div>
+  <div>
+    <a href="https://github.com/openlethe/lethe" style="margin-left:0">GitHub</a>
+    <a href="../index.html">Lethe</a>
+    <a href="../charon.html">Charon</a>
+  </div>
+  <div class="fc">openlethe.com · 2026</div>
+</footer>
+</body>
+</html>

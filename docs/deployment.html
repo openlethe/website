@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deployment &amp; Ops — Lethe Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05070a;--bg2:#080d12;--ink:#e8f2f5;--dim:#7d99a3;--faint:#41565e;--cyan:#39d0e8;--cyan-soft:rgba(57,208,232,.12);--line:#12242c;--serif:'Cormorant Garamond',serif;--gold:#d9a441;--gold-soft:rgba(217,164,65,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;overflow-x:hidden;font-size:15px;line-height:1.65}
+::selection{background:var(--cyan);color:#04141a}
+nav.top{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:rgba(5,7,10,.55);backdrop-filter:blur(14px);border-bottom:1px solid rgba(57,208,232,.08)}
+.logo{font-weight:700;font-size:20px;letter-spacing:-.02em;text-decoration:none;color:var(--ink)}
+.logo i{font-style:normal;color:var(--cyan)}
+.navlinks{display:flex;gap:32px;align-items:center}
+.navlinks a{color:var(--dim);text-decoration:none;font-size:13px;letter-spacing:.08em;transition:color .25s}
+.navlinks a:hover{color:var(--cyan)}
+.navlinks a.here{color:var(--cyan)}
+.cta{border:1px solid var(--cyan);color:var(--cyan)!important;padding:9px 20px;font-size:12px!important;letter-spacing:.15em!important;text-transform:uppercase;text-decoration:none;transition:all .25s}
+.cta:hover{background:var(--cyan);color:#04141a!important}
+.wiki{display:grid;grid-template-columns:270px minmax(0,1fr);gap:64px;max-width:1320px;margin:0 auto;padding:110px 32px 60px}
+aside{position:sticky;top:96px;align-self:start;max-height:calc(100vh - 126px);overflow-y:auto;padding-right:14px;scrollbar-width:thin}
+aside .grp{margin-bottom:26px}
+aside .gt{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--faint);text-transform:uppercase;margin-bottom:10px}
+aside a{display:block;color:var(--dim);text-decoration:none;font-size:13px;padding:5px 0 5px 16px;border-left:1px solid var(--line);transition:all .2s;line-height:1.4}
+aside a:hover{color:var(--cyan)}
+aside a.on{color:var(--cyan);border-left-color:var(--cyan)}
+main{min-width:0;max-width:860px}
+main h1{font-family:var(--serif);font-weight:400;font-size:clamp(32px,4.5vw,46px);line-height:1.1;margin:14px 0 18px}
+main h2{font-family:var(--serif);font-weight:400;font-size:clamp(24px,3vw,32px);line-height:1.15;margin:40px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
+main h2:first-of-type{border-top:none;padding-top:0}
+main h3{font-size:18px;font-weight:600;margin:28px 0 8px}
+main p{color:var(--dim);margin:12px 0;font-weight:300}
+main b,main strong{color:var(--ink);font-weight:500}
+main a{color:var(--cyan)}
+main ul,main ol{color:var(--dim);margin:12px 0 16px 22px;font-weight:300}
+main li{margin:6px 0}
+main code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);background:var(--cyan-soft);padding:2px 7px;border-radius:4px}
+main pre{background:#03080a;border:1px solid var(--line);border-radius:6px;padding:18px 20px;overflow-x:auto;margin:16px 0}
+main pre code{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.8;color:#9fc3cd;background:none;padding:0}
+main table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+main th{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--faint);text-align:left;padding:11px 12px;border-bottom:1px solid var(--line)}
+main td{padding:11px 12px;border-bottom:1px solid var(--line);color:var(--dim);line-height:1.55;vertical-align:top;font-weight:300}
+main td code{white-space:nowrap}
+main tr:hover td{background:rgba(57,208,232,.03)}
+main blockquote{border-left:2px solid var(--gold);padding:8px 0 8px 18px;margin:16px 0;color:var(--dim);font-weight:300}
+main hr{border:none;border-top:1px solid var(--line);margin:28px 0}
+.kick{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.28em;color:var(--cyan);text-transform:uppercase}
+.pn{display:flex;justify-content:space-between;gap:16px;margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-size:13px}
+.pn a{color:var(--dim);text-decoration:none}
+.pn a:hover{color:var(--cyan)}
+.pn .n{margin-left:auto}
+footer{border-top:1px solid var(--line);padding:40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-top:40px}
+footer .fl{font-weight:700;font-size:18px}
+footer .fl i{font-style:normal;color:var(--cyan)}
+footer a{color:var(--faint);text-decoration:none;font-size:13px;margin-left:24px;transition:color .25s}
+footer a:hover{color:var(--cyan)}
+footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);letter-spacing:.15em}
+@media(max-width:1000px){.wiki{grid-template-columns:1fr;gap:0;padding-top:100px}aside{position:static;max-height:none;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}aside .grp{margin:0}aside .gt{display:none}aside a{border:1px solid var(--line);padding:6px 12px;font-size:12px}.navlinks a:not(.cta){display:none}}
+</style>
+</head>
+<body>
+<nav class="top">
+  <a class="logo" href="../index.html">Lethe<i>.</i></a>
+  <div class="navlinks">
+    <a href="../index.html">Lethe</a>
+    <a href="../charon.html">Charon</a>
+    <a href="index.html" class="here">Docs</a>
+    <a href="https://github.com/openlethe/lethe">GitHub</a>
+    <a class="cta" href="installation.html">Get started</a>
+  </div>
+</nav>
+<div class="wiki">
+<aside>
+<div class="grp"><div class="gt">Start</div>
+<a href="overview.html">Overview</a>
+<a href="installation.html">Installation</a>
+<a href="runtime-modes.html">Runtime Modes</a>
+<div class="grp"><div class="gt">Memory Systems</div>
+<a href="memory-git.html">Memory Git</a>
+<a href="legacy-mode.html">Legacy Mode</a>
+<div class="grp"><div class="gt">Platform</div>
+<a href="architecture.html">Architecture</a>
+<a href="configuration.html">Configuration</a>
+<a href="deployment.html" class="on">Deployment &amp; Ops</a>
+<a href="docker-compose.html">Compose Variations</a>
+<div class="grp"><div class="gt">Reference</div>
+<a href="api.html">HTTP API Reference</a>
+<div class="grp"><div class="gt">Integrations</div>
+<a href="openclaw.html">OpenClaw</a>
+<a href="integrations.html">Client Integrations</a>
+<div class="grp"><div class="gt">Project</div>
+<a href="migration.html">Migration &amp; Upgrading</a>
+<a href="faq.html">FAQ</a>
+</div>
+</aside>
+<main>
+<div class="kick">Lethe docs · Deployment &amp; Ops</div>
+<h1>Deployment &amp; Operations</h1>
+<h2>Production checklist</h2>
+<ul>
+<li>[ ] Pin an exact image tag (<code>ghcr.io/openlethe/lethe:&lt;version&gt;</code>), not <code>latest</code>.</li>
+<li>[ ] <code>LETHE_API_KEY</code> set (required for any non-loopback bind), generated with <code>openssl rand -hex 32</code>.</li>
+<li>[ ] Git mode: <code>CHARON_MERGE_HMAC_KEY</code> set and identical on Lethe and Charon.</li>
+<li>[ ] Data on bind-mounted host directories owned by UID 1000 — never named volumes for persistent data.</li>
+<li>[ ] <code>LETHE_TRUST=loopback</code> unless you have a reason to widen it; never expose the port beyond loopback without a key.</li>
+<li>[ ] Backup schedule in place; restore rehearsed (see below).</li>
+<li>[ ] Metrics scraped (<code>GET /api/metrics</code>) and alerts wired (<a href="observability.md">observability.md</a>).</li>
+</ul>
+<h2>Ports and exposure</h2>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Service</th>
+<th>Exposure guidance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>18483</code></td>
+<td>legacy/hybrid Lethe</td>
+<td>loopback, or behind a reverse proxy with the API key</td>
+</tr>
+<tr>
+<td><code>18485</code></td>
+<td>Memory Git</td>
+<td><strong>loopback only</strong> — reach it through Charon from agents</td>
+</tr>
+<tr>
+<td><code>18484</code></td>
+<td>Charon primary (OAuth)</td>
+<td>the only agent-facing port worth tunneling (HTTPS)</td>
+</tr>
+<tr>
+<td><code>18486</code></td>
+<td>Charon reviewer (Obol)</td>
+<td>loopback only</td>
+</tr>
+</tbody>
+</table>
+<h2>Upgrading</h2>
+<ol>
+<li>Back up the database (<code>sqlite3 &lt;db&gt; ".backup backups/lethe-&lt;date&gt;.db"</code> and <code>PRAGMA integrity_check;</code>).</li>
+<li>Read the release notes; schema migrations are additive and automatic on startup.</li>
+<li>Pull the new pinned tag and recreate the container.</li>
+<li>Watch startup logs: migration lines, then health <code>200</code>/<code>401</code> as expected.</li>
+<li>Rollback: previous image tag + restore the pre-upgrade backup.</li>
+</ol>
+<p>Current migration path: v0.3.x → v0.4.0 via automatic additive migration
+008. Memory Git runs on separate tables and does not migrate legacy events;
+see <a href="migration.md">migration.md</a>.</p>
+<h2>Backup and restore</h2>
+<p><strong>Backup (no downtime):</strong></p>
+<pre><code class="language-bash">sqlite3 /path/to/lethe.db &quot;.backup backups/lethe-$(date +%Y%m%d-%H%M).db&quot;
+sqlite3 backups/lethe-*.db &quot;PRAGMA integrity_check;&quot;
+</code></pre>
+<p><strong>Restore:</strong> stop the container, replace the database file, start with
+<code>LETHE_RECOVERY_READONLY=1</code>, validate with <code>sqlite3 &lt;db&gt; "PRAGMA integrity_check;"</code>,
+then clear the flag.</p>
+<p><strong>Charon side:</strong> the policy database has its own backup/restore runbook in
+<a href="https://github.com/openlethe/charon/blob/main/docs/operations.md">Charon's operations guide</a>,
+including coordinated two-database backup and <code>charon reconcile</code>.</p>
+<h2>Container hardening (as shipped)</h2>
+<p>Non-root UID 1000, <code>cap_drop: ALL</code>, read-only root filesystem,
+<code>no-new-privileges</code>, PID/memory/CPU limits, and a token-free healthcheck
+(<code>/api/health</code> answers 401 with a key set, 200 without). Compose references
+live in <a href="docker-compose.md">docker-compose.md</a>.</p>
+<h2>Observability</h2>
+<ul>
+<li><code>GET /api/health</code>, <code>/readyz</code> — liveness/readiness (auth-aware).</li>
+<li><code>GET /api/metrics</code> — Prometheus metrics for both modes; SLOs and alert
+  thresholds in <a href="observability.md">observability.md</a>.</li>
+<li>Logs are structured per request; secret values are never logged.</li>
+</ul>
+<h2>Failure behavior to expect</h2>
+<p>Lethe fails closed. Common named errors:</p>
+<ul>
+<li>startup: <code>LETHE_API_KEY is required</code> (non-loopback bind without a key),
+  merge-key missing in git mode, unsupported storage durability</li>
+<li>request: <code>401</code> (bad/missing bearer), <code>403</code> (protected ref written
+  directly, merge authorization invalid), <code>409</code> (CAS conflict — reread and
+  retry), <code>400</code> (validation: closed payload keys, size caps, unknown ref)</li>
+</ul>
+<p>A <code>409</code> on a changeset or merge is never corruption — it is the
+compare-and-swap working. Reread the current head, reconcile, resubmit with
+a new idempotency key.</p>
+<div class="pn"><a class="p" href="configuration.html">← Configuration</a><a class="n" href="docker-compose.html">Compose Variations →</a></div>
+</main>
+</div>
+<footer>
+  <div class="fl">Lethe<i>.</i></div>
+  <div>
+    <a href="https://github.com/openlethe/lethe" style="margin-left:0">GitHub</a>
+    <a href="../index.html">Lethe</a>
+    <a href="../charon.html">Charon</a>
+  </div>
+  <div class="fc">openlethe.com · 2026</div>
+</footer>
+</body>
+</html>

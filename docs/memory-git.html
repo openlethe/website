@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory Git — Lethe Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05070a;--bg2:#080d12;--ink:#e8f2f5;--dim:#7d99a3;--faint:#41565e;--cyan:#39d0e8;--cyan-soft:rgba(57,208,232,.12);--line:#12242c;--serif:'Cormorant Garamond',serif;--gold:#d9a441;--gold-soft:rgba(217,164,65,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;overflow-x:hidden;font-size:15px;line-height:1.65}
+::selection{background:var(--cyan);color:#04141a}
+nav.top{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:rgba(5,7,10,.55);backdrop-filter:blur(14px);border-bottom:1px solid rgba(57,208,232,.08)}
+.logo{font-weight:700;font-size:20px;letter-spacing:-.02em;text-decoration:none;color:var(--ink)}
+.logo i{font-style:normal;color:var(--cyan)}
+.navlinks{display:flex;gap:32px;align-items:center}
+.navlinks a{color:var(--dim);text-decoration:none;font-size:13px;letter-spacing:.08em;transition:color .25s}
+.navlinks a:hover{color:var(--cyan)}
+.navlinks a.here{color:var(--cyan)}
+.cta{border:1px solid var(--cyan);color:var(--cyan)!important;padding:9px 20px;font-size:12px!important;letter-spacing:.15em!important;text-transform:uppercase;text-decoration:none;transition:all .25s}
+.cta:hover{background:var(--cyan);color:#04141a!important}
+.wiki{display:grid;grid-template-columns:270px minmax(0,1fr);gap:64px;max-width:1320px;margin:0 auto;padding:110px 32px 60px}
+aside{position:sticky;top:96px;align-self:start;max-height:calc(100vh - 126px);overflow-y:auto;padding-right:14px;scrollbar-width:thin}
+aside .grp{margin-bottom:26px}
+aside .gt{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--faint);text-transform:uppercase;margin-bottom:10px}
+aside a{display:block;color:var(--dim);text-decoration:none;font-size:13px;padding:5px 0 5px 16px;border-left:1px solid var(--line);transition:all .2s;line-height:1.4}
+aside a:hover{color:var(--cyan)}
+aside a.on{color:var(--cyan);border-left-color:var(--cyan)}
+main{min-width:0;max-width:860px}
+main h1{font-family:var(--serif);font-weight:400;font-size:clamp(32px,4.5vw,46px);line-height:1.1;margin:14px 0 18px}
+main h2{font-family:var(--serif);font-weight:400;font-size:clamp(24px,3vw,32px);line-height:1.15;margin:40px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
+main h2:first-of-type{border-top:none;padding-top:0}
+main h3{font-size:18px;font-weight:600;margin:28px 0 8px}
+main p{color:var(--dim);margin:12px 0;font-weight:300}
+main b,main strong{color:var(--ink);font-weight:500}
+main a{color:var(--cyan)}
+main ul,main ol{color:var(--dim);margin:12px 0 16px 22px;font-weight:300}
+main li{margin:6px 0}
+main code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);background:var(--cyan-soft);padding:2px 7px;border-radius:4px}
+main pre{background:#03080a;border:1px solid var(--line);border-radius:6px;padding:18px 20px;overflow-x:auto;margin:16px 0}
+main pre code{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.8;color:#9fc3cd;background:none;padding:0}
+main table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+main th{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--faint);text-align:left;padding:11px 12px;border-bottom:1px solid var(--line)}
+main td{padding:11px 12px;border-bottom:1px solid var(--line);color:var(--dim);line-height:1.55;vertical-align:top;font-weight:300}
+main td code{white-space:nowrap}
+main tr:hover td{background:rgba(57,208,232,.03)}
+main blockquote{border-left:2px solid var(--gold);padding:8px 0 8px 18px;margin:16px 0;color:var(--dim);font-weight:300}
+main hr{border:none;border-top:1px solid var(--line);margin:28px 0}
+.kick{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.28em;color:var(--cyan);text-transform:uppercase}
+.pn{display:flex;justify-content:space-between;gap:16px;margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-size:13px}
+.pn a{color:var(--dim);text-decoration:none}
+.pn a:hover{color:var(--cyan)}
+.pn .n{margin-left:auto}
+footer{border-top:1px solid var(--line);padding:40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-top:40px}
+footer .fl{font-weight:700;font-size:18px}
+footer .fl i{font-style:normal;color:var(--cyan)}
+footer a{color:var(--faint);text-decoration:none;font-size:13px;margin-left:24px;transition:color .25s}
+footer a:hover{color:var(--cyan)}
+footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);letter-spacing:.15em}
+@media(max-width:1000px){.wiki{grid-template-columns:1fr;gap:0;padding-top:100px}aside{position:static;max-height:none;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}aside .grp{margin:0}aside .gt{display:none}aside a{border:1px solid var(--line);padding:6px 12px;font-size:12px}.navlinks a:not(.cta){display:none}}
+</style>
+</head>
+<body>
+<nav class="top">
+  <a class="logo" href="../index.html">Lethe<i>.</i></a>
+  <div class="navlinks">
+    <a href="../index.html">Lethe</a>
+    <a href="../charon.html">Charon</a>
+    <a href="index.html" class="here">Docs</a>
+    <a href="https://github.com/openlethe/lethe">GitHub</a>
+    <a class="cta" href="installation.html">Get started</a>
+  </div>
+</nav>
+<div class="wiki">
+<aside>
+<div class="grp"><div class="gt">Start</div>
+<a href="overview.html">Overview</a>
+<a href="installation.html">Installation</a>
+<a href="runtime-modes.html">Runtime Modes</a>
+<div class="grp"><div class="gt">Memory Systems</div>
+<a href="memory-git.html" class="on">Memory Git</a>
+<a href="legacy-mode.html">Legacy Mode</a>
+<div class="grp"><div class="gt">Platform</div>
+<a href="architecture.html">Architecture</a>
+<a href="configuration.html">Configuration</a>
+<a href="deployment.html">Deployment &amp; Ops</a>
+<a href="docker-compose.html">Compose Variations</a>
+<div class="grp"><div class="gt">Reference</div>
+<a href="api.html">HTTP API Reference</a>
+<div class="grp"><div class="gt">Integrations</div>
+<a href="openclaw.html">OpenClaw</a>
+<a href="integrations.html">Client Integrations</a>
+<div class="grp"><div class="gt">Project</div>
+<a href="migration.html">Migration &amp; Upgrading</a>
+<a href="faq.html">FAQ</a>
+</div>
+</aside>
+<main>
+<div class="kick">Lethe docs · Memory Git</div>
+<h1>Memory Git</h1>
+<p>Memory Git is Lethe's versioned memory system: durable, reviewable,
+branchable memory for any AI agent. It borrows Git's semantics — refs,
+changesets, branching, merging, immutable history — and applies them to
+memory records. <strong>It is not filesystem Git</strong>: no <code>.git</code> directory, no blobs
+of source code; the objects are semantic memory records.</p>
+<h2>What it enables</h2>
+<ul>
+<li><strong>Persistent AI memory</strong> — knowledge that survives sessions, restarts,
+  and model changes, reconstructed exactly at a changeset head.</li>
+<li><strong>Collaborative knowledge</strong> — many agents, one accepted history, each
+  writing to its own refs.</li>
+<li><strong>Reviewable memory</strong> — nothing reaches shared memory without a proposal
+  and an independent review.</li>
+<li><strong>Immutable history</strong> — every changeset is validated, then frozen forever;
+  corrections and supersedes are new entries, never rewrites.</li>
+<li><strong>Provenance</strong> — every record carries its author principal, parent
+  changesets, and the review that admitted it.</li>
+<li><strong>Branching and merging</strong> — <code>refs/agents/*</code>, <code>refs/sessions/*</code>,
+  <code>refs/topics/*</code> for working memory; <code>refs/shared/*</code> for accepted memory.</li>
+<li><strong>Versioned context</strong> — read memory at any exact head, optionally pinned
+  in a context manifest.</li>
+</ul>
+<h2>The objects</h2>
+<table>
+<thead>
+<tr>
+<th>Object</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>changeset</strong></td>
+<td>The immutable unit: an ordered list of semantic operations (<code>add_memory</code>, <code>correct_memory</code>, <code>supersede_memory</code>, <code>mark_duplicate</code>, <code>add_relationship</code>, <code>attach_evidence</code>, <code>attach_verification</code>, <code>propose_deprecation</code>) committed with compare-and-swap and an idempotency key</td>
+</tr>
+<tr>
+<td><strong>ref</strong></td>
+<td>A named pointer to a changeset. <code>refs/shared/*</code> is protected accepted memory; <code>refs/agents/&lt;actor&gt;/*</code>, <code>refs/sessions/&lt;actor&gt;/*</code>, <code>refs/topics/*</code> are owned by their creating principal</td>
+</tr>
+<tr>
+<td><strong>proposal</strong></td>
+<td>A merge request from an owned ref head into a protected ref, pinned to the exact source changeset at creation</td>
+</tr>
+<tr>
+<td><strong>review</strong></td>
+<td>An <code>approve</code> / <code>request_changes</code> / <code>reject</code> verdict bound to the proposal snapshot. Originators can never review or merge their own proposals</td>
+</tr>
+<tr>
+<td><strong>merge authorization</strong></td>
+<td>A <code>memory-git-merge/v2</code> envelope: HMAC-signed, ≤15-minute TTL, single-use nonce, bound to project, ref, heads, proposal digest, reviewer, and merger. Lethe verifies it independently and consumes the nonce atomically with the CAS — replays are rejected even if the ref cycles back</td>
+</tr>
+<tr>
+<td><strong>context projection</strong></td>
+<td><code>memory_context_at</code> reconstructs accepted memory at an exact ref head — precisely what was approved, optionally pinned in a manifest</td>
+</tr>
+</tbody>
+</table>
+<h2>The everyday flow</h2>
+<ol>
+<li><strong>Orient</strong> — read accepted memory: <code>memory_context_at</code> on
+   <code>refs/shared/main</code>.</li>
+<li><strong>Branch</strong> — create or reuse an owned ref: <code>refs/agents/&lt;you&gt;/main</code> or a
+   topic ref.</li>
+<li><strong>Commit</strong> — write a changeset with compare-and-swap
+   (<code>expected_head</code> + idempotency key). Payloads are closed-key validated at
+   Charon and again at Lethe before anything becomes immutable.</li>
+<li><strong>Propose</strong> — <code>memory_merge_propose</code> into <code>refs/shared/main</code>.</li>
+<li><strong>Independent review</strong> — a different principal records a verdict bound to
+   the exact snapshot. Self-review and self-merge are denied in code.</li>
+<li><strong>Merge</strong> — the reviewer applies it; the signed envelope advances the
+   protected ref; the ledger records everything.</li>
+<li><strong>Read later</strong> — any reader reconstructs accepted memory at the new head.</li>
+</ol>
+<p>Retrying the identical request with the same idempotency key returns the
+original changeset exactly once; a changed request under a reused key fails
+closed instead of silently discarding work.</p>
+<h2>Using it without OpenClaw</h2>
+<p>Memory Git needs nothing OpenClaw-specific. Direct over HTTP:</p>
+<pre><code class="language-bash">curl -H &quot;Authorization: Bearer $LETHE_API_KEY&quot; \
+  http://127.0.0.1:18485/api/memory/&lt;project&gt;/refs
+</code></pre>
+<p>Or via MCP through <a href="https://github.com/openlethe/charon">Charon</a> for scoped,
+reviewed access — see <a href="integrations.md">integrations.md</a> for
+ChatGPT, Claude Code, Cursor, and generic MCP setups, and the
+<a href="https://github.com/openlethe/charon/blob/main/docs/full-run.md">full governed walkthrough</a>.</p>
+<h2>Further reading</h2>
+<ul>
+<li><a href="memory-git-v1.md">memory-git-v1.md</a> — the full protocol: changeset model,
+  merge shapes, conflict lifecycle, envelope fields, durability and recovery</li>
+<li><a href="memory-context-bridge.md">memory-context-bridge.md</a> — the
+  <code>memory-context/v1</code> projection and manifest API</li>
+<li><a href="runtime-modes.md">runtime-modes.md</a> — when to run git vs legacy vs hybrid</li>
+<li><a href="api.md">api.md</a> — the Memory Git HTTP routes</li>
+</ul>
+<div class="pn"><a class="p" href="runtime-modes.html">← Runtime Modes</a><a class="n" href="legacy-mode.html">Legacy Mode →</a></div>
+</main>
+</div>
+<footer>
+  <div class="fl">Lethe<i>.</i></div>
+  <div>
+    <a href="https://github.com/openlethe/lethe" style="margin-left:0">GitHub</a>
+    <a href="../index.html">Lethe</a>
+    <a href="../charon.html">Charon</a>
+  </div>
+  <div class="fc">openlethe.com · 2026</div>
+</footer>
+</body>
+</html>
