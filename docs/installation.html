@@ -138,7 +138,10 @@ curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:18485/api/health   # 4
 </code></pre>
 <p>The script generates <code>LETHE_API_KEY</code> and <code>CHARON_MERGE_HMAC_KEY</code> without
 printing them. Git mode binds <code>127.0.0.1:18485</code> and uses its own data
-directory — never point it at an existing OpenLethe data directory.</p>
+directory — never point it at an existing OpenLethe data directory. The
+Compose file <strong>pulls <code>ghcr.io/openlethe/lethe:latest</code></strong> (multi-arch:
+linux/amd64 + linux/arm64), so no local build or toolchain is required;
+uncomment <code>build: .</code> in the file to compile from source instead.</p>
 <h2 id="hybrid-mode-both-surfaces-in-one-instance">Hybrid mode (both surfaces in one instance)</h2>
 <pre><code class="language-bash">docker run -d --name lethe-hybrid \
   -p 127.0.0.1:18483:18483 \

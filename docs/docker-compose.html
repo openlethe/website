@@ -127,8 +127,8 @@ token-free healthcheck.</p>
 <p>Ships in the repo as <code>docker-compose.git.yml</code>:</p>
 <pre><code class="language-yaml">services:
   lethe-git:
-    build: .
-    image: openlethe/lethe-git:local
+    image: ghcr.io/openlethe/lethe:latest   # multi-arch; uncomment build: . to compile from source
+    # build: .
     container_name: lethe-git-local
     restart: unless-stopped
     ports:
@@ -169,7 +169,7 @@ container, everything" layout:</p>
 stays loopback-only; agents meet Charon, never Lethe.</p>
 <pre><code class="language-yaml">services:
   lethe-git:                        # as Variation B
-    image: openlethe/lethe-git:local
+    image: ghcr.io/openlethe/lethe:latest
     ports: [&quot;127.0.0.1:18485:18483&quot;]
     environment:
       LETHE_MODE: git
