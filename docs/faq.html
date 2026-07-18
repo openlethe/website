@@ -145,6 +145,14 @@ No — it is the compare-and-swap working as intended. Reread the current
 head, reconcile against it, and resubmit with a <strong>new</strong> idempotency key.
 A replayed merge authorization is also a hard rejection, even if the ref
 cycled back to the same head.</p>
+<p><strong>The gateway says "<code>CHARON_OAUTH_PAIRING_SECRET</code> is required". Do I need to set it?</strong>
+Usually no — that error means the OAuth block never reached the container,
+not that a secret is missing. Pass
+<code>CHARON_OAUTH_GENERATE_PAIRING_SECRET=true</code> (the released compose does) and
+every Charon start prints a fresh browser authorization key in the logs
+(<code>docker compose logs charon</code>). You only set a static
+<code>CHARON_OAUTH_PAIRING_SECRET</code> (32+ characters) when you deliberately
+disable generation for one stable key.</p>
 <p><strong>Can multiple agents share one memory?</strong>
 Yes — that is the designed center of the system: one Lethe Git, one Charon,
 a propose-profile principal per writing agent, an independent reviewer

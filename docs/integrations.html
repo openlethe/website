@@ -111,12 +111,20 @@ supported patterns; none of them require OpenClaw.</p>
 S256 PKCE flow gated by an operator-held pairing key.</p>
 <ol>
 <li>Deploy the governed stack (<a href="docker-compose.html#variation-d--governed-stack-lethe-git--charon">docker-compose.md</a>).</li>
-<li>Tunnel <code>127.0.0.1:18484</code> to a public HTTPS URL; set <code>CHARON_PUBLIC_URL</code>
-   to it and allow ChatGPT in <code>CHARON_OAUTH_REDIRECT_URIS</code>.</li>
-<li>Restart Charon and copy the current pairing key from the startup banner
-   (<code>docker compose logs charon</code>) — it regenerates on every restart.</li>
-<li>Add the connector in ChatGPT and paste the pairing key when prompted.</li>
+<li><strong>Create the role principals</strong> (once — the gateway refuses to start while
+   <code>CHARON_OAUTH_DEFAULT_USER</code> names a principal that does not exist):</li>
 </ol>
+<p><code>bash
+   docker compose run --rm --no-deps --entrypoint charon charon \
+     principal reconcile "Local Memory Author" propose default</code></p>
+<p>Set <code>CHARON_OAUTH_DEFAULT_USER</code> to that principal's name or ID.
+3. Tunnel <code>127.0.0.1:18484</code> to a public HTTPS URL; set <code>CHARON_PUBLIC_URL</code>
+   to it and allow ChatGPT in <code>CHARON_OAUTH_REDIRECT_URIS</code>.
+4. Restart Charon and copy the current pairing key from the startup banner
+   (<code>docker compose logs charon</code>). <strong>It is generated automatically on every
+   start</strong> — you never set it by hand; a static
+   <code>CHARON_OAUTH_PAIRING_SECRET</code> is only for deliberately stable keys.
+5. Add the connector in ChatGPT and paste the pairing key when prompted.</p>
 <p>Tokens are capped to <code>memory.read · search · thread.read · propose</code> by
 default; review/merge never come over OAuth.</p>
 <h2 id="claude-code-claude-mcp">Claude Code / Claude (MCP)</h2>
