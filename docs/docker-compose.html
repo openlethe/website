@@ -200,7 +200,13 @@ stays loopback-only; agents meet Charon, never Lethe.</p>
     environment:
       CHARON_MODE: memory-git
       CHARON_AUTH_MODE: obol
-      # ... same shared keys and upstream ...
+      CHARON_UPSTREAM: http://host.docker.internal:18485
+      CHARON_ALLOW_INSECURE_UPSTREAM: &quot;1&quot;
+      LETHE_API_KEY: ${LETHE_API_KEY:?}
+      CHARON_OBOL_HMAC_KEY: ${CHARON_OBOL_HMAC_KEY:?}
+      CHARON_OAUTH_HMAC_KEY: ${CHARON_OAUTH_HMAC_KEY:?}
+      CHARON_MERGE_HMAC_KEY: ${CHARON_MERGE_HMAC_KEY:?}
+      CHARON_PUBLIC_URL: http://127.0.0.1:18486
     volumes:
       - charon-data:/data
     ports: [&quot;127.0.0.1:18486:18484&quot;]
@@ -208,9 +214,26 @@ stays loopback-only; agents meet Charon, never Lethe.</p>
 volumes:
   charon-data:
 </code></pre>
-<p>The authoritative versions of the Charon services (with full hardening:
-non-root 10001, <code>cap_drop: ALL</code>, read-only FS, limits) live in the
-<a href="https://github.com/openlethe/charon/blob/main/docker-compose.yml">charon repository</a>.</p>
+<p>The <code>charon</code> service also needs its OAuth block
+(<code>CHARON_OAUTH_CLIENT_ID</code>, <code>CHARON_OAUTH_REDIRECT_URIS</code>,
+<code>CHARON_OAUTH_DEFAULT_USER</code>, and
+<code>CHARON_OAUTH_GENERATE_PAIRING_SECRET: "true"</code> — a fresh browser pairing
+key is generated and printed in the logs on every start; no manual pairing
+secret is required). The authoritative versions of both services (with full
+hardening: non-root 10001, <code>cap_drop: ALL</code>, read-only FS, limits) live in
+the <a href="https://github.com/openlethe/charon/blob/main/docker-compose.yml">charon repository</a>.</p>
+<p><strong>Before first start</strong>, <code>CHARON_OAUTH_DEFAULT_USER</code> must resolve to an
+existing principal (ID or name). Create the role principals once after the
+databases exist:</p>
+<pre><code class="language-bash">docker compose run --rm --no-deps --entrypoint charon charon \
+  principal reconcile &quot;Local Memory Author&quot;   propose  &lt;project&gt;
+docker compose run --rm --no-deps --entrypoint charon charon \
+  principal reconcile &quot;Local Memory Reviewer&quot; review   &lt;project&gt;
+docker compose run --rm --no-deps --entrypoint charon charon \
+  principal reconcile &quot;Local Memory Reader&quot;   readonly &lt;project&gt;
+</code></pre>
+<p>(Or run the charon repository's <code>./setup.sh</code>, which does env, principals,
+Obols, and startup in one pass.)</p>
 <h2 id="rules-of-thumb">Rules of thumb</h2>
 <ul>
 <li>Bind mounts for data, owned by UID 1000; named volumes only for Charon's
