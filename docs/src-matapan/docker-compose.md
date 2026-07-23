@@ -58,12 +58,10 @@ Claude connector ──┤── cloudflared (host) ────┤
 
 services:
   matapan-chatgpt:
-    build:
-      context: /path/to/matapan          # the matapan repository
-      dockerfile: Dockerfile
-      args:
-        VERSION: compose-dev
-    image: matapan:compose
+    image: ghcr.io/openlethe/matapan:latest
+    # Pin a release tag for anything you care about, or build from source
+    # (build: { context: /path/to/matapan, dockerfile: Dockerfile }) and
+    # switch image: back to matapan:compose.
     container_name: matapan-chatgpt
     restart: unless-stopped
     environment:
@@ -85,12 +83,8 @@ services:
       start_period: 10s
 
   matapan-claude:
-    build:
-      context: /path/to/matapan
-      dockerfile: Dockerfile
-      args:
-        VERSION: compose-dev
-    image: matapan:compose
+    image: ghcr.io/openlethe/matapan:latest
+    # Same image line as the chatgpt instance.
     container_name: matapan-claude
     restart: unless-stopped
     environment:
@@ -255,11 +249,15 @@ per-model config file.
 ## Operate
 
 ```sh
-docker compose build                # rebuild after pulling new code
-docker compose up -d                # recreate changed instances
+docker compose pull                 # fetch the latest published image
+docker compose up -d                # recreate instances on the new image
 docker compose logs -f matapan-chatgpt
 docker compose exec matapan-chatgpt matapan --config /data/config.json doctor
 ```
+
+The image is multi-arch (`linux/amd64`, `linux/arm64`), published from
+the matapan repo on every version tag — Linux, macOS, and Windows (via
+Docker Desktop/WSL2) all pull the same reference.
 
 On upgrade, the database migrates forward automatically and idempotently
 at open. Pre-v14 workspaces are conservatively marked `ever_ran` (their
