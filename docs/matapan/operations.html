@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operations — Matapan Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#040806;--bg2:#081209;--ink:#e6f5ec;--dim:#82a392;--faint:#3f5c4c;--cyan:#3ddc97;--cyan-soft:rgba(61,220,151,.12);--line:#122a1c;--serif:'Cormorant Garamond',serif}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;overflow-x:hidden;font-size:15px;line-height:1.65}
+::selection{background:var(--cyan);color:#04140c}
+nav.top{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:#040806d9;backdrop-filter:blur(14px);border-bottom:1px solid rgba(61,220,151,.08)}
+.logo{font-weight:700;font-size:20px;letter-spacing:-.02em;text-decoration:none;color:var(--ink)}
+.logo i{font-style:normal;color:var(--cyan)}
+.navlinks{display:flex;gap:32px;align-items:center}
+.navlinks a{color:var(--dim);text-decoration:none;font-size:13px;letter-spacing:.08em;transition:color .25s}
+.navlinks a:hover{color:var(--cyan)}
+.navlinks a.here{color:var(--cyan)}
+.cta{border:1px solid var(--cyan);color:var(--cyan)!important;padding:9px 20px;font-size:12px!important;letter-spacing:.15em!important;text-transform:uppercase;text-decoration:none;transition:all .25s}
+.cta:hover{background:var(--cyan);color:#04140c!important}
+.dd{position:relative}
+.ddt{cursor:pointer}
+.ddm{display:none;position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%);min-width:200px;background:var(--bg2);border:1px solid var(--line);padding:6px;z-index:60;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.dd:hover .ddm,.dd:focus-within .ddm{display:block}
+.ddm a{display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:13px;color:var(--dim);text-decoration:none;letter-spacing:.04em}
+.ddm a:hover{background:var(--bg);color:var(--ink)}
+.ddm .sw{width:8px;height:8px;border-radius:50%;flex:none}
+.wiki{display:grid;grid-template-columns:270px minmax(0,1fr);gap:64px;max-width:1320px;margin:0 auto;padding:110px 32px 60px}
+aside{position:sticky;top:96px;align-self:start;max-height:calc(100vh - 126px);overflow-y:auto;padding-right:14px;scrollbar-width:thin}
+aside .proj{display:flex;gap:6px;margin-bottom:22px}
+aside .proj a{flex:1;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:7px 4px;border:1px solid var(--line);color:var(--faint);transition:all .2s}
+aside .proj a:hover{color:var(--ink);border-color:var(--dim)}
+aside .proj a.onl{color:#39d0e8;border-color:#39d0e8}
+aside .proj a.onc{color:#d9a441;border-color:#d9a441}
+aside .proj a.onm{color:#3ddc97;border-color:#3ddc97}
+aside .grp{margin-bottom:26px}
+aside .gt{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--faint);text-transform:uppercase;margin-bottom:10px}
+aside a{display:block;color:var(--dim);text-decoration:none;font-size:13px;padding:5px 0 5px 16px;border-left:1px solid var(--line);transition:all .2s;line-height:1.4}
+aside a:hover{color:var(--cyan)}
+aside a.on{color:var(--cyan);border-left-color:var(--cyan)}
+main{min-width:0;max-width:860px}
+main h1{font-family:var(--serif);font-weight:400;font-size:clamp(32px,4.5vw,46px);line-height:1.1;margin:14px 0 18px}
+main h2{font-family:var(--serif);font-weight:400;font-size:clamp(24px,3vw,32px);line-height:1.15;margin:40px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
+main h2:first-of-type{border-top:none;padding-top:0}
+main h3{font-size:18px;font-weight:600;margin:28px 0 8px}
+main p{color:var(--dim);margin:12px 0;font-weight:300}
+main b,main strong{color:var(--ink);font-weight:500}
+main a{color:var(--cyan)}
+main ul,main ol{color:var(--dim);margin:12px 0 16px 22px;font-weight:300}
+main li{margin:6px 0}
+main code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);background:var(--cyan-soft);padding:2px 7px;border-radius:4px}
+main pre{background:#030a06;border:1px solid var(--line);border-radius:6px;padding:18px 20px;overflow-x:auto;margin:16px 0}
+main pre code{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.8;color:#9fcdb2;background:none;padding:0}
+main table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+main th{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--faint);text-align:left;padding:11px 12px;border-bottom:1px solid var(--line)}
+main td{padding:11px 12px;border-bottom:1px solid var(--line);color:var(--dim);line-height:1.55;vertical-align:top;font-weight:300}
+main td code{white-space:nowrap}
+main tr:hover td{background:rgba(61,220,151,.03)}
+main blockquote{border-left:2px solid var(--cyan);padding:8px 0 8px 18px;margin:16px 0;color:var(--dim);font-weight:300}
+main hr{border:none;border-top:1px solid var(--line);margin:28px 0}
+.kick{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.28em;color:var(--cyan);text-transform:uppercase}
+.pn{display:flex;justify-content:space-between;gap:16px;margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-size:13px}
+.pn a{color:var(--dim);text-decoration:none}
+.pn a:hover{color:var(--cyan)}
+.pn .n{margin-left:auto}
+footer{border-top:1px solid var(--line);padding:40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-top:40px}
+footer .fl{font-weight:700;font-size:18px}
+footer .fl i{font-style:normal;color:var(--cyan)}
+footer a{color:var(--faint);text-decoration:none;font-size:13px;margin-left:24px;transition:color .25s}
+footer a:hover{color:var(--cyan)}
+footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);letter-spacing:.15em}
+@media(max-width:1000px){.wiki{grid-template-columns:1fr;gap:0;padding-top:100px}aside{position:static;max-height:none;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}aside .grp{margin:0}aside .gt{display:none}aside a{border:1px solid var(--line);padding:6px 12px;font-size:12px}.navlinks a:not(.cta){display:none}.ddm{position:static;transform:none;display:block;box-shadow:none;background:none;border:none;padding:0}}
+</style>
+</head>
+<body>
+<nav class="top">
+  <a class="logo" href="../../index.html">Matapan<i>.</i></a>
+  <div class="navlinks">
+    <a href="../../index.html">Lethe</a>
+    <a href="../../charon.html">Charon</a>
+    <a href="../../matapan.html">Matapan</a>
+    <div class="dd">
+      <a class="ddt here" href="../../docs.html">Docs ▾</a>
+      <div class="ddm">
+<a href="../index.html"><span class="sw" style="background:#39d0e8"></span>Lethe docs</a>
+<a href="../charon/index.html"><span class="sw" style="background:#d9a441"></span>Charon docs</a>
+<a href="../matapan/index.html"><span class="sw" style="background:#3ddc97"></span>Matapan docs</a>
+      </div>
+    </div>
+    <a href="https://github.com/openlethe/matapan">GitHub</a>
+    <a class="cta" href="quickstart.html">Get started</a>
+  </div>
+</nav>
+<div class="wiki">
+<aside>
+<div class="proj"><a class="" href="../index.html">Lethe</a>
+<a class="" href="../charon/index.html">Charon</a>
+<a class="onm" href="index.html">Matapan</a></div>
+<div class="grp"><div class="gt">Start</div>
+<a href="overview.html">Overview</a>
+<a href="quickstart.html">Quickstart</a>
+<div class="grp"><div class="gt">Deploy</div>
+<a href="docker-compose.html">Docker Compose Setup</a>
+<a href="operations.html" class="on">Operations</a>
+<a href="docker-limitations.html">Docker Limitations</a>
+<div class="grp"><div class="gt">Security</div>
+<a href="threat-model.html">Threat Model</a>
+<div class="grp"><div class="gt">Project</div>
+<a href="comparison-devspace.html">vs DevSpace</a>
+</div>
+</aside>
+<main>
+<div class="kick">Matapan docs · Operations</div>
+<h1 id="operations">Operations</h1>
+<p>Day-to-day running of matapand and the matapan CLI.</p>
+<h2 id="daemon-management">Daemon management</h2>
+<ul>
+<li><strong>Start:</strong> <code>matapand</code> (HTTP on <code>127.0.0.1:18777</code>) or <code>matapand --stdio</code>
+  (MCP over stdio for a local agent, requires <code>MATAPAN_OBOL</code>).</li>
+<li><strong>Stop:</strong> SIGTERM/SIGINT — graceful: in-flight containers are swept by
+  label, then the HTTP server drains.</li>
+<li><strong>Logs:</strong> stderr. Lifecycle transitions, reconciliation reports, GC
+  collections, and errors — never command output or secret values (command
+  output goes only to the authenticated caller).</li>
+<li><strong>Startup reconciliation:</strong> every start runs a pass — stuck transitional
+  states fail or resume, orphan dirs/rows are reported (or cleaned with
+  <code>--reconcile-clean</code>), stale git worktree metadata is pruned, orphaned
+  labeled containers and lock files are removed. All actions are ledgered.</li>
+<li><strong>Health:</strong> <code>curl http://127.0.0.1:18777/api/health</code> (loopback only).</li>
+</ul>
+<h2 id="inspection-and-repair">Inspection and repair</h2>
+<ul>
+<li><code>matapan doctor</code> — environment: git, config, runtime user (resolved
+  runtime uid:gid + root-mode chown probe), database + schema version,
+  reconciliation status, obol key, Docker, runtime image (digest match),
+  runtime spawn (as the resolved identity), daemon reachability, ledger
+  size + retention.</li>
+<li><code>matapan workspace diagnose &lt;id&gt;</code> — one workspace: state, source
+  identity, head/dirty, dir usage, lock holder (+liveness), labeled
+  containers, egress grants, manifest drift, degraded run leases,
+  issues list.</li>
+<li><code>matapan workspace rebind &lt;id&gt; [--yes]</code> — rebind a git workspace whose
+  source identity is missing or changed (legacy rows, operator-moved
+  repos). Prints recorded vs live identity; <code>--yes</code> records it after
+  content proof (base commit must resolve). Without <code>--yes</code> it changes
+  nothing.</li>
+<li><code>matapan workspace purge-backups &lt;id&gt; [--yes]</code> — remove the retained
+  snapshot recovery backup home for the workspace's source. Lists what
+  will be removed and requires <code>--yes</code>; reconciliation NEVER removes
+  backups automatically.</li>
+<li><code>matapan workspace repair &lt;id&gt;</code> — preview; <code>--yes</code> to execute (mark
+  stuck states failed, kill orphan containers, re-derive manifests).
+  Ledgered.</li>
+</ul>
+<h2 id="garbage-collection">Garbage collection</h2>
+<ul>
+<li>Leases: <code>workspace create --lease 24h</code> (or <code>7d</code>). Idle expiry:
+  <code>gc.idle_hours</code> config (default 72).</li>
+<li><code>matapan workspace protect &lt;id&gt;</code> exempts a workspace (<code>--clear</code> to undo).</li>
+<li>Sweeper: daemon startup + hourly; manual preview with <code>matapan gc
+  --dry-run</code>, collect with <code>matapan gc</code>.</li>
+<li><strong>Never collected:</strong> workspaces with sealed-but-unapplied proposals
+  (marked stale instead) and protected workspaces. Collection always uses
+  the verified destroy path and is ledgered.</li>
+<li>Audit retention: <code>ledger.retention_days</code> (90) and <code>ledger.max_entries</code>
+  (1e6), swept at startup + daily with compaction anchors so the retained
+  hash chain still verifies.</li>
+</ul>
+<h2 id="backup-and-upgrade">Backup and upgrade</h2>
+<ul>
+<li><strong>State:</strong> everything lives in <code>~/.matapan/</code> — <code>matapan.db</code> (SQLite,
+  WAL), <code>obol.key</code>, <code>secret.key</code>, <code>config.json</code>, <code>workspaces/</code>.</li>
+<li><strong>Backup:</strong> stop the daemon (or use <code>sqlite3 matapan.db ".backup
+  backup.db"</code>), then copy the directory. Keys are irreplaceable — losing
+  <code>obol.key</code> invalidates all obols; losing <code>secret.key</code> loses all secrets.
+  <code>obol.key</code> also authenticates sealed-proposal anchors (round 6): losing
+  it makes every sealed proposal unapplyable (re-seal to recover).</li>
+<li><strong>Upgrade:</strong> install the new binaries over the old. The DB migrates
+  forward automatically and idempotently at open (v1→current verified in
+  tests). Downgrades are not supported. Notes for the v14+ upgrade:
+  pre-existing workspaces are conservatively marked <code>ever_ran</code> (Docker
+  required for their destroys), and proposals sealed before the v2 seal
+  anchor must be re-sealed before they can apply.</li>
+<li><strong>Version:</strong> <code>matapan version</code>, <code>matapand --version</code>.</li>
+</ul>
+<h2 id="failure-modes">Failure modes</h2>
+<ul>
+<li><strong>Daemon dies mid-operation:</strong> restart — reconciliation fails or resumes
+  the operation. Destroy operations resume to completion.</li>
+<li><strong>Docker unavailable:</strong> the daemon runs normally; <code>workspace_run</code> returns
+  typed <code>unavailable</code>. Reads and edits work. Destroys are different
+  (round 5/6): without container visibility, destroy REFUSES any
+  workspace that has ever run (durable <code>ever_ran</code> evidence,
+  <code>ErrContainerKillUnavailable</code>) — never-run workspaces (e.g.
+  create-rollback) still clean up. Retry destroys from a process with
+  Docker access.</li>
+<li><strong>Daemon startup aborts on sweep errors:</strong> if the startup lease sweep
+  cannot read or write the store (e.g. a failed degradation write), the
+  daemon logs FATAL and refuses to serve — a store that cannot record
+  safety state is never run around.</li>
+<li><strong>Sealed proposals are ledger-anchored (round 5/6):</strong> apply requires
+  the proposal's HMAC-authenticated seal anchor. Proposals sealed before
+  the anchor existed fail closed (<code>ErrSealedEvidenceMissing</code>) — <code>proposal
+  revise</code> + re-seal to apply them.</li>
+<li><strong>Stale base on apply:</strong> the target moved — <code>proposal revise &lt;id&gt;</code> seeds
+  a fresh workspace from the proposal and re-seals.</li>
+</ul>
+<h2 id="container-deployment">Container deployment</h2>
+<p>matapand ships as an image (<code>scripts/docker-build.sh matapan:local</code>). One
+container per agent model, each with its own config, database, keys, and
+workspace root.</p>
+<h3 id="the-three-path-parity-requirements">The three path-parity requirements</h3>
+<ol>
+<li><strong>Workspace root.</strong> matapand bind-mounts a workspace's directory into
+   run containers by its absolute path. The workspace root mount inside
+   the matapand container MUST be the <em>same absolute path</em> as the host
+   path (e.g. <code>-v /data/ws-chatgpt:/data/ws-chatgpt</code>). Otherwise nested
+   run containers get a path that does not exist on the host.</li>
+<li><strong>Source repos.</strong> Git workspaces are linked worktrees of host repos:
+   <code>git worktree add</code> writes administrative pointers containing absolute
+   paths. Source roots must be mounted at <em>identical</em> absolute paths
+   inside and outside (e.g. <code>-v /Users/me/dev:/Users/me/dev</code>).</li>
+<li><strong>docker.sock.</strong> matapand needs <code>/var/run/docker.sock</code> to run agent
+   workloads — mount it into the matapand container ONLY. Agent run
+   containers are refused any docker.sock mount by spec validation. The
+   socket is full root on the host: matapand is trusted control-plane
+   code; treat its host access accordingly.</li>
+</ol>
+<h3 id="config-and-secrets-provisioning">Config and secrets provisioning</h3>
+<p>Mount the model's config JSON at <code>/etc/matapan/config.json</code> (the image's
+default <code>--config</code>). Bootstrap keys and the admin obol once per model:</p>
+<pre><code class="language-sh">docker compose run --rm --no-deps --entrypoint matapan matapan-chatgpt \
+  config init --home /data
+</code></pre>
+<p>(The image's entrypoint is <code>matapand</code>, so <code>--entrypoint matapan</code> is
+required to run the CLI. <code>/data</code> is the per-model volume; config init
+writes config.json, obol.key, secret.key, and the db, then prints the
+admin obol ONCE. Point <code>--config</code> at <code>/data/config.json</code> afterwards, or
+mount that file at <code>/etc/matapan/config.json</code>.) Override any setting
+per-instance with the <code>MATAPAN_*</code> env vars — env &gt; file &gt; defaults.</p>
+<h3 id="user-model">User model</h3>
+<p>The image runs as root (see the Dockerfile comment): the docker group gid
+varies by host and Docker Desktop manages socket access differently, so a
+fixed non-root uid cannot open the socket out-of-the-box. On a rootless
+or group-managed host you can instead run:</p>
+<pre><code class="language-sh">docker run --user &quot;$(id -u):$(getent group docker | cut -d: -f3)&quot; \
+  -v &quot;$XDG_RUNTIME_DIR/docker.sock:/var/run/docker.sock&quot; ...
+</code></pre>
+<h3 id="runtime-user-and-workspace-ownership-b-01">Runtime user and workspace ownership (B-01)</h3>
+<p>Native Linux bind mounts preserve host ownership, so the container user
+must MATCH the owner of workspace content (<code>0750</code>/<code>0640</code>). The daemon
+resolves one runtime identity at startup:</p>
+<ul>
+<li><strong>Daemon non-root</strong> (native Linux dev): containers run as the daemon's
+  own uid:gid; workspace content is already owned by it. No chown.</li>
+<li><strong>Daemon root</strong> (this container deployment): containers run as
+  <code>runtime.uid</code>:<code>runtime.gid</code> (env <code>MATAPAN_RUNTIME_UID</code> /
+  <code>MATAPAN_RUNTIME_GID</code>, default <code>65534:65534</code>), and the daemon chowns
+  workspace content to that identity at every write moment (create, MCP
+  edit, commit, revise). Container-created files are born runtime-owned.</li>
+</ul>
+<p><code>matapan doctor</code> reports the resolved identity under <code>runtime user</code> and,
+in root mode, fails loudly if the chown probe fails (rootless daemon,
+read-only fs). Modes never change — only ownership.</p>
+<h3 id="compose-layout">Compose layout</h3>
+<p>See the per-model deployment folder (two services: one per model). Each
+service mounts its config, its data dir, its workspace dir at the
+identical absolute path, the docker socket, and the host dev tree at its
+identical absolute path; ports are published on 127.0.0.1 only.</p>
+<h2 id="oauth-authorization-server-mode">OAuth authorization-server mode</h2>
+<p><code>auth.mode: oauth</code> turns the instance into an OAuth 2.0 authorization
+server for connectors that require OAuth (ChatGPT, Claude).</p>
+<p>Config (<code>auth</code> section):</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>oauth_issuer</code></td>
+<td>Public base URL (REQUIRED, https — the tunnel hostname). Metadata endpoints and JWT <code>iss</code> derive from it.</td>
+</tr>
+<tr>
+<td><code>oauth_redirects</code></td>
+<td>Redirect-URI allowlist (REQUIRED). Must cover ChatGPT's and Claude's callbacks.</td>
+</tr>
+<tr>
+<td><code>oauth_client_id</code></td>
+<td>Public client_id (default <code>chatgpt-mcp</code>; printable ASCII, no spaces; override via <code>MATAPAN_OAUTH_CLIENT_ID</code>).</td>
+</tr>
+<tr>
+<td><code>oauth_principal</code></td>
+<td>Principal tokens map to (default <code>agent-&lt;oauth_client_id&gt;</code>; must exist and stay within the agent scope set at startup).</td>
+</tr>
+<tr>
+<td><code>oauth_allow_admin</code></td>
+<td>Escape hatch: permit <code>oauth_principal</code> to name an admin-capable principal (default false — refused). Suspends the connector authority boundary; operator use only.</td>
+</tr>
+<tr>
+<td><code>oauth_owner_password_hash</code></td>
+<td>SHA-256 hex of the approval-gate password. Prefer the env var.</td>
+</tr>
+</tbody>
+</table>
+<p>Owner password: set <code>MATAPAN_OAUTH_OWNER_PASSWORD</code> in the daemon's
+environment (compose: <code>.env</code>). It is hashed in memory at startup and never
+stored; the daemon REFUSES to start in oauth mode without it (or the
+config hash). The approval form cannot be bypassed — every authorization
+code is issued only after the owner types it.</p>
+<p>Flow: connector discovers <code>/.well-known/oauth-protected-resource</code> →
+<code>/oauth/authorize</code> renders the approval form (exact effective scopes +
+token principal shown) → owner password → code → <code>/oauth/token</code> (PKCE) →
+24h HS256 JWT. <code>/mcp</code> accepts both JWTs and obols. No refresh tokens;
+connectors re-authorize daily. Per-client and global rate limits cover
+<code>/oauth/token</code> and the approval POST.</p>
+<p>Token authority: tokens map to <code>agent-&lt;oauth_client_id&gt;</code> (auto-provisioned
+with AgentScopes — no <code>workspace.grant</code>, no <code>proposal.apply</code>), NOT admin.
+The connector can't grant egress/secrets and can't apply proposals; apply
+is human-only (CLI or a proposal.apply-scoped principal). Grant workspaces
+to the connector at create: oauth mode auto-grants <code>agent-&lt;client_id&gt;</code>;
+add more with <code>matapan workspace create --grant &lt;principal&gt;</code> (repeatable).
+Self-approval prevention defaults ON in oauth and charon modes.</p>
+<p>Per-model setup: <code>docker compose run --rm --no-deps matapan-chatgpt \
+matapan config oauth-setup --config /data/config.json</code> prints the exact
+connector instructions.</p>
+<div class="pn"><a class="p" href="docker-compose.html">← Docker Compose Setup</a><a class="n" href="docker-limitations.html">Docker Limitations →</a></div>
+</main>
+</div>
+<footer>
+  <div class="fl">Matapan<i>.</i></div>
+  <div>
+    <a href="https://github.com/openlethe/matapan" style="margin-left:0">GitHub</a>
+    <a href="../../index.html">Lethe</a>
+    <a href="../../charon.html">Charon</a>
+    <a href="../../matapan.html">Matapan</a>
+  </div>
+  <div class="fc">openlethe.com · 2026</div>
+</footer>
+</body>
+</html>

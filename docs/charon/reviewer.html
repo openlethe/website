@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Local Reviewer Setup — Charon Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070604;--bg2:#0d0a06;--ink:#f5efe4;--dim:#a3988a;--faint:#5c5344;--cyan:#d9a441;--cyan-soft:rgba(217,164,65,.12);--line:#2a2214;--serif:'Cormorant Garamond',serif}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;overflow-x:hidden;font-size:15px;line-height:1.65}
+::selection{background:var(--cyan);color:#1a1204}
+nav.top{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:#070604d9;backdrop-filter:blur(14px);border-bottom:1px solid rgba(217,164,65,.08)}
+.logo{font-weight:700;font-size:20px;letter-spacing:-.02em;text-decoration:none;color:var(--ink)}
+.logo i{font-style:normal;color:var(--cyan)}
+.navlinks{display:flex;gap:32px;align-items:center}
+.navlinks a{color:var(--dim);text-decoration:none;font-size:13px;letter-spacing:.08em;transition:color .25s}
+.navlinks a:hover{color:var(--cyan)}
+.navlinks a.here{color:var(--cyan)}
+.cta{border:1px solid var(--cyan);color:var(--cyan)!important;padding:9px 20px;font-size:12px!important;letter-spacing:.15em!important;text-transform:uppercase;text-decoration:none;transition:all .25s}
+.cta:hover{background:var(--cyan);color:#1a1204!important}
+.dd{position:relative}
+.ddt{cursor:pointer}
+.ddm{display:none;position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%);min-width:200px;background:var(--bg2);border:1px solid var(--line);padding:6px;z-index:60;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.dd:hover .ddm,.dd:focus-within .ddm{display:block}
+.ddm a{display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:13px;color:var(--dim);text-decoration:none;letter-spacing:.04em}
+.ddm a:hover{background:var(--bg);color:var(--ink)}
+.ddm .sw{width:8px;height:8px;border-radius:50%;flex:none}
+.wiki{display:grid;grid-template-columns:270px minmax(0,1fr);gap:64px;max-width:1320px;margin:0 auto;padding:110px 32px 60px}
+aside{position:sticky;top:96px;align-self:start;max-height:calc(100vh - 126px);overflow-y:auto;padding-right:14px;scrollbar-width:thin}
+aside .proj{display:flex;gap:6px;margin-bottom:22px}
+aside .proj a{flex:1;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:7px 4px;border:1px solid var(--line);color:var(--faint);transition:all .2s}
+aside .proj a:hover{color:var(--ink);border-color:var(--dim)}
+aside .proj a.onl{color:#39d0e8;border-color:#39d0e8}
+aside .proj a.onc{color:#d9a441;border-color:#d9a441}
+aside .proj a.onm{color:#3ddc97;border-color:#3ddc97}
+aside .grp{margin-bottom:26px}
+aside .gt{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--faint);text-transform:uppercase;margin-bottom:10px}
+aside a{display:block;color:var(--dim);text-decoration:none;font-size:13px;padding:5px 0 5px 16px;border-left:1px solid var(--line);transition:all .2s;line-height:1.4}
+aside a:hover{color:var(--cyan)}
+aside a.on{color:var(--cyan);border-left-color:var(--cyan)}
+main{min-width:0;max-width:860px}
+main h1{font-family:var(--serif);font-weight:400;font-size:clamp(32px,4.5vw,46px);line-height:1.1;margin:14px 0 18px}
+main h2{font-family:var(--serif);font-weight:400;font-size:clamp(24px,3vw,32px);line-height:1.15;margin:40px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
+main h2:first-of-type{border-top:none;padding-top:0}
+main h3{font-size:18px;font-weight:600;margin:28px 0 8px}
+main p{color:var(--dim);margin:12px 0;font-weight:300}
+main b,main strong{color:var(--ink);font-weight:500}
+main a{color:var(--cyan)}
+main ul,main ol{color:var(--dim);margin:12px 0 16px 22px;font-weight:300}
+main li{margin:6px 0}
+main code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);background:var(--cyan-soft);padding:2px 7px;border-radius:4px}
+main pre{background:#0a0805;border:1px solid var(--line);border-radius:6px;padding:18px 20px;overflow-x:auto;margin:16px 0}
+main pre code{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.8;color:#cbb693;background:none;padding:0}
+main table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+main th{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--faint);text-align:left;padding:11px 12px;border-bottom:1px solid var(--line)}
+main td{padding:11px 12px;border-bottom:1px solid var(--line);color:var(--dim);line-height:1.55;vertical-align:top;font-weight:300}
+main td code{white-space:nowrap}
+main tr:hover td{background:rgba(217,164,65,.03)}
+main blockquote{border-left:2px solid var(--cyan);padding:8px 0 8px 18px;margin:16px 0;color:var(--dim);font-weight:300}
+main hr{border:none;border-top:1px solid var(--line);margin:28px 0}
+.kick{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.28em;color:var(--cyan);text-transform:uppercase}
+.pn{display:flex;justify-content:space-between;gap:16px;margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-size:13px}
+.pn a{color:var(--dim);text-decoration:none}
+.pn a:hover{color:var(--cyan)}
+.pn .n{margin-left:auto}
+footer{border-top:1px solid var(--line);padding:40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-top:40px}
+footer .fl{font-weight:700;font-size:18px}
+footer .fl i{font-style:normal;color:var(--cyan)}
+footer a{color:var(--faint);text-decoration:none;font-size:13px;margin-left:24px;transition:color .25s}
+footer a:hover{color:var(--cyan)}
+footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);letter-spacing:.15em}
+@media(max-width:1000px){.wiki{grid-template-columns:1fr;gap:0;padding-top:100px}aside{position:static;max-height:none;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}aside .grp{margin:0}aside .gt{display:none}aside a{border:1px solid var(--line);padding:6px 12px;font-size:12px}.navlinks a:not(.cta){display:none}.ddm{position:static;transform:none;display:block;box-shadow:none;background:none;border:none;padding:0}}
+</style>
+</head>
+<body>
+<nav class="top">
+  <a class="logo" href="../../index.html">Charon<i>.</i></a>
+  <div class="navlinks">
+    <a href="../../index.html">Lethe</a>
+    <a href="../../charon.html">Charon</a>
+    <a href="../../matapan.html">Matapan</a>
+    <div class="dd">
+      <a class="ddt here" href="../../docs.html">Docs ▾</a>
+      <div class="ddm">
+<a href="../index.html"><span class="sw" style="background:#39d0e8"></span>Lethe docs</a>
+<a href="../charon/index.html"><span class="sw" style="background:#d9a441"></span>Charon docs</a>
+<a href="../matapan/index.html"><span class="sw" style="background:#3ddc97"></span>Matapan docs</a>
+      </div>
+    </div>
+    <a href="https://github.com/openlethe/charon">GitHub</a>
+    <a class="cta" href="full-run.html">Get started</a>
+  </div>
+</nav>
+<div class="wiki">
+<aside>
+<div class="proj"><a class="" href="../index.html">Lethe</a>
+<a class="onc" href="index.html">Charon</a>
+<a class="" href="../matapan/index.html">Matapan</a></div>
+<div class="grp"><div class="gt">Start</div>
+<a href="overview.html">Overview</a>
+<a href="full-run.html">Full Run: End to End</a>
+<div class="grp"><div class="gt">Platform</div>
+<a href="operations.html">Operations</a>
+<a href="reviewer.html" class="on">Local Reviewer Setup</a>
+</div>
+</aside>
+<main>
+<div class="kick">Charon docs · Local Reviewer Setup</div>
+<h1 id="local-memory-reviewer-runbook">Local Memory Reviewer Runbook</h1>
+<blockquote>
+<p><strong>Scope:</strong> Configure and operate a local agent as a dedicated, independent
+Charon Memory Git reviewer for one exact project.
+Substitute your own case-sensitive project ID wherever <code>&lt;project&gt;</code> appears,
+and record the values your deployment produces in the table at the end.</p>
+</blockquote>
+<h2 id="architecture">Architecture</h2>
+<pre><code class="language-text">Public MCP clients                  Local reviewer agent
+        | OAuth                                  | Obol
+        v                                        v
+Charon main gateway                    Charon reviewer gateway
+charon-charon-1                         charon-charon-reviewer-1
+127.0.0.1:18484                         127.0.0.1:18486
+        \                                      /
+         \ shared policy DB + private upstream /
+          v                                   v
+             Lethe Git (lethe-git-local)
+                    127.0.0.1:18485
+</code></pre>
+<p><strong>Data ownership:</strong></p>
+<ul>
+<li>The main and reviewer Charon gateways share principals, grants, scopes, proposals, review findings, Obols, idempotency records, and the audit ledger in <code>/data/charon.db</code> inside the persistent <code>charon_charon-data</code> Docker volume. Ledger appends acquire a cross-process SQLite write lock before reading the predecessor hash.</li>
+<li>Lethe Git (<code>lethe-git-local</code>) owns semantic changesets, ref heads, accepted shared memory, protected-ref history, context manifests, and conflict records. It stores these in <code>/data/lethe.db</code> inside the host bind-mounted data directory (<code>./lethe-git-data</code> in the Lethe repository by default).</li>
+<li>OpenClaw (or another MCP client) stores the MCP server definition in its own client configuration.</li>
+<li>The reviewer's Obol credential is stored outside version control in a mode-<code>0600</code> file, conventionally <code>secrets/reviewer-obol.txt</code> in the Charon repository.</li>
+</ul>
+<p><strong>Separation of duties:</strong></p>
+<ul>
+<li>Authoring agents (e.g. ChatGPT, Claude) use their own principals and credentials. They must not use the reviewer principal.</li>
+<li>The reviewer principal has only read, review, and merge scopes. It cannot create branches, commit changesets, or write directly to protected refs.</li>
+<li>The reviewer must never review or merge a proposal it authored. If the local agent needs to propose memory, a separate independent reviewer must review it.</li>
+</ul>
+<h2 id="database-locations">Database locations</h2>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Container</th>
+<th>Database path inside container</th>
+<th>Host path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Charon policy DB</td>
+<td><code>charon-charon-1</code>, <code>charon-charon-reviewer-1</code></td>
+<td><code>/data/charon.db</code></td>
+<td>Docker volume <code>charon_charon-data</code></td>
+</tr>
+<tr>
+<td>Lethe Git</td>
+<td><code>lethe-git-local</code></td>
+<td><code>/data/lethe.db</code></td>
+<td><code>&lt;lethe-repo&gt;/lethe-git-data/lethe.db</code></td>
+</tr>
+</tbody>
+</table>
+<p>Both databases use SQLite WAL mode. Neither is ephemeral.</p>
+<h2 id="backup-and-restore-procedure">Backup and restore procedure</h2>
+<p>Store backups in a dedicated directory (for example <code>backups/charon-lethe-git/</code>) with mode <code>0700</code>, outside version control.</p>
+<h3 id="lethe-git-backup-no-downtime">Lethe Git backup (no downtime)</h3>
+<pre><code class="language-bash">sqlite3 &lt;lethe-repo&gt;/lethe-git-data/lethe.db \
+  &quot;.backup backups/charon-lethe-git/lethe-git-before-&lt;reason&gt;.db&quot;
+
+sqlite3 backups/charon-lethe-git/lethe-git-before-&lt;reason&gt;.db \
+  &quot;PRAGMA integrity_check;&quot;
+</code></pre>
+<h3 id="charon-backup-requires-brief-restart">Charon backup (requires brief restart)</h3>
+<p>Charon runs in read-only containers with one SQLite database in a Docker volume. The host cannot access the volume file directly, so stop both database users for a consistent snapshot:</p>
+<pre><code class="language-bash">cd &lt;charon-repo&gt;
+docker stop charon-charon-reviewer-1 charon-charon-1
+docker cp charon-charon-1:/data/charon.db \
+  backups/charon-lethe-git/charon-raw.db
+sqlite3 backups/charon-lethe-git/charon-raw.db \
+  &quot;.backup backups/charon-lethe-git/charon-before-&lt;reason&gt;.db&quot;
+rm backups/charon-lethe-git/charon-raw.db
+sqlite3 backups/charon-lethe-git/charon-before-&lt;reason&gt;.db \
+  &quot;PRAGMA integrity_check;&quot;
+docker compose up -d charon charon-reviewer
+</code></pre>
+<h3 id="restore">Restore</h3>
+<p>To restore Charon from backup:</p>
+<ol>
+<li>Stop <code>charon-charon-reviewer-1</code> and <code>charon-charon-1</code>.</li>
+<li>Copy the backup <code>.db</code> file into the container at <code>/data/charon.db</code>.</li>
+<li>Start <code>charon-charon-1</code>.</li>
+</ol>
+<p>To restore Lethe Git from backup:</p>
+<ol>
+<li>Stop <code>lethe-git-local</code>.</li>
+<li>Copy the backup <code>.db</code> file over <code>&lt;lethe-repo&gt;/lethe-git-data/lethe.db</code>.</li>
+<li>Start <code>lethe-git-local</code>.</li>
+</ol>
+<h2 id="reviewer-principal-setup">Reviewer-principal setup</h2>
+<p>Create the reviewer principal with review-only scopes for the exact project:</p>
+<pre><code class="language-bash">cd &lt;charon-repo&gt;
+docker compose exec charon-reviewer charon principal reconcile \
+  &quot;Local Memory Reviewer&quot; \
+  review \
+  &lt;project&gt;
+</code></pre>
+<p>This grants:</p>
+<ul>
+<li><code>memory.read</code></li>
+<li><code>memory.review</code></li>
+<li><code>memory.merge</code></li>
+<li><code>memory.search</code></li>
+<li><code>proposal.review</code></li>
+<li><code>thread.read</code></li>
+</ul>
+<p>It does <strong>not</strong> grant <code>memory.branch</code>, <code>memory.commit</code>, <code>memory.propose</code>, or <code>memory.write</code>.</p>
+<p>Capture the returned <code>principal_...</code> ID and record it as the reviewer principal for all later steps.</p>
+<h2 id="local-agent-mcp-configuration">Local agent MCP configuration</h2>
+<ol>
+<li>Mint an Obol for the reviewer principal. Obols are audience-bound to the gateway that mints them, so mint through the Obol listener (<code>charon-reviewer</code>), not the OAuth-only primary gateway:</li>
+</ol>
+<pre><code class="language-bash">cd &lt;charon-repo&gt;
+docker compose exec charon-reviewer charon obol mint --expires 7d &lt;reviewer-principal-id&gt;
+</code></pre>
+<ol start="2">
+<li>Store the credential securely, for example <code>secrets/reviewer-obol.txt</code> in the Charon repository (covered by <code>.gitignore</code>):</li>
+</ol>
+<pre><code class="language-bash">chmod 600 secrets/reviewer-obol.txt
+</code></pre>
+<ol start="3">
+<li>Add the MCP server to the client. Use a script or non-interactive command to avoid leaving the token in shell history (OpenClaw example):</li>
+</ol>
+<pre><code class="language-bash">TOKEN=$(grep -oE 'Token: obol_[A-Za-z0-9_-]+' \
+  secrets/reviewer-obol.txt \
+  | sed 's/Token: //')
+
+openclaw mcp add charon-local-reviewer \
+  --url http://127.0.0.1:18486/mcp \
+  --transport streamable-http \
+  --header &quot;Authorization=Bearer ${TOKEN}&quot;
+
+openclaw mcp reload
+openclaw mcp probe charon-local-reviewer
+</code></pre>
+<p>Do not connect directly to Lethe Git. All agent access must pass through Charon so project grants, scopes, provenance, review rules, and audit logging are enforced.</p>
+<h2 id="proposal-review-criteria">Proposal review criteria</h2>
+<p>Approve a merge proposal only when <strong>all</strong> of the following are true:</p>
+<ul>
+<li>Project is exactly the intended, case-sensitive project ID.</li>
+<li>Target ref is the intended protected shared ref (<code>refs/shared/main</code>).</li>
+<li>Proposal originator is a different principal from the reviewer.</li>
+<li>Source changeset belongs to the same project.</li>
+<li>Proposal base and current target state are understood.</li>
+<li>No blocking conflicts exist (<code>conflict_ids_json</code> is empty).</li>
+<li>Operation ordinals are valid.</li>
+<li>Content is durable and useful across sessions.</li>
+<li>Content contains no credentials, secret values, private chain-of-thought, or unnecessary personal data.</li>
+<li>Outcomes, decisions, verification, and open threads are represented accurately.</li>
+<li>Claims of testing or completion have supporting evidence.</li>
+<li>The proposal is not stale relative to the content the author intended to share.</li>
+</ul>
+<h3 id="stale-proposal-handling">Stale-proposal handling</h3>
+<p>A Memory Git proposal is pinned to the exact source changeset used at creation time. If the topic branch has advanced since the proposal was created, the proposal does <strong>not</strong> automatically include the newer changesets.</p>
+<p>When a proposal is stale:</p>
+<ol>
+<li>Read the proposal's <code>head_changeset_id</code>.</li>
+<li>Read the current topic ref head with <code>memory_ref_list</code> or <code>memory_log</code>.</li>
+<li>If the topic ref head differs from the proposal source, do not merge.</li>
+<li>Record <code>request_changes</code> or <code>reject</code> with a clear explanation.</li>
+<li>Notify the originating principal that a new proposal must be created from the intended current branch head.</li>
+<li>Only the originating principal may cancel the stale proposal via <code>memory_merge_cancel</code>.</li>
+</ol>
+<h2 id="merge-and-verification-procedure">Merge and verification procedure</h2>
+<p>For every pending proposal:</p>
+<ol>
+<li><strong>Resolve exact state:</strong> read the proposal ID, project, originator, base/source changesets, target ref, target head, selected ops, conflicts, and review findings.</li>
+<li><strong>Inspect the source:</strong> use <code>memory_show</code>, <code>memory_log</code>, and <code>memory_diff</code> to review the exact source changeset, not the branch name.</li>
+<li><strong>Apply review policy:</strong> approve, request changes, or reject based on the criteria above.</li>
+<li><strong>Merge approved proposals:</strong></li>
+</ol>
+<pre><code class="language-text">memory_merge({
+  &quot;proposal_id&quot;: &quot;&lt;proposal-id&gt;&quot;,
+  &quot;idempotency_key&quot;: &quot;&lt;unique-key-for-this-exact-merge&gt;&quot;
+})
+</code></pre>
+<p>Do <strong>not</strong> use <code>charon proposal approve &lt;proposal-id&gt;</code>. That CLI command belongs to the legacy proposal system and fails closed for Memory Git merges.</p>
+<ol start="5">
+<li><strong>Verify after merge:</strong>
+   - Proposal status changed from <code>pending</code> to <code>approved</code>/<code>completed</code>.
+   - A resulting changeset ID was returned.
+   - <code>refs/shared/main</code> advanced to the expected resulting changeset.
+   - The resulting changeset is readable with <code>memory_show</code>.
+   - <code>memory_context_at</code> can retrieve accepted memory from <code>refs/shared/main</code>.
+   - The Charon audit ledger (<code>charon ledger tail</code>) contains the review and merge operations.
+   - The source branch remains intact.
+   - No unrelated ref moved.</li>
+</ol>
+<h2 id="credential-rotation">Credential rotation</h2>
+<p>To rotate the reviewer Obol:</p>
+<ol>
+<li>Mint a new Obol for the reviewer principal (through the <code>charon-reviewer</code> gateway, as above).</li>
+<li>Update the MCP server header in the client with the new token.</li>
+<li>Reload the MCP runtime.</li>
+<li>Revoke the old Obol:</li>
+</ol>
+<pre><code class="language-bash">cd &lt;charon-repo&gt;
+docker compose exec charon-reviewer charon obol revoke &lt;old-obol-id&gt;
+</code></pre>
+<p><code>scripts/rotate-tokens.sh</code> performs this for all deployment roles at once without printing token values.</p>
+<h2 id="incident-recovery">Incident recovery</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Likely cause</th>
+<th>Check first</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MCP connection fails</td>
+<td>Reviewer gateway not running</td>
+<td>Check <code>charon-charon-reviewer-1</code></td>
+</tr>
+<tr>
+<td><code>unauthorized</code> on MCP</td>
+<td>Obol expired/revoked, wrong principal, or token minted with the wrong gateway audience</td>
+<td><code>charon obol ls &lt;principal-id&gt;</code></td>
+</tr>
+<tr>
+<td>Missing write tools</td>
+<td>Reviewer principal lacks author scopes (by design)</td>
+<td><code>memory_status</code> scopes</td>
+</tr>
+<tr>
+<td>Merge denied</td>
+<td>No current approval or stale proposal</td>
+<td>Proposal <code>review_findings_json</code> and target head</td>
+</tr>
+<tr>
+<td><code>memory_status</code> unavailable</td>
+<td>Client safety layer</td>
+<td>Use <code>memory_ref_list</code>, <code>memory_log</code>, <code>memory_context_at</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="operational-notes">Operational notes</h2>
+<ul>
+<li>Both Charon gateways must run in <code>memory-git</code> mode and point to Lethe Git (<code>http://host.docker.internal:18485</code> in the reference Compose deployment), not OpenLethe on <code>18483</code>.</li>
+<li>The main <code>18484</code> gateway is OAuth-only; the loopback-only <code>18486</code> reviewer gateway is Obol-only. The isolated <code>18487</code> E2E gateway remains a separate test system.</li>
+<li>The protected shared memory ref is <code>refs/shared/main</code>.</li>
+<li>Never write directly to <code>refs/shared/*</code>.</li>
+<li>Review and merge must remain fail-closed.</li>
+<li>Produce notifications only when there is actionable work; silent success is acceptable.</li>
+</ul>
+<h2 id="deployment-record">Deployment record</h2>
+<p>Record the values your deployment produces:</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reviewer principal</td>
+<td><code>&lt;principal_...&gt;</code></td>
+</tr>
+<tr>
+<td>MCP endpoint</td>
+<td><code>http://127.0.0.1:18486/mcp</code></td>
+</tr>
+<tr>
+<td>Project</td>
+<td><code>&lt;project&gt;</code></td>
+</tr>
+<tr>
+<td>Protected ref</td>
+<td><code>refs/shared/main</code></td>
+</tr>
+<tr>
+<td>Charon container</td>
+<td><code>charon-charon-1</code></td>
+</tr>
+<tr>
+<td>Reviewer container</td>
+<td><code>charon-charon-reviewer-1</code></td>
+</tr>
+<tr>
+<td>Lethe Git container</td>
+<td><code>lethe-git-local</code></td>
+</tr>
+<tr>
+<td>Charon database backup</td>
+<td><code>&lt;backup-dir&gt;/charon-before-&lt;reason&gt;.db</code></td>
+</tr>
+<tr>
+<td>Lethe Git database backup</td>
+<td><code>&lt;backup-dir&gt;/lethe-git-before-&lt;reason&gt;.db</code></td>
+</tr>
+<tr>
+<td>Reviewer credential</td>
+<td><code>secrets/reviewer-obol.txt</code> (mode <code>0600</code>)</td>
+</tr>
+<tr>
+<td>MCP client server entry</td>
+<td><code>&lt;client-specific&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<div class="pn"><a class="p" href="operations.html">← Operations</a></div>
+</main>
+</div>
+<footer>
+  <div class="fl">Charon<i>.</i></div>
+  <div>
+    <a href="https://github.com/openlethe/charon" style="margin-left:0">GitHub</a>
+    <a href="../../index.html">Lethe</a>
+    <a href="../../charon.html">Charon</a>
+    <a href="../../matapan.html">Matapan</a>
+  </div>
+  <div class="fc">openlethe.com · 2026</div>
+</footer>
+</body>
+</html>

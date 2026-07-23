@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matapan — Agent Execution Broker · Lethe remembers, Matapan guards the gate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#040806; --bg2:#081209; --ink:#e6f5ec; --dim:#82a392; --faint:#3f5c4c;
+    --green:#3ddc97; --green-hi:#8aefc4; --green-soft:rgba(61,220,151,.12); --line:#122a1c; --serif:'Cormorant Garamond',serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;overflow-x:hidden}
+  ::selection{background:var(--green);color:#04140c}
+
+  /* ---------- nav ---------- */
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+    padding:18px 40px;background:rgba(4,8,6,.55);backdrop-filter:blur(14px);border-bottom:1px solid rgba(61,220,151,.08)}
+  .logo{font-weight:700;font-size:20px;letter-spacing:-.02em;text-decoration:none;color:var(--ink)}
+  .logo i{font-style:normal;color:var(--green)}
+  .navlinks{display:flex;gap:32px;align-items:center}
+  .navlinks a{color:var(--dim);text-decoration:none;font-size:13px;letter-spacing:.08em;transition:color .25s}
+  .navlinks a:hover{color:var(--green)}
+  .navlinks a.here{color:var(--green)}
+  .cta{border:1px solid var(--green);color:var(--green)!important;padding:9px 20px;font-size:12px!important;letter-spacing:.15em!important;text-transform:uppercase;transition:all .25s}
+  .cta:hover{background:var(--green);color:#04140c!important;box-shadow:0 0 28px rgba(61,220,151,.4)}
+  .dd{position:relative}
+  .ddm{display:none;position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%);min-width:200px;background:var(--bg2);border:1px solid var(--line);padding:6px;z-index:60;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+  .dd:hover .ddm,.dd:focus-within .ddm{display:block}
+  .ddm a{display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:13px;color:var(--dim);text-decoration:none;letter-spacing:.04em}
+  .ddm a:hover{background:var(--bg);color:var(--ink)}
+  .ddm .sw{width:8px;height:8px;border-radius:50%;flex:none}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px}
+  #gate{position:absolute;inset:0;width:100%;height:100%}
+  .hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 55% at 50% 42%,transparent 30%,var(--bg) 100%);pointer-events:none}
+  .hero-inner{position:relative;z-index:2}
+  .glyph{font-family:var(--serif);font-size:15px;letter-spacing:.55em;color:var(--green);margin-bottom:26px;text-shadow:0 0 24px rgba(61,220,151,.8)}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(56px,10vw,138px);line-height:.98;letter-spacing:-.01em}
+  h1 .fade{background:linear-gradient(180deg,var(--ink) 40%,rgba(61,220,151,.25));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .tagline{margin-top:8px;font-size:13px;letter-spacing:.45em;text-transform:uppercase;color:var(--dim)}
+  .lede{margin:34px auto 0;max-width:640px;font-size:18px;line-height:1.75;color:#a3c2b1;font-weight:300}
+  .lede b{color:var(--ink);font-weight:500}
+  .btnrow{margin-top:44px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+  .btn{font-size:13px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:16px 34px;transition:all .3s}
+  .btn-p{background:var(--green);color:#04140c;font-weight:600;box-shadow:0 0 40px rgba(61,220,151,.3)}
+  .btn-p:hover{box-shadow:0 0 70px rgba(61,220,151,.55);transform:translateY(-2px)}
+  .btn-s{border:1px solid var(--faint);color:var(--dim)}
+  .btn-s:hover{border-color:var(--green);color:var(--green)}
+  .scrollhint{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);z-index:2;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.4em;color:var(--faint);text-transform:uppercase;animation:bob 2.6s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,8px)}}
+
+  section{padding:130px 24px;position:relative}
+  .wrap{max-width:1140px;margin:0 auto}
+  .seclabel{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.4em;color:var(--green);text-transform:uppercase;margin-bottom:22px;display:flex;align-items:center;gap:14px}
+  .seclabel::before{content:'';width:36px;height:1px;background:var(--green)}
+  h2{font-family:var(--serif);font-weight:400;font-size:clamp(38px,5.4vw,64px);line-height:1.08;margin-bottom:26px}
+  h2 em{font-style:italic;color:var(--green)}
+
+  /* ---------- myth ---------- */
+  .myth-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:80px;align-items:center}
+  .myth-copy p{color:var(--dim);line-height:1.85;font-size:16px;margin-bottom:22px;font-weight:300}
+  .myth-copy p b{color:var(--ink);font-weight:500}
+  .myth-copy .greek-inline{font-family:var(--serif);color:var(--green);font-size:1.15em}
+  blockquote{border-left:1px solid var(--green);padding:6px 0 6px 24px;margin:34px 0;font-family:var(--serif);font-size:22px;font-style:italic;line-height:1.5;color:var(--ink)}
+  blockquote span{display:block;margin-top:10px;font-family:'JetBrains Mono',monospace;font-style:normal;font-size:10px;letter-spacing:.3em;color:var(--faint);text-transform:uppercase}
+  .vessel{background:linear-gradient(160deg,var(--bg2),#040a05);border:1px solid var(--line);padding:40px;position:relative;overflow:hidden}
+  .vessel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
+  .vessel .vt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);letter-spacing:.2em;margin-bottom:22px}
+  .boat{font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;color:var(--green);white-space:pre;text-shadow:0 0 12px rgba(61,220,151,.5)}
+  .vessel p{margin-top:22px;color:var(--dim);font-size:14px;line-height:1.7}
+
+  /* ---------- gate rules ---------- */
+  .figures{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line);border:1px solid var(--line)}
+  .fig{background:var(--bg);padding:48px 36px;transition:background .3s}
+  .fig:hover{background:var(--bg2)}
+  .fig .gk{font-family:var(--serif);font-size:15px;letter-spacing:.35em;color:var(--green);margin-bottom:18px}
+  .fig h3{font-family:var(--serif);font-size:30px;font-weight:500;margin-bottom:6px}
+  .fig .role{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--faint);text-transform:uppercase;margin-bottom:20px}
+  .fig p{color:var(--dim);font-size:14px;line-height:1.8;font-weight:300}
+  .fig .scopes{margin-top:18px;list-style:none}
+  .fig .scopes li{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green-hi);padding:4px 0;letter-spacing:.04em}
+  .fig .scopes li.no{color:var(--faint);text-decoration:line-through}
+
+  /* ---------- how it works ---------- */
+  .how-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+  .step{display:flex;gap:26px;padding:26px 0;border-bottom:1px solid var(--line)}
+  .step:first-child{padding-top:0}
+  .stepnum{font-family:var(--serif);font-size:34px;color:var(--green);min-width:52px;line-height:1;opacity:.85}
+  .step h4{font-size:17px;font-weight:600;margin-bottom:8px}
+  .step p{color:var(--dim);font-size:14px;line-height:1.75;font-weight:300}
+  .step code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green);background:var(--green-soft);padding:2px 7px}
+  .jsoncard{position:sticky;top:110px;background:#040a06;border:1px solid var(--line);box-shadow:0 40px 80px rgba(0,0,0,.5)}
+  .jsonhead{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);letter-spacing:.15em}
+  .jsonhead .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);display:inline-block;margin-right:8px;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  pre{padding:26px 24px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.75;overflow-x:auto;color:#9fcdb2}
+  .k{color:var(--green)} .s{color:#e8c98a} .b{color:#c792ea}
+  .jsonfoot{padding:14px 20px;border-top:1px solid var(--line);font-size:12px;color:var(--faint);font-family:'JetBrains Mono',monospace}
+
+  /* ---------- features ---------- */
+  .featgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line);border:1px solid var(--line)}
+  .feat{background:var(--bg);padding:42px 34px;position:relative;overflow:hidden;transition:background .3s}
+  .feat:hover{background:var(--bg2)}
+  .feat::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--green);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+  .feat:hover::after{width:100%}
+  .feat .ico{font-family:var(--serif);font-size:26px;color:var(--green);margin-bottom:20px}
+  .feat h4{font-size:17px;font-weight:600;margin-bottom:10px}
+  .feat p{color:var(--dim);font-size:14px;line-height:1.75;font-weight:300}
+  .feat code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green)}
+
+  /* ---------- what passes ---------- */
+  .fares{max-width:900px;margin:0 auto}
+  .fare-row{display:grid;grid-template-columns:210px 1fr 190px;gap:22px;align-items:center;padding:20px 0;border-bottom:1px solid var(--line)}
+  .fare-row .fn{font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.06em;color:var(--ink)}
+  .fare-row .fd{color:var(--dim);font-size:13px;font-weight:300;line-height:1.5}
+  .fare-row .ft{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.25em;color:var(--faint);text-transform:uppercase;text-align:right}
+  .fare-row.rare .fn{color:var(--green)}
+  .fare-row.rare .ft{color:var(--green)}
+  .quote-outro{text-align:center;margin-top:90px;font-family:var(--serif);font-style:italic;font-size:clamp(22px,3vw,30px);line-height:1.55;color:#a3c2b1;max-width:720px;margin-left:auto;margin-right:auto}
+  .quote-outro span{display:block;margin-top:18px;font-family:'JetBrains Mono',monospace;font-style:normal;font-size:10px;letter-spacing:.35em;color:var(--faint);text-transform:uppercase}
+
+  /* ---------- install ---------- */
+  .install{text-align:center}
+  .cmdrow{max-width:760px;margin:56px auto 0;display:grid;gap:14px}
+  .cmd{display:flex;align-items:center;gap:18px;background:#030a06;border:1px solid var(--line);padding:20px 24px;text-align:left;transition:border-color .3s;text-decoration:none;color:inherit}
+  .cmd:hover{border-color:var(--green)}
+  .cmd .cl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.25em;color:var(--faint);text-transform:uppercase;min-width:150px}
+  .cmd code{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--green);overflow-x:auto;white-space:nowrap}
+  .cmd code b{color:#e6f5ec;font-weight:400}
+
+  footer{border-top:1px solid var(--line);padding:56px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
+  footer .fl{font-weight:700;font-size:18px}
+  footer .fl i{font-style:normal;color:var(--green)}
+  footer a{color:var(--faint);text-decoration:none;font-size:13px;margin-left:28px;transition:color .25s}
+  footer a:hover{color:var(--green)}
+  footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);letter-spacing:.15em}
+
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+  .reveal.on{opacity:1;transform:none}
+
+  @media(max-width:900px){
+    .myth-grid,.how-grid{grid-template-columns:1fr;gap:56px}
+    .figures,.featgrid{grid-template-columns:1fr}
+    .navlinks a:not(.cta){display:none}
+    .jsoncard{position:static}
+    .fare-row{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">Lethe<i>.</i></a>
+  <div class="navlinks">
+    <a href="index.html">Lethe</a>
+    <a href="charon.html">Charon</a>
+    <a href="matapan.html" class="here">Matapan</a>
+    <div class="dd">
+      <a href="docs.html">Docs ▾</a>
+      <div class="ddm">
+        <a href="docs/index.html"><span class="sw" style="background:#39d0e8"></span>Lethe docs</a>
+        <a href="docs/charon/index.html"><span class="sw" style="background:#d9a441"></span>Charon docs</a>
+        <a href="docs/matapan/index.html"><span class="sw" style="background:#3ddc97"></span>Matapan docs</a>
+      </div>
+    </div>
+    <a href="https://github.com/openlethe/matapan">GitHub</a>
+    <a class="cta" href="#install">Get started</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <canvas id="gate"></canvas>
+  <div class="hero-inner">
+    <div class="glyph">Τ Α Ι Ν Α Ρ Ο Ν</div>
+    <h1><span class="fade">Every agent action</span><br><span class="fade">passes the gate.</span></h1>
+    <div class="tagline">Agent Execution Broker</div>
+    <p class="lede">Cape Matapan — Tainaron — was the cave where the living world met the underworld. <b>Matapan is that gate for your agents:</b> untrusted code works in disposable, container-isolated workspaces, and only sealed, evidence-bearing proposals cross back. Your active checkout is never in the agent's write path.</p>
+    <div class="btnrow">
+      <a class="btn btn-p" href="#install">Self-host free</a>
+      <a class="btn btn-s" href="https://github.com/openlethe/matapan">View on GitHub</a>
+    </div>
+  </div>
+  <div class="scrollhint">Approach</div>
+</header>
+
+<!-- MYTH -->
+<section id="myth">
+  <div class="wrap myth-grid">
+    <div class="myth-copy reveal">
+      <div class="seclabel">The myth</div>
+      <h2>The cave at the end<br>of the <em>world.</em></h2>
+      <p>At the southernmost point of mainland Greece lies Cape Tainaron — Cape Matapan. The Greeks placed an entrance to the underworld there: a cave where Heracles dragged <span class="greek-inline">Κέρβερος — Cerberus</span>, the three-headed hound, up from Hades into the light.</p>
+      <p>Every passage through that cave was watched. Nothing crossed in either direction without being seen for exactly what it was. <b>That is the job.</b> Your agent works on the far side of the gate, in isolation. What comes back is examined — digest by digest — before it is allowed to touch anything you own.</p>
+      <blockquote>The gate does not trust what approaches it. It inspects, seals, and only then carries across.<span>The founding idea</span></blockquote>
+    </div>
+    <div class="vessel reveal">
+      <div class="vt">matapand · v0.1.0-beta · :18777</div>
+      <div class="boat">      _______
+     / gate  \
+    | []   [] |
+    |  MATAPAN|
+  ~~|_________|~~
+ ≋ agent ≋ | ≋ you ≋
+≋≋≋≋≋ ≋≋≋≋≋</div>
+      <p>The agent works on one side of the gate. Your repository, your secrets, and your machine live on the other. Only sealed proposals cross.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GATE RULES -->
+<section>
+  <div class="wrap">
+    <div class="seclabel reveal">The law of the gate</div>
+    <h2 class="reveal">Three rules decide<br>what <em>crosses.</em></h2>
+    <div class="figures reveal" style="margin-top:56px">
+      <div class="fig">
+        <div class="gk">ΑΠΟΜΟΝΩΣΙΣ</div>
+        <h3>Isolation</h3>
+        <div class="role">Nothing untrusted touches the host</div>
+        <p>Agents execute in locked-down containers: all capabilities dropped, read-only rootfs, no network by default, hard resource clamps. gVisor where available — never a silent fallback.</p>
+        <ul class="scopes">
+          <li>cap_drop ALL · no-new-privileges</li>
+          <li class="no">docker.sock mounts</li>
+          <li class="no">host PID / IPC / privileged</li>
+          <li class="no">unpinned images</li>
+        </ul>
+      </div>
+      <div class="fig">
+        <div class="gk">ΑΠΟΔΕΙΞΙΣ</div>
+        <h3>Evidence</h3>
+        <div class="role">What you reviewed is what lands</div>
+        <p>Work returns as a sealed proposal: diff, content digest, policy digest, run evidence, and an HMAC-authenticated target anchor only the daemon's 0600 key can produce.</p>
+        <ul class="scopes">
+          <li>sealed content digest verified at apply</li>
+          <li>HMAC anchor · workspace-bound</li>
+          <li class="no">unreviewed writes to your checkout</li>
+          <li class="no">repo-configured code execution</li>
+        </ul>
+      </div>
+      <div class="fig">
+        <div class="gk">ΑΝΤΑΛΛΑΓΗ</div>
+        <h3>Exchange</h3>
+        <div class="role">Compare-and-swap, or nothing</div>
+        <p>Apply is a layered CAS: expected base, head-equals-base, sealed-digest-equals-applied-tree, atomic ref move. A stale base or a shifted identity aborts typed — never a partial land.</p>
+        <ul class="scopes">
+          <li>atomic update-ref with old-value CAS</li>
+          <li>source identity rechecked at each boundary</li>
+          <li class="no">silent conflict resolution</li>
+          <li class="no">forced checkouts</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section id="how" style="background:var(--bg2)">
+  <div class="wrap how-grid">
+    <div>
+      <div class="seclabel reveal">How it works</div>
+      <h2 class="reveal">The crossing,<br><em>step by step.</em></h2>
+      <div style="margin-top:48px">
+        <div class="step reveal"><div class="stepnum">01</div><div><h4>Import trusted source</h4><p>A workspace is created from your repo — a git worktree pinned at an exact commit, a defended snapshot copy, or a fresh scaffold. The source identity is recorded by device and inode.</p></div></div>
+        <div class="step reveal"><div class="stepnum">02</div><div><h4>Agent works in isolation</h4><p>Scoped MCP tools, container runs with hard clamps, no network unless a human grants a domain through the egress proxy. Every git call goes through one hardened runner — hooks, filters, and signing programs can never execute.</p></div></div>
+        <div class="step reveal"><div class="stepnum">03</div><div><h4>Seal the proposal</h4><p>The workspace is drained, evidence gathered, and the result sealed: diff, digests, instruction manifest, and an <code>HMAC</code>-authenticated anchor in the hash-chained ledger.</p></div></div>
+        <div class="step reveal"><div class="stepnum">04</div><div><h4>Review like code review</h4><p><code>proposal show</code> renders the diff, the evidence, the lineage. The creator can never approve its own proposal in charon mode.</p></div></div>
+        <div class="step reveal" style="border-bottom:none"><div class="stepnum">05</div><div><h4>Compare-and-swap apply</h4><p>The sealed digest must equal the applied tree; the target anchor must verify; the base must not have moved. Then — and only then — the ref moves. Destroy revokes secrets and tears down with verification.</p></div></div>
+      </div>
+    </div>
+    <div class="jsoncard reveal">
+      <div class="jsonhead"><span><span class="dot"></span>SEALED PROPOSAL</span><span>matapan</span></div>
+<pre>{
+  <span class="k">"proposal_id"</span>: <span class="s">"019f…"</span>,
+  <span class="k">"base"</span>: <span class="s">"8b9f2ca…"</span>,
+  <span class="k">"head"</span>: <span class="s">"7329c9c…"</span>,
+  <span class="k">"content_digest"</span>: <span class="s">"sha256:…"</span>,
+  <span class="k">"policy_digest"</span>: <span class="s">"restricted"</span>,
+  <span class="k">"target_branch"</span>: <span class="s">"main"</span>,
+  <span class="k">"anchor"</span>: {
+    <span class="k">"ledger"</span>: <span class="s">"proposal_seal_evidence"</span>,
+    <span class="k">"mac"</span>: <span class="s">"hmac-sha256:v2"</span>,
+    <span class="k">"workspace_bound"</span>: <span class="b">true</span>
+  }
+}</pre>
+      <div class="jsonfoot">// apply refuses anything that fails this envelope — typed, never silent</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="wrap">
+    <div class="seclabel reveal">Features</div>
+    <h2 class="reveal">Everything a gate<br>needs to be <em>trusted.</em></h2>
+    <div class="featgrid reveal" style="margin-top:56px">
+      <div class="feat"><div class="ico">Γ</div><h4>Hardened git runner</h4><p>Every git invocation: hooks dead, env scrubbed, exact safe.directory, external drivers refused, all signing and signature verification forced off. Repo config never executes as the daemon.</p></div>
+      <div class="feat"><div class="ico">Κ</div><h4>Container sandbox</h4><p>Cap-drop ALL, no-new-privileges, read-only rootfs, network none, memory/CPU/pids clamps a per-run config can only lower. Kill paths verify after destroy.</p></div>
+      <div class="feat"><div class="ico">Σ</div><h4>Sealed proposals</h4><p>Immutable, evidence-bearing, HMAC-anchored. Storage substitution, anchor forgery, and cross-workspace replay all fail closed.</p></div>
+      <div class="feat"><div class="ico">Δ</div><h4>Egress proxy</h4><p>Per-domain human grants. DNS resolution pinned, non-public answers rejected wholesale, CONNECT limited to 80/443. Everything else denied and ledgered.</p></div>
+      <div class="feat"><div class="ico">Φ</div><h4>Secrets broker</h4><p>AES-256-GCM at rest, per-workspace grants, injected only into runs, revoked at seal and destroy. Values never touch the ledger.</p></div>
+      <div class="feat"><div class="ico">Ω</div><h4>Run lifecycle proof</h4><p>Cross-process leases where every retained row is live until verified cleanup. Destroy requires proven container absence — durable <code>ever_ran</code> evidence, never a guess.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT PASSES -->
+<section style="background:var(--bg2)">
+  <div class="wrap">
+    <div class="seclabel reveal">The toll</div>
+    <h2 class="reveal">What passes the gate,<br>and what is <em>refused.</em></h2>
+    <div class="fares reveal" style="margin-top:56px">
+      <div class="fare-row rare"><div class="fn">sealed proposals</div><div class="fd">Digest-verified, HMAC-anchored, reviewed — the only thing an agent can send home.</div><div class="ft">crosses</div></div>
+      <div class="fare-row"><div class="fn">granted domains</div><div class="fd">HTTP(S) to human-granted domains via the egress proxy. Network is none by default.</div><div class="ft">conditional</div></div>
+      <div class="fare-row"><div class="fn">granted secrets</div><div class="fd">Env-injected into runs only, redacted from output, revoked at seal and destroy.</div><div class="ft">conditional</div></div>
+      <div class="fare-row"><div class="fn">repo hooks & filters</div><div class="fd">Repository-configured programs — hooks, clean/smudge filters, merge drivers, signers — never execute as the daemon.</div><div class="ft">refused</div></div>
+      <div class="fare-row"><div class="fn">direct checkout writes</div><div class="fd">Your active checkout is never in the agent's write path. Merges happen in temp worktrees; the ref moves atomically.</div><div class="ft">refused</div></div>
+      <div class="fare-row"><div class="fn">self-approval</div><div class="fd">A proposal's creator cannot apply or reject it in charon mode. Review is structurally independent.</div><div class="ft">refused</div></div>
+    </div>
+    <div class="quote-outro reveal">"The agent never gets the keys to the far side. It hands work to the gate, and the gate decides."<span>The matapan contract</span></div>
+  </div>
+</section>
+
+<!-- INSTALL -->
+<section id="install" class="install">
+  <div class="wrap">
+    <div class="seclabel reveal" style="justify-content:center">Get started</div>
+    <h2 class="reveal">One instance<br>per <em>model.</em></h2>
+    <p class="reveal" style="color:var(--dim);margin-top:16px;font-weight:300">Per-model containers, isolated keys and workspaces, one tunnel. Full compose walkthrough in the docs.</p>
+    <div class="cmdrow reveal">
+      <div class="cmd"><span class="cl">Install</span><code><b>$</b> scripts/install.sh && matapan doctor</code></div>
+      <a class="cmd" href="docs/matapan/docker-compose.html"><span class="cl">Compose setup</span><code><b>→</b> end-to-end, with env reference</code></a>
+      <a class="cmd" href="docs/matapan/index.html"><span class="cl">Documentation</span><code><b>→</b> the full matapan guide</code></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fl">Matapan<i>.</i></div>
+  <div>
+    <a href="https://github.com/openlethe/matapan" style="margin-left:0">GitHub</a>
+    <a href="index.html">Lethe</a>
+    <a href="charon.html">Charon</a>
+    <a href="docs/matapan/index.html">Docs</a>
+  </div>
+  <div class="fc">openlethe.com · 2026</div>
+</footer>
+
+<script>
+// ---- gate canvas: particles converging on a pass-through seam ----
+const cv = document.getElementById('gate'), cx = cv.getContext('2d');
+let W,H,parts=[];
+function resize(){ W=cv.width=cv.offsetWidth; H=cv.height=cv.offsetHeight; }
+resize(); addEventListener('resize',resize);
+const N = Math.min(200, innerWidth/7|0);
+for(let i=0;i<N;i++) parts.push({x:Math.random()<.5?Math.random()*.4:.6+Math.random()*.4,y:Math.random(),s:.4+Math.random()*1.5,o:.12+Math.random()*.45,ph:Math.random()*Math.PI*2,v:.0006+Math.random()*.0012});
+let t=0;
+function draw(){
+  t+=.008;
+  cx.clearRect(0,0,W,H);
+  // the seam
+  const sx=W/2;
+  const g=cx.createLinearGradient(sx-60,0,sx+60,0);
+  g.addColorStop(0,'rgba(61,220,151,0)');
+  g.addColorStop(.5,'rgba(61,220,151,.14)');
+  g.addColorStop(1,'rgba(61,220,151,0)');
+  cx.fillStyle=g;
+  cx.fillRect(sx-60,0,120,H);
+  cx.strokeStyle='rgba(61,220,151,.28)';
+  cx.setLineDash([2,10]);
+  cx.beginPath(); cx.moveTo(sx,0); cx.lineTo(sx,H); cx.stroke();
+  cx.setLineDash([]);
+  // particles drifting toward the seam and passing through
+  for(const p of parts){
+    const dir = p.x<.5 ? 1 : -1;
+    p.x += dir*p.v*.6;
+    // pass through the seam to the other side, then loop
+    if(dir>0 && p.x>.56){ p.x=.44; p.y=Math.random(); }
+    if(dir<0 && p.x<.44){ p.x=.56; p.y=Math.random(); }
+    const wob = Math.sin(t*2+p.ph)*.006;
+    const near = Math.abs(p.x-.5)<.06;
+    cx.beginPath();
+    cx.arc(p.x*W,(p.y+wob)*H,p.s*(near?1.6:1),0,7);
+    cx.fillStyle=`rgba(61,220,151,${near?Math.min(1,p.o*1.8):p.o*.5})`;
+    cx.fill();
+  }
+  requestAnimationFrame(draw);
+}
+draw();
+
+// ---- reveals ----
+const io = new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting) e.target.classList.add('on');
+}),{threshold:.18});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

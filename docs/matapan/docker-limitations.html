@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Docker Limitations — Matapan Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#040806;--bg2:#081209;--ink:#e6f5ec;--dim:#82a392;--faint:#3f5c4c;--cyan:#3ddc97;--cyan-soft:rgba(61,220,151,.12);--line:#122a1c;--serif:'Cormorant Garamond',serif}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;overflow-x:hidden;font-size:15px;line-height:1.65}
+::selection{background:var(--cyan);color:#04140c}
+nav.top{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:#040806d9;backdrop-filter:blur(14px);border-bottom:1px solid rgba(61,220,151,.08)}
+.logo{font-weight:700;font-size:20px;letter-spacing:-.02em;text-decoration:none;color:var(--ink)}
+.logo i{font-style:normal;color:var(--cyan)}
+.navlinks{display:flex;gap:32px;align-items:center}
+.navlinks a{color:var(--dim);text-decoration:none;font-size:13px;letter-spacing:.08em;transition:color .25s}
+.navlinks a:hover{color:var(--cyan)}
+.navlinks a.here{color:var(--cyan)}
+.cta{border:1px solid var(--cyan);color:var(--cyan)!important;padding:9px 20px;font-size:12px!important;letter-spacing:.15em!important;text-transform:uppercase;text-decoration:none;transition:all .25s}
+.cta:hover{background:var(--cyan);color:#04140c!important}
+.dd{position:relative}
+.ddt{cursor:pointer}
+.ddm{display:none;position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%);min-width:200px;background:var(--bg2);border:1px solid var(--line);padding:6px;z-index:60;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.dd:hover .ddm,.dd:focus-within .ddm{display:block}
+.ddm a{display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:13px;color:var(--dim);text-decoration:none;letter-spacing:.04em}
+.ddm a:hover{background:var(--bg);color:var(--ink)}
+.ddm .sw{width:8px;height:8px;border-radius:50%;flex:none}
+.wiki{display:grid;grid-template-columns:270px minmax(0,1fr);gap:64px;max-width:1320px;margin:0 auto;padding:110px 32px 60px}
+aside{position:sticky;top:96px;align-self:start;max-height:calc(100vh - 126px);overflow-y:auto;padding-right:14px;scrollbar-width:thin}
+aside .proj{display:flex;gap:6px;margin-bottom:22px}
+aside .proj a{flex:1;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:7px 4px;border:1px solid var(--line);color:var(--faint);transition:all .2s}
+aside .proj a:hover{color:var(--ink);border-color:var(--dim)}
+aside .proj a.onl{color:#39d0e8;border-color:#39d0e8}
+aside .proj a.onc{color:#d9a441;border-color:#d9a441}
+aside .proj a.onm{color:#3ddc97;border-color:#3ddc97}
+aside .grp{margin-bottom:26px}
+aside .gt{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--faint);text-transform:uppercase;margin-bottom:10px}
+aside a{display:block;color:var(--dim);text-decoration:none;font-size:13px;padding:5px 0 5px 16px;border-left:1px solid var(--line);transition:all .2s;line-height:1.4}
+aside a:hover{color:var(--cyan)}
+aside a.on{color:var(--cyan);border-left-color:var(--cyan)}
+main{min-width:0;max-width:860px}
+main h1{font-family:var(--serif);font-weight:400;font-size:clamp(32px,4.5vw,46px);line-height:1.1;margin:14px 0 18px}
+main h2{font-family:var(--serif);font-weight:400;font-size:clamp(24px,3vw,32px);line-height:1.15;margin:40px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
+main h2:first-of-type{border-top:none;padding-top:0}
+main h3{font-size:18px;font-weight:600;margin:28px 0 8px}
+main p{color:var(--dim);margin:12px 0;font-weight:300}
+main b,main strong{color:var(--ink);font-weight:500}
+main a{color:var(--cyan)}
+main ul,main ol{color:var(--dim);margin:12px 0 16px 22px;font-weight:300}
+main li{margin:6px 0}
+main code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);background:var(--cyan-soft);padding:2px 7px;border-radius:4px}
+main pre{background:#030a06;border:1px solid var(--line);border-radius:6px;padding:18px 20px;overflow-x:auto;margin:16px 0}
+main pre code{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.8;color:#9fcdb2;background:none;padding:0}
+main table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+main th{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--faint);text-align:left;padding:11px 12px;border-bottom:1px solid var(--line)}
+main td{padding:11px 12px;border-bottom:1px solid var(--line);color:var(--dim);line-height:1.55;vertical-align:top;font-weight:300}
+main td code{white-space:nowrap}
+main tr:hover td{background:rgba(61,220,151,.03)}
+main blockquote{border-left:2px solid var(--cyan);padding:8px 0 8px 18px;margin:16px 0;color:var(--dim);font-weight:300}
+main hr{border:none;border-top:1px solid var(--line);margin:28px 0}
+.kick{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.28em;color:var(--cyan);text-transform:uppercase}
+.pn{display:flex;justify-content:space-between;gap:16px;margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-size:13px}
+.pn a{color:var(--dim);text-decoration:none}
+.pn a:hover{color:var(--cyan)}
+.pn .n{margin-left:auto}
+footer{border-top:1px solid var(--line);padding:40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-top:40px}
+footer .fl{font-weight:700;font-size:18px}
+footer .fl i{font-style:normal;color:var(--cyan)}
+footer a{color:var(--faint);text-decoration:none;font-size:13px;margin-left:24px;transition:color .25s}
+footer a:hover{color:var(--cyan)}
+footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);letter-spacing:.15em}
+@media(max-width:1000px){.wiki{grid-template-columns:1fr;gap:0;padding-top:100px}aside{position:static;max-height:none;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}aside .grp{margin:0}aside .gt{display:none}aside a{border:1px solid var(--line);padding:6px 12px;font-size:12px}.navlinks a:not(.cta){display:none}.ddm{position:static;transform:none;display:block;box-shadow:none;background:none;border:none;padding:0}}
+</style>
+</head>
+<body>
+<nav class="top">
+  <a class="logo" href="../../index.html">Matapan<i>.</i></a>
+  <div class="navlinks">
+    <a href="../../index.html">Lethe</a>
+    <a href="../../charon.html">Charon</a>
+    <a href="../../matapan.html">Matapan</a>
+    <div class="dd">
+      <a class="ddt here" href="../../docs.html">Docs ▾</a>
+      <div class="ddm">
+<a href="../index.html"><span class="sw" style="background:#39d0e8"></span>Lethe docs</a>
+<a href="../charon/index.html"><span class="sw" style="background:#d9a441"></span>Charon docs</a>
+<a href="../matapan/index.html"><span class="sw" style="background:#3ddc97"></span>Matapan docs</a>
+      </div>
+    </div>
+    <a href="https://github.com/openlethe/matapan">GitHub</a>
+    <a class="cta" href="quickstart.html">Get started</a>
+  </div>
+</nav>
+<div class="wiki">
+<aside>
+<div class="proj"><a class="" href="../index.html">Lethe</a>
+<a class="" href="../charon/index.html">Charon</a>
+<a class="onm" href="index.html">Matapan</a></div>
+<div class="grp"><div class="gt">Start</div>
+<a href="overview.html">Overview</a>
+<a href="quickstart.html">Quickstart</a>
+<div class="grp"><div class="gt">Deploy</div>
+<a href="docker-compose.html">Docker Compose Setup</a>
+<a href="operations.html">Operations</a>
+<a href="docker-limitations.html" class="on">Docker Limitations</a>
+<div class="grp"><div class="gt">Security</div>
+<a href="threat-model.html">Threat Model</a>
+<div class="grp"><div class="gt">Project</div>
+<a href="comparison-devspace.html">vs DevSpace</a>
+</div>
+</aside>
+<main>
+<div class="kick">Matapan docs · Docker Limitations</div>
+<h1 id="docker-isolation-guarantees-and-limitations">Docker isolation: guarantees and limitations</h1>
+<p>Sprint 8. What Matapan's hardened Docker profile actually guarantees — and
+what it does not. This document is the honest reference; the threat model
+summarizes it.</p>
+<h2 id="what-the-hardened-profile-guarantees-per-workspace_run">What the hardened profile guarantees (per <code>workspace_run</code>)</h2>
+<p>Enforced by <code>internal/runtime</code> (ValidateSpec + container config):</p>
+<ul>
+<li><strong>Non-root</strong>: the container user is the daemon-resolved runtime identity
+  (see the ownership model below); root users (including numeric aliases)
+  are refused at spec validation.</li>
+<li><strong>No capabilities</strong>: <code>CapDrop: ALL</code>.</li>
+<li><strong>No privilege escalation</strong>: <code>no-new-privileges</code> security option; Docker's
+  default seccomp profile (not custom, not unconfined).</li>
+<li><strong>Read-only root filesystem</strong>; only <code>/tmp</code> is a small noexec/nosuid tmpfs
+  and <code>/workspace</code> is the bind-mounted workspace.</li>
+<li><strong>Resource limits</strong>: memory, CPU, and PID limits with hard clamps
+  (constants: ≤ 10 min, ≤ 4 GiB, ≤ 4 MiB output).</li>
+<li><strong>Network denied by default</strong>: <code>NetworkMode: none</code> unless a human granted
+  egress.</li>
+<li><strong>No Docker socket, ever</strong>: any spec mounting a <code>docker.sock</code> path is
+  refused; privileged mode and host PID/IPC namespaces are refused.</li>
+<li><strong>Digest-pinned images</strong>, verified after every pull; provenance recorded.</li>
+<li><strong>No ambient host env</strong>: container env is an explicit allowlist (granted
+  secrets + proxy vars only).</li>
+<li><strong>Bounded evidence</strong>: exit code, OOM-kill flag, reason, capped output
+  with truncation markers.</li>
+<li><strong>Lifecycle</strong>: containers are named and labeled; destroy and
+  reconciliation kill them; cleanup is verified by re-listing.</li>
+</ul>
+<h2 id="what-it-does-not-guarantee">What it does NOT guarantee</h2>
+<ul>
+<li><strong>Kernel isolation.</strong> Containers share the host kernel. A kernel exploit
+  or a container-runtime (runc) escape breaks the boundary. This is
+  <em>hardened container isolation</em>, not a VM. Upgrade path: gVisor
+  (<code>runtime.isolation: gvisor</code>, experimental, fails hard without runsc) or
+  Kata/microVM profiles (future).</li>
+<li><strong>userns-remap.</strong> Docker userns-remap is NOT assumed; the container uid
+  maps to the same host uid. That is exactly why the ownership model
+  below exists: the container user must MATCH the owner of workspace
+  content, or native Linux bind mounts refuse every read and write.</li>
+</ul>
+<h2 id="workspace-ownership-model-b-01">Workspace ownership model (B-01)</h2>
+<p>Native Linux bind mounts preserve host ownership and mode bits. The
+workspace tree is <code>0750</code>/<code>0640</code>, so a container running as a uid that
+does not own it cannot list, read, or write it (Docker Desktop's
+ownership translation masks this entirely — it is NOT a safe test of the
+behavior). Matapan resolves one runtime identity per daemon and makes
+ownership match it:</p>
+<ul>
+<li><strong>Daemon non-root</strong> (native Linux dev): containers run as the daemon's
+  own uid:gid. The daemon owns every workspace it creates, so no chown is
+  needed (or possible). <code>runtime.uid</code>/<code>runtime.gid</code> are ignored.</li>
+<li><strong>Daemon root</strong> (the Docker container deployment): containers run as
+  the configured <code>runtime.uid</code>/<code>runtime.gid</code> (env
+  <code>MATAPAN_RUNTIME_UID</code>/<code>MATAPAN_RUNTIME_GID</code>, default <code>65534:65534</code>),
+  and the daemon CHOWNS workspace content to that identity at every
+  moment it writes: workspace create (git/fresh/snapshot), MCP file edit
+  (file + new parent dirs), <code>workspace_commit</code>, and proposal revise.
+  Container-created files are born runtime-owned because the container
+  runs as that uid.</li>
+</ul>
+<p>Modes stay <code>0750</code>/<code>0640</code>; ownership now matches the container user, so
+reads AND writes work on native Linux. <strong>The chown excludes <code>.git</code>
+entirely</strong> (directories, their contents, and linked-worktree <code>.git</code>
+pointer files): git metadata stays daemon-owned, so the runtime identity
+can never write hooks or config the daemon's git would honor, and daemon
+git keeps working on its own metadata. <code>matapan doctor</code> reports the
+resolved identity and, in root mode, verifies the chown capability with
+a real probe (a clear FAIL on rootless or read-only setups). The
+<code>...NativeLinux</code> integration tests exercise this for real on the ubuntu
+CI leg: read a daemon-written <code>0640</code> file, create a nested artifact, and
+seal it into a proposal.
+- <strong>Docker Desktop (macOS/Windows VM) specifics.</strong>
+  - The daemon runs in a VM; bind mounts cross a filesystem translation
+    layer with weaker semantics (case-insensitivity, ownership mapping).
+  - Internal networks cannot reach the host gateway, so the egress proxy
+    runs in <strong>degraded mode</strong>: HTTP(S) through the proxy is
+    domain-allowlisted, but a process that ignores the proxy env has raw
+    egress. Full enforcement exists on native Linux Docker (internal
+    network + host-side proxy). Sidecar-proxy upgrade is planned.
+- <strong>Hardlink residual.</strong> A file inside a workspace may share an inode with
+  a file outside it (hardlinks are invisible to path checks). Mitigation:
+  workspace file tools refuse files with link count &gt; 1 (<code>ErrHardlink</code>).
+  Residual: content created via <em>other</em> channels (e.g. <code>cp --link</code> inside a
+  run's mounted workspace is still just files the agent made; the refusal
+  covers the file-tool read/write path).
+- <strong>The Docker daemon itself is trusted.</strong> Docker API access equals root on
+  the host. Matapan never mounts the socket into workloads and never lets a
+  workload reach the daemon, but the host's daemon is part of the TCB.
+- <strong>Egress proxy = HTTP(S) only.</strong> It filters CONNECT/plain-HTTP by domain
+  and port (80/443). Non-HTTP protocols are blocked at the network layer on
+  Linux and are unfiltered-but-unprivileged on Docker Desktop degraded mode.
+- <strong>Denylists are advisory depth.</strong> Profile command denylists (argv[0])
+  stop casual use, not determined evasion (a copied binary renamed).
+  Enforcement comes from the runtime boundary, not name matching.</p>
+<h2 id="gvisor-experimental">gVisor (experimental)</h2>
+<p><code>runtime.isolation: gvisor</code> runs containers under <code>runsc</code> when the daemon
+offers it (detected via <code>docker info</code> runtimes; <code>matapan doctor</code> reports).
+If runsc is absent, runs fail with a typed error — never a silent fallback
+to runc. gVisor adds a userspace-kernel boundary that materially raises the
+cost of container escape; it is experimental in Sprint 8 and off by
+default.</p>
+<div class="pn"><a class="p" href="operations.html">← Operations</a><a class="n" href="threat-model.html">Threat Model →</a></div>
+</main>
+</div>
+<footer>
+  <div class="fl">Matapan<i>.</i></div>
+  <div>
+    <a href="https://github.com/openlethe/matapan" style="margin-left:0">GitHub</a>
+    <a href="../../index.html">Lethe</a>
+    <a href="../../charon.html">Charon</a>
+    <a href="../../matapan.html">Matapan</a>
+  </div>
+  <div class="fc">openlethe.com · 2026</div>
+</footer>
+</body>
+</html>

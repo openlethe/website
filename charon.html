@@ -27,6 +27,12 @@
   .navlinks a.here{color:var(--gold)}
   .cta{border:1px solid var(--gold);color:var(--gold)!important;padding:9px 20px;font-size:12px!important;letter-spacing:.15em!important;text-transform:uppercase;transition:all .25s}
   .cta:hover{background:var(--gold);color:#1a1204!important;box-shadow:0 0 28px rgba(217,164,65,.4)}
+  .dd{position:relative}
+  .ddm{display:none;position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%);min-width:200px;background:var(--bg2);border:1px solid var(--line);padding:6px;z-index:60;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+  .dd:hover .ddm,.dd:focus-within .ddm{display:block}
+  .ddm a{display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:13px;color:var(--dim);text-decoration:none;letter-spacing:.04em}
+  .ddm a:hover{background:var(--bg);color:var(--ink)}
+  .ddm .sw{width:8px;height:8px;border-radius:50%;flex:none}
 
   /* ---------- hero ---------- */
   .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px}
@@ -154,9 +160,17 @@
   <div class="navlinks">
     <a href="index.html">Lethe</a>
     <a href="charon.html" class="here">Charon</a>
+    <a href="matapan.html">Matapan</a>
     <a href="charon.html#myth">The myth</a>
     <a href="charon.html#how">How it works</a>
-    <a href="docs.html">Docs</a>
+    <div class="dd">
+      <a href="docs.html">Docs ▾</a>
+      <div class="ddm">
+        <a href="docs/index.html"><span class="sw" style="background:#39d0e8"></span>Lethe docs</a>
+        <a href="docs/charon/index.html"><span class="sw" style="background:#d9a441"></span>Charon docs</a>
+        <a href="docs/matapan/index.html"><span class="sw" style="background:#3ddc97"></span>Matapan docs</a>
+      </div>
+    </div>
     <a href="https://github.com/openlethe/charon">GitHub</a>
     <a class="cta" href="charon.html#install">Get started</a>
   </div>
@@ -328,7 +342,7 @@
       <div class="cmd"><span class="cl">1 · Lethe Git</span><code><b>$</b> sh scripts/prepare-local-memory-git-env.sh && docker compose -f docker-compose.git.yml --env-file .env.git up -d</code></div>
       <div class="cmd"><span class="cl">2 · Charon</span><code><b>$</b> ./setup.sh <span style="color:var(--faint)"># keys, principals, obols, both gateways</span></code></div>
       <div class="cmd"><span class="cl">3 · Connect an agent</span><code><b>$</b> openclaw mcp add charon --url http://127.0.0.1:18486/mcp --transport streamable-http --header "Authorization=Bearer ${TOKEN}"</code></div>
-      <a class="cmd" href="docs.html"><span class="cl">Documentation</span><code><b>→</b> docs.html — tools, scopes, API, harnesses</code></a>
+      <a class="cmd" href="docs/charon/index.html"><span class="cl">Documentation</span><code><b>→</b> the full charon guide</code></a>
     </div>
   </div>
 </section>

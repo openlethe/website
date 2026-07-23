@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Documentation — Lethe Docs</title>
+<title>Overview — Matapan Docs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#05070a;--bg2:#080d12;--ink:#e8f2f5;--dim:#7d99a3;--faint:#41565e;--cyan:#39d0e8;--cyan-soft:rgba(57,208,232,.12);--line:#12242c;--serif:'Cormorant Garamond',serif}
+:root{--bg:#040806;--bg2:#081209;--ink:#e6f5ec;--dim:#82a392;--faint:#3f5c4c;--cyan:#3ddc97;--cyan-soft:rgba(61,220,151,.12);--line:#122a1c;--serif:'Cormorant Garamond',serif}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;overflow-x:hidden;font-size:15px;line-height:1.65}
-::selection{background:var(--cyan);color:#04141a}
-nav.top{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:#05070ad9;backdrop-filter:blur(14px);border-bottom:1px solid rgba(57,208,232,.08)}
+::selection{background:var(--cyan);color:#04140c}
+nav.top{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:#040806d9;backdrop-filter:blur(14px);border-bottom:1px solid rgba(61,220,151,.08)}
 .logo{font-weight:700;font-size:20px;letter-spacing:-.02em;text-decoration:none;color:var(--ink)}
 .logo i{font-style:normal;color:var(--cyan)}
 .navlinks{display:flex;gap:32px;align-items:center}
@@ -20,7 +20,7 @@ nav.top{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:
 .navlinks a:hover{color:var(--cyan)}
 .navlinks a.here{color:var(--cyan)}
 .cta{border:1px solid var(--cyan);color:var(--cyan)!important;padding:9px 20px;font-size:12px!important;letter-spacing:.15em!important;text-transform:uppercase;text-decoration:none;transition:all .25s}
-.cta:hover{background:var(--cyan);color:#04141a!important}
+.cta:hover{background:var(--cyan);color:#04140c!important}
 .dd{position:relative}
 .ddt{cursor:pointer}
 .ddm{display:none;position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%);min-width:200px;background:var(--bg2);border:1px solid var(--line);padding:6px;z-index:60;box-shadow:0 24px 60px rgba(0,0,0,.5)}
@@ -52,13 +52,13 @@ main a{color:var(--cyan)}
 main ul,main ol{color:var(--dim);margin:12px 0 16px 22px;font-weight:300}
 main li{margin:6px 0}
 main code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);background:var(--cyan-soft);padding:2px 7px;border-radius:4px}
-main pre{background:#03080a;border:1px solid var(--line);border-radius:6px;padding:18px 20px;overflow-x:auto;margin:16px 0}
-main pre code{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.8;color:#9fc3cd;background:none;padding:0}
+main pre{background:#030a06;border:1px solid var(--line);border-radius:6px;padding:18px 20px;overflow-x:auto;margin:16px 0}
+main pre code{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.8;color:#9fcdb2;background:none;padding:0}
 main table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
 main th{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--faint);text-align:left;padding:11px 12px;border-bottom:1px solid var(--line)}
 main td{padding:11px 12px;border-bottom:1px solid var(--line);color:var(--dim);line-height:1.55;vertical-align:top;font-weight:300}
 main td code{white-space:nowrap}
-main tr:hover td{background:rgba(57,208,232,.03)}
+main tr:hover td{background:rgba(61,220,151,.03)}
 main blockquote{border-left:2px solid var(--cyan);padding:8px 0 8px 18px;margin:16px 0;color:var(--dim);font-weight:300}
 main hr{border:none;border-top:1px solid var(--line);margin:28px 0}
 .kick{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.28em;color:var(--cyan);text-transform:uppercase}
@@ -73,98 +73,118 @@ footer a{color:var(--faint);text-decoration:none;font-size:13px;margin-left:24px
 footer a:hover{color:var(--cyan)}
 footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);letter-spacing:.15em}
 @media(max-width:1000px){.wiki{grid-template-columns:1fr;gap:0;padding-top:100px}aside{position:static;max-height:none;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}aside .grp{margin:0}aside .gt{display:none}aside a{border:1px solid var(--line);padding:6px 12px;font-size:12px}.navlinks a:not(.cta){display:none}.ddm{position:static;transform:none;display:block;box-shadow:none;background:none;border:none;padding:0}}
-
-.tocwrap{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:2px;background:var(--line);border:1px solid var(--line);margin-top:28px}
-a.toc{display:flex;align-items:center;gap:12px;background:var(--bg);padding:16px 18px;text-decoration:none;color:var(--ink)}
-a.toc:hover{background:var(--bg2)}
-a.toc b{font-weight:600;font-size:14px}
-a.toc .n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--cyan)}
-a.toc .g{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--faint);letter-spacing:.12em;text-transform:uppercase}
 </style>
 </head>
 <body>
 <nav class="top">
-  <a class="logo" href="../index.html">Lethe<i>.</i></a>
+  <a class="logo" href="../../index.html">Matapan<i>.</i></a>
   <div class="navlinks">
-    <a href="../index.html">Lethe</a>
-    <a href="../charon.html">Charon</a>
-    <a href="../matapan.html">Matapan</a>
+    <a href="../../index.html">Lethe</a>
+    <a href="../../charon.html">Charon</a>
+    <a href="../../matapan.html">Matapan</a>
     <div class="dd">
-      <a class="ddt here" href="../docs.html">Docs ▾</a>
+      <a class="ddt here" href="../../docs.html">Docs ▾</a>
       <div class="ddm">
-<a href="index.html"><span class="sw" style="background:#39d0e8"></span>Lethe docs</a>
-<a href="charon/index.html"><span class="sw" style="background:#d9a441"></span>Charon docs</a>
-<a href="matapan/index.html"><span class="sw" style="background:#3ddc97"></span>Matapan docs</a>
+<a href="../index.html"><span class="sw" style="background:#39d0e8"></span>Lethe docs</a>
+<a href="../charon/index.html"><span class="sw" style="background:#d9a441"></span>Charon docs</a>
+<a href="../matapan/index.html"><span class="sw" style="background:#3ddc97"></span>Matapan docs</a>
       </div>
     </div>
-    <a href="https://github.com/openlethe/lethe">GitHub</a>
-    <a class="cta" href="installation.html">Get started</a>
+    <a href="https://github.com/openlethe/matapan">GitHub</a>
+    <a class="cta" href="quickstart.html">Get started</a>
   </div>
 </nav>
 <div class="wiki">
 <aside>
-<div class="proj"><a class="onl" href="index.html">Lethe</a>
-<a class="" href="charon/index.html">Charon</a>
-<a class="" href="matapan/index.html">Matapan</a></div>
+<div class="proj"><a class="" href="../index.html">Lethe</a>
+<a class="" href="../charon/index.html">Charon</a>
+<a class="onm" href="index.html">Matapan</a></div>
 <div class="grp"><div class="gt">Start</div>
 <a href="overview.html" class="on">Overview</a>
-<a href="installation.html">Installation</a>
-<a href="runtime-modes.html">Runtime Modes</a>
-<div class="grp"><div class="gt">Memory Systems</div>
-<a href="memory-git.html">Memory Git</a>
-<a href="legacy-mode.html">Legacy Mode</a>
-<div class="grp"><div class="gt">Platform</div>
-<a href="architecture.html">Architecture</a>
-<a href="configuration.html">Configuration</a>
-<a href="deployment.html">Deployment &amp; Ops</a>
-<a href="docker-compose.html">Compose Variations</a>
-<div class="grp"><div class="gt">Reference</div>
-<a href="api.html">HTTP API Reference</a>
-<div class="grp"><div class="gt">Integrations</div>
-<a href="openclaw.html">OpenClaw</a>
-<a href="integrations.html">Client Integrations</a>
+<a href="quickstart.html">Quickstart</a>
+<div class="grp"><div class="gt">Deploy</div>
+<a href="docker-compose.html">Docker Compose Setup</a>
+<a href="operations.html">Operations</a>
+<a href="docker-limitations.html">Docker Limitations</a>
+<div class="grp"><div class="gt">Security</div>
+<a href="threat-model.html">Threat Model</a>
 <div class="grp"><div class="gt">Project</div>
-<a href="migration.html">Migration &amp; Upgrading</a>
-<a href="faq.html">FAQ</a>
-<div class="grp"><div class="gt">Deep Dive</div>
-<a href="memory-git-v1.html">Protocol · memory_git/v1</a>
-<a href="memory-context-bridge.html">Context Projection</a>
-<a href="observability.html">Observability</a>
+<a href="comparison-devspace.html">vs DevSpace</a>
 </div>
 </aside>
 <main>
-<div class="kick">Lethe docs · Documentation</div>
-
-<h1>Lethe documentation.</h1>
-<p style="max-width:640px">Agent memory layer — read in order, or jump to a topic. These pages mirror <code>docs/</code> in the <a href="https://github.com/openlethe/lethe">lethe repository</a>; regenerate them with <code>scripts/build-docs.py</code>.</p>
-<div class="tocwrap"><a class="toc" href="overview.html"><span class="n">01</span><b>Overview</b><span class="g">Start</span></a>
-<a class="toc" href="installation.html"><span class="n">02</span><b>Installation</b><span class="g">Start</span></a>
-<a class="toc" href="runtime-modes.html"><span class="n">03</span><b>Runtime Modes</b><span class="g">Start</span></a>
-<a class="toc" href="memory-git.html"><span class="n">04</span><b>Memory Git</b><span class="g">Memory Systems</span></a>
-<a class="toc" href="legacy-mode.html"><span class="n">05</span><b>Legacy Mode</b><span class="g">Memory Systems</span></a>
-<a class="toc" href="architecture.html"><span class="n">06</span><b>Architecture</b><span class="g">Platform</span></a>
-<a class="toc" href="configuration.html"><span class="n">07</span><b>Configuration</b><span class="g">Platform</span></a>
-<a class="toc" href="deployment.html"><span class="n">08</span><b>Deployment &amp; Ops</b><span class="g">Platform</span></a>
-<a class="toc" href="docker-compose.html"><span class="n">09</span><b>Compose Variations</b><span class="g">Platform</span></a>
-<a class="toc" href="api.html"><span class="n">10</span><b>HTTP API Reference</b><span class="g">Reference</span></a>
-<a class="toc" href="openclaw.html"><span class="n">11</span><b>OpenClaw</b><span class="g">Integrations</span></a>
-<a class="toc" href="integrations.html"><span class="n">12</span><b>Client Integrations</b><span class="g">Integrations</span></a>
-<a class="toc" href="migration.html"><span class="n">13</span><b>Migration &amp; Upgrading</b><span class="g">Project</span></a>
-<a class="toc" href="faq.html"><span class="n">14</span><b>FAQ</b><span class="g">Project</span></a>
-<a class="toc" href="memory-git-v1.html"><span class="n">15</span><b>Protocol · memory_git/v1</b><span class="g">Deep Dive</span></a>
-<a class="toc" href="memory-context-bridge.html"><span class="n">16</span><b>Context Projection</b><span class="g">Deep Dive</span></a>
-<a class="toc" href="observability.html"><span class="n">17</span><b>Observability</b><span class="g">Deep Dive</span></a></div>
-
-<div class="pn"></div>
+<div class="kick">Matapan docs · Overview</div>
+<h1 id="matapan">Matapan</h1>
+<p>Matapan is a <strong>local-first transactional control plane for agent-produced
+code</strong>. Coding agents (ChatGPT, Claude, Codex) get disposable,
+container-isolated workspaces and return work only as immutable,
+evidence-bearing proposals, applied via compare-and-swap. <strong>Your active
+checkout is never in the agent's write path.</strong></p>
+<p>The loop:</p>
+<blockquote>
+<p>import trusted source → disposable isolated workspace → scoped
+tools/runtime → capture edits + verification → seal immutable proposal
+against an expected base → review → compare-and-swap apply → revoke and
+destroy → redacted audit trail remains.</p>
+</blockquote>
+<p>Matapan is a workspace transaction manager — not an IDE, not an agent, not
+a generic sandbox, not a Git GUI.</p>
+<h2 id="status">Status</h2>
+<p><strong>0.1.0-beta.1 + hardening rounds 3–6.</strong> All eight planned sprints are
+landed (security core, lifecycle, hardened runtime, MCP surface, proposal
+engine, policy profiles, secrets broker, egress proxy, audit retention,
+packaging), followed by an independent adversarial audit series that
+closed every blocker-severity finding (B-03 host Git execution, B-05
+snapshot backups, B-06/NB-01 run lifecycle, B-08 destructive storage
+inputs). See <code>CHANGELOG.md</code> and the <a href="threat-model.html">Threat Model</a>.</p>
+<h2 id="the-trust-model-in-one-paragraph">The trust model in one paragraph</h2>
+<p>The agent is untrusted code working on trusted source. Every git
+invocation goes through one hardened runner (hooks dead, environment
+scrubbed, external drivers refused, signing and signature verification
+forced off). Every run executes in a locked-down container (capabilities
+dropped, read-only rootfs, no network by default, resource clamps).
+Agents never receive apply authority: work returns as a <strong>sealed
+proposal</strong> whose content digest, policy digest, and target branch are
+anchored in a hash-chained ledger and authenticated with an HMAC only the
+daemon holds. Apply is a layered compare-and-swap — what you reviewed is
+what lands, or nothing does.</p>
+<h2 id="key-properties">Key properties</h2>
+<ul>
+<li><strong>Disposable workspaces</strong> — git worktrees at an exact commit, defended
+  snapshot copies of non-Git dirs, or fresh scaffolds. Leases and GC with
+  sealed-work protection.</li>
+<li><strong>Scoped tool surface</strong> — typed MCP tools with stable error codes,
+  capability discovery, and an operation/state matrix enforced on every
+  mutation.</li>
+<li><strong>Egress control</strong> — network <code>none</code> by default; per-domain human grants
+  through an allowlisting proxy with DNS-rebinding defense.</li>
+<li><strong>Secrets broker</strong> — AES-256-GCM at rest, per-workspace grants, injected
+  only into runs, revoked at seal and destroy, never ledgered.</li>
+<li><strong>Policy profiles</strong> — image allowlists, command denylists, resource
+  ceilings; the profile digest is sealed into every proposal.</li>
+<li><strong>Immutable audit</strong> — every action lands in a redacted, hash-chained
+  ledger with retention that preserves verifiability.</li>
+</ul>
+<h2 id="where-to-go-next">Where to go next</h2>
+<ul>
+<li><a href="quickstart.html">Quickstart</a> — zero to a sealed, applied proposal.</li>
+<li><a href="docker-compose.html">Docker Compose Setup</a> — the full per-model
+  container deployment, end to end, with the environment variable
+  reference.</li>
+<li><a href="operations.html">Operations</a> — day-to-day daemon and CLI operation.</li>
+<li><a href="threat-model.html">Threat Model</a> — the adversary classes and the
+  defenses that hold against them.</li>
+</ul>
+<div class="pn"><a class="n" href="quickstart.html">Quickstart →</a></div>
 </main>
 </div>
 <footer>
-  <div class="fl">Lethe<i>.</i></div>
+  <div class="fl">Matapan<i>.</i></div>
   <div>
-    <a href="https://github.com/openlethe/lethe" style="margin-left:0">GitHub</a>
-    <a href="../index.html">Lethe</a>
-    <a href="../charon.html">Charon</a>
-    <a href="../matapan.html">Matapan</a>
+    <a href="https://github.com/openlethe/matapan" style="margin-left:0">GitHub</a>
+    <a href="../../index.html">Lethe</a>
+    <a href="../../charon.html">Charon</a>
+    <a href="../../matapan.html">Matapan</a>
   </div>
   <div class="fc">openlethe.com · 2026</div>
 </footer>

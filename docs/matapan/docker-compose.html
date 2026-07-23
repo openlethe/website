@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Docker Compose Setup — Matapan Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#040806;--bg2:#081209;--ink:#e6f5ec;--dim:#82a392;--faint:#3f5c4c;--cyan:#3ddc97;--cyan-soft:rgba(61,220,151,.12);--line:#122a1c;--serif:'Cormorant Garamond',serif}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;overflow-x:hidden;font-size:15px;line-height:1.65}
+::selection{background:var(--cyan);color:#04140c}
+nav.top{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:#040806d9;backdrop-filter:blur(14px);border-bottom:1px solid rgba(61,220,151,.08)}
+.logo{font-weight:700;font-size:20px;letter-spacing:-.02em;text-decoration:none;color:var(--ink)}
+.logo i{font-style:normal;color:var(--cyan)}
+.navlinks{display:flex;gap:32px;align-items:center}
+.navlinks a{color:var(--dim);text-decoration:none;font-size:13px;letter-spacing:.08em;transition:color .25s}
+.navlinks a:hover{color:var(--cyan)}
+.navlinks a.here{color:var(--cyan)}
+.cta{border:1px solid var(--cyan);color:var(--cyan)!important;padding:9px 20px;font-size:12px!important;letter-spacing:.15em!important;text-transform:uppercase;text-decoration:none;transition:all .25s}
+.cta:hover{background:var(--cyan);color:#04140c!important}
+.dd{position:relative}
+.ddt{cursor:pointer}
+.ddm{display:none;position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%);min-width:200px;background:var(--bg2);border:1px solid var(--line);padding:6px;z-index:60;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.dd:hover .ddm,.dd:focus-within .ddm{display:block}
+.ddm a{display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:13px;color:var(--dim);text-decoration:none;letter-spacing:.04em}
+.ddm a:hover{background:var(--bg);color:var(--ink)}
+.ddm .sw{width:8px;height:8px;border-radius:50%;flex:none}
+.wiki{display:grid;grid-template-columns:270px minmax(0,1fr);gap:64px;max-width:1320px;margin:0 auto;padding:110px 32px 60px}
+aside{position:sticky;top:96px;align-self:start;max-height:calc(100vh - 126px);overflow-y:auto;padding-right:14px;scrollbar-width:thin}
+aside .proj{display:flex;gap:6px;margin-bottom:22px}
+aside .proj a{flex:1;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:7px 4px;border:1px solid var(--line);color:var(--faint);transition:all .2s}
+aside .proj a:hover{color:var(--ink);border-color:var(--dim)}
+aside .proj a.onl{color:#39d0e8;border-color:#39d0e8}
+aside .proj a.onc{color:#d9a441;border-color:#d9a441}
+aside .proj a.onm{color:#3ddc97;border-color:#3ddc97}
+aside .grp{margin-bottom:26px}
+aside .gt{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--faint);text-transform:uppercase;margin-bottom:10px}
+aside a{display:block;color:var(--dim);text-decoration:none;font-size:13px;padding:5px 0 5px 16px;border-left:1px solid var(--line);transition:all .2s;line-height:1.4}
+aside a:hover{color:var(--cyan)}
+aside a.on{color:var(--cyan);border-left-color:var(--cyan)}
+main{min-width:0;max-width:860px}
+main h1{font-family:var(--serif);font-weight:400;font-size:clamp(32px,4.5vw,46px);line-height:1.1;margin:14px 0 18px}
+main h2{font-family:var(--serif);font-weight:400;font-size:clamp(24px,3vw,32px);line-height:1.15;margin:40px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
+main h2:first-of-type{border-top:none;padding-top:0}
+main h3{font-size:18px;font-weight:600;margin:28px 0 8px}
+main p{color:var(--dim);margin:12px 0;font-weight:300}
+main b,main strong{color:var(--ink);font-weight:500}
+main a{color:var(--cyan)}
+main ul,main ol{color:var(--dim);margin:12px 0 16px 22px;font-weight:300}
+main li{margin:6px 0}
+main code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);background:var(--cyan-soft);padding:2px 7px;border-radius:4px}
+main pre{background:#030a06;border:1px solid var(--line);border-radius:6px;padding:18px 20px;overflow-x:auto;margin:16px 0}
+main pre code{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.8;color:#9fcdb2;background:none;padding:0}
+main table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+main th{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--faint);text-align:left;padding:11px 12px;border-bottom:1px solid var(--line)}
+main td{padding:11px 12px;border-bottom:1px solid var(--line);color:var(--dim);line-height:1.55;vertical-align:top;font-weight:300}
+main td code{white-space:nowrap}
+main tr:hover td{background:rgba(61,220,151,.03)}
+main blockquote{border-left:2px solid var(--cyan);padding:8px 0 8px 18px;margin:16px 0;color:var(--dim);font-weight:300}
+main hr{border:none;border-top:1px solid var(--line);margin:28px 0}
+.kick{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.28em;color:var(--cyan);text-transform:uppercase}
+.pn{display:flex;justify-content:space-between;gap:16px;margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-size:13px}
+.pn a{color:var(--dim);text-decoration:none}
+.pn a:hover{color:var(--cyan)}
+.pn .n{margin-left:auto}
+footer{border-top:1px solid var(--line);padding:40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-top:40px}
+footer .fl{font-weight:700;font-size:18px}
+footer .fl i{font-style:normal;color:var(--cyan)}
+footer a{color:var(--faint);text-decoration:none;font-size:13px;margin-left:24px;transition:color .25s}
+footer a:hover{color:var(--cyan)}
+footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);letter-spacing:.15em}
+@media(max-width:1000px){.wiki{grid-template-columns:1fr;gap:0;padding-top:100px}aside{position:static;max-height:none;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}aside .grp{margin:0}aside .gt{display:none}aside a{border:1px solid var(--line);padding:6px 12px;font-size:12px}.navlinks a:not(.cta){display:none}.ddm{position:static;transform:none;display:block;box-shadow:none;background:none;border:none;padding:0}}
+</style>
+</head>
+<body>
+<nav class="top">
+  <a class="logo" href="../../index.html">Matapan<i>.</i></a>
+  <div class="navlinks">
+    <a href="../../index.html">Lethe</a>
+    <a href="../../charon.html">Charon</a>
+    <a href="../../matapan.html">Matapan</a>
+    <div class="dd">
+      <a class="ddt here" href="../../docs.html">Docs ▾</a>
+      <div class="ddm">
+<a href="../index.html"><span class="sw" style="background:#39d0e8"></span>Lethe docs</a>
+<a href="../charon/index.html"><span class="sw" style="background:#d9a441"></span>Charon docs</a>
+<a href="../matapan/index.html"><span class="sw" style="background:#3ddc97"></span>Matapan docs</a>
+      </div>
+    </div>
+    <a href="https://github.com/openlethe/matapan">GitHub</a>
+    <a class="cta" href="quickstart.html">Get started</a>
+  </div>
+</nav>
+<div class="wiki">
+<aside>
+<div class="proj"><a class="" href="../index.html">Lethe</a>
+<a class="" href="../charon/index.html">Charon</a>
+<a class="onm" href="index.html">Matapan</a></div>
+<div class="grp"><div class="gt">Start</div>
+<a href="overview.html">Overview</a>
+<a href="quickstart.html">Quickstart</a>
+<div class="grp"><div class="gt">Deploy</div>
+<a href="docker-compose.html" class="on">Docker Compose Setup</a>
+<a href="operations.html">Operations</a>
+<a href="docker-limitations.html">Docker Limitations</a>
+<div class="grp"><div class="gt">Security</div>
+<a href="threat-model.html">Threat Model</a>
+<div class="grp"><div class="gt">Project</div>
+<a href="comparison-devspace.html">vs DevSpace</a>
+</div>
+</aside>
+<main>
+<div class="kick">Matapan docs · Docker Compose Setup</div>
+<h1 id="docker-compose-setup">Docker Compose Setup</h1>
+<p>The reference container deployment: <strong>one matapand container per agent
+model</strong>, each with its own config, database, keys, and workspace root,
+fronted by a single host-managed HTTPS tunnel. This page is the complete
+end-to-end guide — topology, the full compose file, per-model config,
+and the environment variable reference.</p>
+<h2 id="topology">Topology</h2>
+<pre><code>ChatGPT connector ─┐                         ┌─ matapan-chatgpt ── /data (db, keys, workspaces)
+                   │  HTTPS tunnel            │   127.0.0.1:18777
+Claude connector ──┤── cloudflared (host) ────┤
+                   │  one tunnel, two hosts   │   127.0.0.1:18778
+                   │                         └─ matapan-claude  ── /data (db, keys, workspaces)
+                   │
+                   └─ both containers share the HOST docker.sock to spawn
+                      agent run containers (never mounted into run containers)
+</code></pre>
+<ul>
+<li>The tunnel runs on the <strong>host</strong> (<code>cloudflared</code>, or <code>tailscale funnel</code>),
+  not in the compose project. One tunnel fronts both instances:
+  <code>matapan.example.com → localhost:18777</code>,
+  <code>claude.example.com → localhost:18778</code>.</li>
+<li>The <code>127.0.0.1</code> port publishes are both the tunnel path and the local
+  CLI/debug path. <code>/api/health</code> answers loopback peers only (host curls
+  through the Docker proxy get <code>403</code> by design; the tunnel fronts the
+  authenticated MCP surface).</li>
+<li>Each model gets an isolated identity: own database, own <code>obol.key</code> /
+  <code>secret.key</code> (both 0600), own workspace root. Nothing is shared between
+  instances except the host Docker daemon.</li>
+</ul>
+<h2 id="the-three-path-parity-requirements">The three path-parity requirements</h2>
+<ol>
+<li><strong>Workspace root.</strong> matapand bind-mounts a workspace's directory into
+   run containers by absolute path. The workspace-root mount inside the
+   matapand container MUST be the <em>same absolute path</em> as the host path
+   (<code>./data/&lt;model&gt;/workspaces</code> is mounted at its full host absolute
+   path). Otherwise nested run containers get a path that does not exist
+   on the host.</li>
+<li><strong>Source repos.</strong> Git workspaces are linked worktrees of host repos:
+   <code>git worktree add</code> writes administrative pointers containing absolute
+   paths. Source trees are mounted at <em>identical</em> absolute paths inside
+   and outside.</li>
+<li><strong>docker.sock.</strong> Mounted into the matapand containers ONLY. Agent run
+   containers are refused any docker.sock mount by spec validation. The
+   socket is full root on the host: matapand is trusted control-plane
+   code — treat its host access accordingly.</li>
+</ol>
+<h2 id="docker-composeyml">docker-compose.yml</h2>
+<pre><code class="language-yaml"># Matapan per-model matapand instances.
+# Path parity: ./data/&lt;model&gt;/workspaces is mounted at the HOST absolute
+# path; the dev tree is mounted read-write at the identical path so git
+# worktree sources resolve; docker.sock goes into matapand containers only.
+
+services:
+  matapan-chatgpt:
+    build:
+      context: /path/to/matapan          # the matapan repository
+      dockerfile: Dockerfile
+      args:
+        VERSION: compose-dev
+    image: matapan:compose
+    container_name: matapan-chatgpt
+    restart: unless-stopped
+    environment:
+      MATAPAN_OAUTH_OWNER_PASSWORD: ${MATAPAN_OAUTH_OWNER_PASSWORD:?set MATAPAN_OAUTH_OWNER_PASSWORD in .env}
+      MATAPAN_OAUTH_ISSUER: ${MATAPAN_OAUTH_ISSUER_CHATGPT:?set MATAPAN_OAUTH_ISSUER_CHATGPT in .env}
+    ports:
+      - &quot;127.0.0.1:18777:18777&quot;
+    volumes:
+      - ./chatgpt.yaml:/etc/matapan/config.json:ro
+      - ./data/chatgpt:/data
+      - ./data/chatgpt/workspaces:/abs/host/path/to/data/chatgpt/workspaces
+      - /abs/host/path/to/workspace:/abs/host/path/to/workspace
+      - /var/run/docker.sock:/var/run/docker.sock
+    healthcheck:
+      test: [&quot;CMD&quot;, &quot;bash&quot;, &quot;-c&quot;, &quot;exec 3&lt;&gt;/dev/tcp/127.0.0.1/18777 &amp;&amp; printf 'GET /api/health HTTP/1.0\r\n\r\n' &gt;&amp;3 &amp;&amp; grep -q '\&quot;ok\&quot;' &lt;&amp;3&quot;]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  matapan-claude:
+    build:
+      context: /path/to/matapan
+      dockerfile: Dockerfile
+      args:
+        VERSION: compose-dev
+    image: matapan:compose
+    container_name: matapan-claude
+    restart: unless-stopped
+    environment:
+      MATAPAN_OAUTH_OWNER_PASSWORD: ${MATAPAN_OAUTH_OWNER_PASSWORD:?set MATAPAN_OAUTH_OWNER_PASSWORD in .env}
+      MATAPAN_OAUTH_ISSUER: ${MATAPAN_OAUTH_ISSUER_CLAUDE:?set MATAPAN_OAUTH_ISSUER_CLAUDE in .env}
+    ports:
+      - &quot;127.0.0.1:18778:18778&quot;
+    volumes:
+      - ./claude.yaml:/etc/matapan/config.json:ro
+      - ./data/claude:/data
+      - ./data/claude/workspaces:/abs/host/path/to/data/claude/workspaces
+      - /abs/host/path/to/workspace:/abs/host/path/to/workspace
+      - /var/run/docker.sock:/var/run/docker.sock
+    healthcheck:
+      test: [&quot;CMD&quot;, &quot;bash&quot;, &quot;-c&quot;, &quot;exec 3&lt;&gt;/dev/tcp/127.0.0.1/18778 &amp;&amp; printf 'GET /api/health HTTP/1.0\r\n\r\n' &gt;&amp;3 &amp;&amp; grep -q '\&quot;ok\&quot;' &lt;&amp;3&quot;]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+</code></pre>
+<blockquote>
+<p>The image runs as root: the docker group gid varies by host and Docker
+Desktop manages socket access differently, so a fixed non-root uid
+cannot open the socket out-of-the-box. On a rootless or group-managed
+host, run with <code>--user "$(id -u):$(getent group docker | cut -d: -f3)"</code>
+and the user-namespace socket instead.</p>
+</blockquote>
+<h2 id="per-model-config-modelyaml">Per-model config (<code>&lt;model&gt;.yaml</code>)</h2>
+<p>Each instance mounts one JSON config at <code>/etc/matapan/config.json</code> (the
+image's default <code>--config</code>). The two files differ only in listen port,
+tool profile, and OAuth redirects:</p>
+<pre><code class="language-json">{
+  &quot;listen_addr&quot;: &quot;0.0.0.0:18778&quot;,
+  &quot;allow_lan&quot;: true,
+  &quot;db_path&quot;: &quot;/data/matapan.db&quot;,
+  &quot;workspace_root&quot;: &quot;/abs/host/path/to/data/claude/workspaces&quot;,
+  &quot;docker_image&quot;: &quot;alpine@sha256:&lt;digest&gt;&quot;,
+  &quot;obol_key_path&quot;: &quot;/data/obol.key&quot;,
+  &quot;secret_key_path&quot;: &quot;/data/secret.key&quot;,
+  &quot;runtime&quot;: {
+    &quot;timeout_sec&quot;: 300, &quot;memory_mb&quot;: 512, &quot;pids_limit&quot;: 256,
+    &quot;nano_cpus&quot;: 2000000000, &quot;max_output_bytes&quot;: 1048576,
+    &quot;isolation&quot;: &quot;docker&quot;
+  },
+  &quot;mcp&quot;: { &quot;tool_profile&quot;: &quot;full&quot; },
+  &quot;ledger&quot;: { &quot;retention_days&quot;: 90, &quot;max_entries&quot;: 1000000 },
+  &quot;auth&quot;: {
+    &quot;mode&quot;: &quot;oauth&quot;,
+    &quot;oauth_issuer&quot;: &quot;https://claude.example.com&quot;,
+    &quot;oauth_redirects&quot;: [
+      &quot;https://claude.ai/api/mcp/auth_callback&quot;,
+      &quot;https://chatgpt.com/connector/oauth/*&quot;
+    ],
+    &quot;oauth_principal&quot;: &quot;admin&quot;,
+    &quot;oauth_allow_admin&quot;: true
+  },
+  &quot;gc&quot;: { &quot;idle_hours&quot;: 72 }
+}
+</code></pre>
+<p>Notes:</p>
+<ul>
+<li><code>workspace_root</code> must equal the host absolute path (path parity rule 1).</li>
+<li><code>listen_addr</code> binds <code>0.0.0.0</code> <strong>inside</strong> the container so the published
+  port works; <code>allow_lan: true</code> permits the non-loopback bind. Everything
+  except <code>/api/health</code> still requires authentication.</li>
+<li><code>oauth_principal: "admin"</code> with <code>oauth_allow_admin: true</code> is an
+  explicit operator opt-in: the connector principal carries admin scopes
+  (including <code>proposal.apply</code>). For a least-privilege connector, omit
+  both — the daemon auto-provisions <code>agent-&lt;client_id&gt;</code> with agent scopes
+  and no workspace grants, and you grant workspaces to it explicitly.</li>
+<li>The runtime image is digest-pinned; <code>matapan runtime pull</code> fetches it.</li>
+</ul>
+<h2 id="first-boot-keys-and-admin-obol">First boot: keys and admin obol</h2>
+<p>Bootstrap keys and the admin obol once per model (the image entrypoint
+is <code>matapand</code>, so override it to run the CLI):</p>
+<pre><code class="language-sh">docker compose run --rm --no-deps --entrypoint matapan matapan-chatgpt \
+  config init --home /data
+</code></pre>
+<p>This writes <code>config.json</code>, <code>obol.key</code>, <code>secret.key</code>, and the database
+into <code>/data</code> and prints the admin obol <strong>once</strong> — store it somewhere
+safe. Afterwards point <code>--config</code> at <code>/data/config.json</code> or keep the
+mounted <code>&lt;model&gt;.yaml</code>.</p>
+<p>Then:</p>
+<pre><code class="language-sh">docker compose up -d          # build + start both instances
+docker compose ps             # both healthy
+docker logs matapan-claude    # &quot;listening on 0.0.0.0:18778 (mcp at /mcp …)&quot;
+</code></pre>
+<h2 id="tunnel">Tunnel</h2>
+<p>cloudflared runs on the host. <code>~/.cloudflared/config.yml</code>:</p>
+<pre><code class="language-yaml">tunnel: &lt;your-tunnel-id&gt;
+credentials-file: /path/to/&lt;id&gt;.json
+ingress:
+  - hostname: matapan.example.com
+    service: http://localhost:18777
+  - hostname: claude.example.com
+    service: http://localhost:18778
+  - service: http_status:404
+</code></pre>
+<p>Point each connector at <code>https://&lt;host&gt;/mcp</code> and complete the OAuth flow
+— the authorize page demands the owner password from
+<code>MATAPAN_OAUTH_OWNER_PASSWORD</code>.</p>
+<h2 id="environment-variables">Environment variables</h2>
+<p>Precedence is <strong>env &gt; config file &gt; defaults</strong>. The compose file passes
+secrets/hosts through <code>environment:</code>; everything else lives in the
+per-model config file.</p>
+<h3 id="required-in-env-compose-fails-fast-without-them">Required in <code>.env</code> (compose fails fast without them)</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Used by</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MATAPAN_OAUTH_OWNER_PASSWORD</code></td>
+<td>both instances</td>
+<td>Owner password demanded by the OAuth authorize gate. Never stored in the config file.</td>
+</tr>
+<tr>
+<td><code>MATAPAN_OAUTH_ISSUER_CHATGPT</code></td>
+<td><code>matapan-chatgpt</code></td>
+<td>Public tunnel URL of the ChatGPT instance, e.g. <code>https://matapan.example.com</code>. JWT issuer claim.</td>
+</tr>
+<tr>
+<td><code>MATAPAN_OAUTH_ISSUER_CLAUDE</code></td>
+<td><code>matapan-claude</code></td>
+<td>Public tunnel URL of the Claude instance, e.g. <code>https://claude.example.com</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="agent-credentials">Agent credentials</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MATAPAN_OBOL</code></td>
+<td>Bearer token for <code>matapand --stdio</code> (local agent MCP over stdio). Mint with <code>matapan config obol</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="config-file-overrides-all-optional">Config-file overrides (all optional)</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Overrides</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MATAPAN_LISTEN_ADDR</code></td>
+<td><code>listen_addr</code></td>
+<td>HTTP bind address (default <code>127.0.0.1:18777</code>).</td>
+</tr>
+<tr>
+<td><code>MATAPAN_ALLOW_LAN</code></td>
+<td><code>allow_lan</code></td>
+<td>Permit non-loopback bind. Auth still required everywhere except <code>/api/health</code>.</td>
+</tr>
+<tr>
+<td><code>MATAPAN_DB_PATH</code></td>
+<td><code>db_path</code></td>
+<td>SQLite database path.</td>
+</tr>
+<tr>
+<td><code>MATAPAN_WORKSPACE_ROOT</code></td>
+<td><code>workspace_root</code></td>
+<td>Workspace root — must keep host path parity in containers.</td>
+</tr>
+<tr>
+<td><code>MATAPAN_DOCKER_IMAGE</code></td>
+<td><code>docker_image</code></td>
+<td>Digest-pinned runtime image for agent runs.</td>
+</tr>
+<tr>
+<td><code>MATAPAN_OBOL_KEY_PATH</code></td>
+<td><code>obol_key_path</code></td>
+<td>0600 HMAC key file — signs obols, OAuth JWTs, and sealed-proposal anchors.</td>
+</tr>
+<tr>
+<td><code>MATAPAN_SECRET_KEY_PATH</code></td>
+<td><code>secret_key_path</code></td>
+<td>0600 AES-256-GCM key for the secrets broker.</td>
+</tr>
+<tr>
+<td><code>MATAPAN_AUTH_MODE</code></td>
+<td><code>auth.mode</code></td>
+<td><code>oauth</code> (default), <code>charon</code>, or local obol.</td>
+</tr>
+<tr>
+<td><code>MATAPAN_CHARON_URL</code></td>
+<td><code>auth.charon_url</code></td>
+<td>Charon validate endpoint when <code>auth.mode: charon</code>.</td>
+</tr>
+<tr>
+<td><code>MATAPAN_OAUTH_ISSUER</code></td>
+<td><code>auth.oauth_issuer</code></td>
+<td>JWT issuer (usually passed per-instance via <code>.env</code>).</td>
+</tr>
+<tr>
+<td><code>MATAPAN_OAUTH_CLIENT_ID</code></td>
+<td><code>auth.oauth_client_id</code></td>
+<td>Public PKCE client id (default <code>chatgpt-mcp</code>).</td>
+</tr>
+<tr>
+<td><code>MATAPAN_OAUTH_REDIRECTS</code></td>
+<td><code>auth.oauth_redirects</code></td>
+<td>Comma-separated allowed redirect URIs.</td>
+</tr>
+<tr>
+<td><code>MATAPAN_TOOL_PROFILE</code></td>
+<td><code>mcp.tool_profile</code></td>
+<td><code>minimal</code> (core 12 tools) or <code>full</code> (+ typed glob/grep).</td>
+</tr>
+<tr>
+<td><code>MATAPAN_RUNTIME_UID</code> / <code>MATAPAN_RUNTIME_GID</code></td>
+<td><code>runtime.uid/gid</code></td>
+<td>Identity agent run containers execute as.</td>
+</tr>
+<tr>
+<td><code>MATAPAN_RUNTIME_ISOLATION</code></td>
+<td><code>runtime.isolation</code></td>
+<td><code>docker</code> (default) or <code>gvisor</code> (requires runsc; fails hard without it).</td>
+</tr>
+<tr>
+<td><code>MATAPAN_GC_IDLE_HOURS</code></td>
+<td><code>gc.idle_hours</code></td>
+<td>Idle expiry for GC (default 72).</td>
+</tr>
+<tr>
+<td><code>MATAPAN_LEDGER_RETENTION_DAYS</code></td>
+<td><code>ledger.retention_days</code></td>
+<td>Audit retention (default 90).</td>
+</tr>
+<tr>
+<td><code>MATAPAN_LEDGER_MAX_ENTRIES</code></td>
+<td><code>ledger.max_entries</code></td>
+<td>Audit entry cap (default 1,000,000).</td>
+</tr>
+</tbody>
+</table>
+<h2 id="operate">Operate</h2>
+<pre><code class="language-sh">docker compose build                # rebuild after pulling new code
+docker compose up -d                # recreate changed instances
+docker compose logs -f matapan-chatgpt
+docker compose exec matapan-chatgpt matapan --config /data/config.json doctor
+</code></pre>
+<p>On upgrade, the database migrates forward automatically and idempotently
+at open. Pre-v14 workspaces are conservatively marked <code>ever_ran</code> (their
+destroys require Docker visibility), and proposals sealed before the v2
+seal anchor must be re-sealed before they can apply — see
+<a href="operations.html">Operations</a>.</p>
+<div class="pn"><a class="p" href="quickstart.html">← Quickstart</a><a class="n" href="operations.html">Operations →</a></div>
+</main>
+</div>
+<footer>
+  <div class="fl">Matapan<i>.</i></div>
+  <div>
+    <a href="https://github.com/openlethe/matapan" style="margin-left:0">GitHub</a>
+    <a href="../../index.html">Lethe</a>
+    <a href="../../charon.html">Charon</a>
+    <a href="../../matapan.html">Matapan</a>
+  </div>
+  <div class="fc">openlethe.com · 2026</div>
+</footer>
+</body>
+</html>

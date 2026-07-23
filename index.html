@@ -27,6 +27,12 @@
   .navlinks a.here{color:var(--cyan)}
   .cta{border:1px solid var(--cyan);color:var(--cyan)!important;padding:9px 20px;font-size:12px!important;letter-spacing:.15em!important;text-transform:uppercase;transition:all .25s}
   .cta:hover{background:var(--cyan);color:#04141a!important;box-shadow:0 0 28px rgba(57,208,232,.4)}
+  .dd{position:relative}
+  .ddm{display:none;position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%);min-width:200px;background:var(--bg2);border:1px solid var(--line);padding:6px;z-index:60;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+  .dd:hover .ddm,.dd:focus-within .ddm{display:block}
+  .ddm a{display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:13px;color:var(--dim);text-decoration:none;letter-spacing:.04em}
+  .ddm a:hover{background:var(--bg);color:var(--ink)}
+  .ddm .sw{width:8px;height:8px;border-radius:50%;flex:none}
 
   /* ---------- hero ---------- */
   .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px}
@@ -69,7 +75,7 @@
   .vessel p{margin-top:22px;color:var(--dim);font-size:14px;line-height:1.7}
 
   /* ---------- three figures ---------- */
-  .figures{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line);border:1px solid var(--line)}
+  .figures{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:2px;background:var(--line);border:1px solid var(--line)}
   .fig{background:var(--bg);padding:48px 36px;transition:background .3s}
   .fig:hover{background:var(--bg2)}
   .fig .gk{font-family:var(--serif);font-size:15px;letter-spacing:.35em;color:var(--cyan);margin-bottom:18px}
@@ -166,9 +172,17 @@
   <div class="navlinks">
     <a href="index.html" class="here">Lethe</a>
     <a href="charon.html">Charon</a>
+    <a href="matapan.html">Matapan</a>
     <a href="index.html#myth">The myth</a>
     <a href="index.html#how">How it works</a>
-    <a href="docs.html">Docs</a>
+    <div class="dd">
+      <a href="docs.html">Docs ▾</a>
+      <div class="ddm">
+        <a href="docs/index.html"><span class="sw" style="background:#39d0e8"></span>Lethe docs</a>
+        <a href="docs/charon/index.html"><span class="sw" style="background:#d9a441"></span>Charon docs</a>
+        <a href="docs/matapan/index.html"><span class="sw" style="background:#3ddc97"></span>Matapan docs</a>
+      </div>
+    </div>
     <a href="https://github.com/openlethe/lethe">GitHub</a>
     <a class="cta" href="index.html#install">Get started</a>
   </div>
@@ -217,7 +231,7 @@
 <section>
   <div class="wrap">
     <div class="seclabel reveal">The pantheon</div>
-    <h2 class="reveal">Three powers govern<br>the <em>crossing.</em></h2>
+    <h2 class="reveal">The powers that govern<br>the <em>crossing.</em></h2>
     <div class="figures reveal" style="margin-top:56px">
       <div class="fig">
         <div class="gk">ΛΉΘΗ</div>
@@ -237,6 +251,13 @@
         <div class="role">The ferryman</div>
         <p>Charon carried souls across the river for an obol. Your Docker container is the vessel he carries — floating on Lethe, passing through it untouched, memory intact.</p>
         <a class="more" href="charon.html">Meet the ferryman →</a>
+      </div>
+      <div class="fig">
+        <div class="gk">ΤΑΙΝΑΡΟΝ</div>
+        <h3>Matapan</h3>
+        <div class="role">The gate at the cape</div>
+        <p>At Cape Tainaron the Greeks placed an entrance to the underworld — watched in both directions. Matapan is that gate for agents: isolated workspaces in, sealed and verified proposals out.</p>
+        <a class="more" href="matapan.html">Approach the gate →</a>
       </div>
     </div>
   </div>
@@ -367,6 +388,7 @@
   <div>
     <a href="https://github.com/openlethe/lethe" style="margin-left:0">GitHub</a>
     <a href="charon.html">Charon</a>
+    <a href="matapan.html">Matapan</a>
     <a href="docs.html">Docs</a>
     <a href="index.html#pricing">Pricing</a>
   </div>

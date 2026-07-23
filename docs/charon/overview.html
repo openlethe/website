@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OpenClaw — Lethe Docs</title>
+<title>Overview — Charon Docs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#05070a;--bg2:#080d12;--ink:#e8f2f5;--dim:#7d99a3;--faint:#41565e;--cyan:#39d0e8;--cyan-soft:rgba(57,208,232,.12);--line:#12242c;--serif:'Cormorant Garamond',serif}
+:root{--bg:#070604;--bg2:#0d0a06;--ink:#f5efe4;--dim:#a3988a;--faint:#5c5344;--cyan:#d9a441;--cyan-soft:rgba(217,164,65,.12);--line:#2a2214;--serif:'Cormorant Garamond',serif}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;overflow-x:hidden;font-size:15px;line-height:1.65}
-::selection{background:var(--cyan);color:#04141a}
-nav.top{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:#05070ad9;backdrop-filter:blur(14px);border-bottom:1px solid rgba(57,208,232,.08)}
+::selection{background:var(--cyan);color:#1a1204}
+nav.top{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:#070604d9;backdrop-filter:blur(14px);border-bottom:1px solid rgba(217,164,65,.08)}
 .logo{font-weight:700;font-size:20px;letter-spacing:-.02em;text-decoration:none;color:var(--ink)}
 .logo i{font-style:normal;color:var(--cyan)}
 .navlinks{display:flex;gap:32px;align-items:center}
@@ -20,7 +20,7 @@ nav.top{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:
 .navlinks a:hover{color:var(--cyan)}
 .navlinks a.here{color:var(--cyan)}
 .cta{border:1px solid var(--cyan);color:var(--cyan)!important;padding:9px 20px;font-size:12px!important;letter-spacing:.15em!important;text-transform:uppercase;text-decoration:none;transition:all .25s}
-.cta:hover{background:var(--cyan);color:#04141a!important}
+.cta:hover{background:var(--cyan);color:#1a1204!important}
 .dd{position:relative}
 .ddt{cursor:pointer}
 .ddm{display:none;position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%);min-width:200px;background:var(--bg2);border:1px solid var(--line);padding:6px;z-index:60;box-shadow:0 24px 60px rgba(0,0,0,.5)}
@@ -52,13 +52,13 @@ main a{color:var(--cyan)}
 main ul,main ol{color:var(--dim);margin:12px 0 16px 22px;font-weight:300}
 main li{margin:6px 0}
 main code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);background:var(--cyan-soft);padding:2px 7px;border-radius:4px}
-main pre{background:#03080a;border:1px solid var(--line);border-radius:6px;padding:18px 20px;overflow-x:auto;margin:16px 0}
-main pre code{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.8;color:#9fc3cd;background:none;padding:0}
+main pre{background:#0a0805;border:1px solid var(--line);border-radius:6px;padding:18px 20px;overflow-x:auto;margin:16px 0}
+main pre code{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.8;color:#cbb693;background:none;padding:0}
 main table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
 main th{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--faint);text-align:left;padding:11px 12px;border-bottom:1px solid var(--line)}
 main td{padding:11px 12px;border-bottom:1px solid var(--line);color:var(--dim);line-height:1.55;vertical-align:top;font-weight:300}
 main td code{white-space:nowrap}
-main tr:hover td{background:rgba(57,208,232,.03)}
+main tr:hover td{background:rgba(217,164,65,.03)}
 main blockquote{border-left:2px solid var(--cyan);padding:8px 0 8px 18px;margin:16px 0;color:var(--dim);font-weight:300}
 main hr{border:none;border-top:1px solid var(--line);margin:28px 0}
 .kick{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.28em;color:var(--cyan);text-transform:uppercase}
@@ -77,111 +77,130 @@ footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--fai
 </head>
 <body>
 <nav class="top">
-  <a class="logo" href="../index.html">Lethe<i>.</i></a>
+  <a class="logo" href="../../index.html">Charon<i>.</i></a>
   <div class="navlinks">
-    <a href="../index.html">Lethe</a>
-    <a href="../charon.html">Charon</a>
-    <a href="../matapan.html">Matapan</a>
+    <a href="../../index.html">Lethe</a>
+    <a href="../../charon.html">Charon</a>
+    <a href="../../matapan.html">Matapan</a>
     <div class="dd">
-      <a class="ddt here" href="../docs.html">Docs ▾</a>
+      <a class="ddt here" href="../../docs.html">Docs ▾</a>
       <div class="ddm">
-<a href="index.html"><span class="sw" style="background:#39d0e8"></span>Lethe docs</a>
-<a href="charon/index.html"><span class="sw" style="background:#d9a441"></span>Charon docs</a>
-<a href="matapan/index.html"><span class="sw" style="background:#3ddc97"></span>Matapan docs</a>
+<a href="../index.html"><span class="sw" style="background:#39d0e8"></span>Lethe docs</a>
+<a href="../charon/index.html"><span class="sw" style="background:#d9a441"></span>Charon docs</a>
+<a href="../matapan/index.html"><span class="sw" style="background:#3ddc97"></span>Matapan docs</a>
       </div>
     </div>
-    <a href="https://github.com/openlethe/lethe">GitHub</a>
-    <a class="cta" href="installation.html">Get started</a>
+    <a href="https://github.com/openlethe/charon">GitHub</a>
+    <a class="cta" href="full-run.html">Get started</a>
   </div>
 </nav>
 <div class="wiki">
 <aside>
-<div class="proj"><a class="onl" href="index.html">Lethe</a>
-<a class="" href="charon/index.html">Charon</a>
-<a class="" href="matapan/index.html">Matapan</a></div>
+<div class="proj"><a class="" href="../index.html">Lethe</a>
+<a class="onc" href="index.html">Charon</a>
+<a class="" href="../matapan/index.html">Matapan</a></div>
 <div class="grp"><div class="gt">Start</div>
-<a href="overview.html">Overview</a>
-<a href="installation.html">Installation</a>
-<a href="runtime-modes.html">Runtime Modes</a>
-<div class="grp"><div class="gt">Memory Systems</div>
-<a href="memory-git.html">Memory Git</a>
-<a href="legacy-mode.html">Legacy Mode</a>
+<a href="overview.html" class="on">Overview</a>
+<a href="full-run.html">Full Run: End to End</a>
 <div class="grp"><div class="gt">Platform</div>
-<a href="architecture.html">Architecture</a>
-<a href="configuration.html">Configuration</a>
-<a href="deployment.html">Deployment &amp; Ops</a>
-<a href="docker-compose.html">Compose Variations</a>
-<div class="grp"><div class="gt">Reference</div>
-<a href="api.html">HTTP API Reference</a>
-<div class="grp"><div class="gt">Integrations</div>
-<a href="openclaw.html" class="on">OpenClaw</a>
-<a href="integrations.html">Client Integrations</a>
-<div class="grp"><div class="gt">Project</div>
-<a href="migration.html">Migration &amp; Upgrading</a>
-<a href="faq.html">FAQ</a>
-<div class="grp"><div class="gt">Deep Dive</div>
-<a href="memory-git-v1.html">Protocol · memory_git/v1</a>
-<a href="memory-context-bridge.html">Context Projection</a>
-<a href="observability.html">Observability</a>
+<a href="operations.html">Operations</a>
+<a href="reviewer.html">Local Reviewer Setup</a>
 </div>
 </aside>
 <main>
-<div class="kick">Lethe docs · OpenClaw</div>
-<h1 id="openclaw-integration">OpenClaw Integration</h1>
-<p>OpenClaw is Lethe's first-class integration — one excellent client, not a
-requirement. For OpenClaw users, <strong>Legacy mode is the recommended
-deployment</strong>; the plugin automates the entire session-memory loop.</p>
-<h2 id="what-the-plugin-does">What the plugin does</h2>
-<ul>
-<li>Registers as a <strong>context engine</strong> (<code>bootstrap</code>, <code>assemble</code>, <code>compact</code>
-  hooks) so memory loads before the agent processes its first message.</li>
-<li>Runs <strong>two-stage retrieval</strong> at every session start: previous session
-  summary first, then recent events within the token budget.</li>
-<li>Conditions the agent to <strong>record as it works</strong> (<code>lethe.record</code>,
-  <code>lethe.log</code>, <code>lethe.flag</code>, <code>lethe.task</code>, <code>lethe_search</code>) — no manual
-  tagging.</li>
-<li>Writes a <strong>heartbeat checkpoint every 60 seconds</strong>; crashes resume from
-  the last snapshot automatically.</li>
-<li>Surfaces flags and assemblies in the review board so a human can approve,
-  and the next session knows what was resolved.</li>
-</ul>
-<h2 id="install">Install</h2>
-<pre><code class="language-bash"># 1 · legacy-mode Lethe on 18483 (see installation.md)
-docker run -d --name lethe -p 127.0.0.1:18483:18483 \
-  -v &quot;$PWD/lethe-data:/data&quot; ghcr.io/openlethe/lethe:latest
-
-# 2 · the plugin from ClawHub
-openclaw skills install lethe-memory
-
-# 3 · only needed beyond loopback: a key
-./lethe keygen &amp;&amp; export LETHE_API_KEY=lethe_…
+<div class="kick">Charon docs · Overview</div>
+<h1 id="charon">Charon</h1>
+<blockquote>
+<p>Lethe remembers. Charon carries.</p>
+</blockquote>
+<p>Charon is a self-hosted <strong>MCP policy gateway</strong> for
+<a href="https://github.com/openlethe/lethe">Lethe</a>. It gives AI clients scoped,
+auditable access to Lethe memory while Lethe itself stays private.</p>
+<h2 id="architecture">Architecture</h2>
+<pre><code>MCP Client (ChatGPT, Claude, etc.)
+  |
+  | HTTPS
+  v
+Cloudflare Tunnel / cloudflared
+  |
+  | HTTP
+  v
+Charon (MCP Gateway + Auth)
+  |
+  | Private Network
+  v
+Lethe / Lethe Git (memory store)
 </code></pre>
-<p>Plugin configuration lives in <code>openclaw.plugin.json</code> (endpoint, optional
-API key, project, agent ID). If <code>LETHE_API_KEY</code> is set on the server, the
-same value belongs in the plugin config.</p>
-<h2 id="relationship-to-memory-git">Relationship to Memory Git</h2>
-<p>The plugin automates <strong>session</strong> memory. It does not write to Memory Git by
-default; an experimental <code>memoryGitContext</code> compatibility switch exists for
-migration testing, but the intended versioned-memory client is
-<a href="https://github.com/openlethe/charon">Charon</a> with any MCP harness (see
-<a href="integrations.html">integrations.md</a>). Both systems can run side by side —
-that is exactly what <a href="runtime-modes.html#hybrid-mode">hybrid mode</a> is for.</p>
-<h2 id="when-you-outgrow-it">When you outgrow it</h2>
+<p>No client ever talks to the memory store directly. Every call passes
+through Charon's principal model: who you are, which projects you can see,
+which scopes you hold, and which refs you own.</p>
+<h2 id="what-it-provides">What it provides</h2>
 <ul>
-<li>Several agents need one shared, reviewed memory → Memory Git + Charon.</li>
-<li>Memory must be provable, branched, and replay-protected → Memory Git.</li>
-<li>The plugin stays useful in parallel for OpenClaw's own session continuity.</li>
+<li><strong>Project-scoped authorization</strong> — per-principal project grants, exact
+  and case-sensitive. A wildcard grant is read-only; mutations need an
+  exact project grant.</li>
+<li><strong>Actor-owned refs</strong> — <code>refs/agents/&lt;actor&gt;/main</code>,
+  <code>refs/sessions/&lt;actor&gt;/&lt;session&gt;</code>, <code>refs/topics/&lt;topic&gt;</code>. Principals
+  commit only to refs they own.</li>
+<li><strong>Compare-and-swap changesets</strong> — every write is an immutable,
+  digest-chained changeset with explicit ordered semantic operations and
+  idempotency keys.</li>
+<li><strong>Protected shared memory</strong> — <code>refs/shared/*</code> moves only by proposal,
+  <strong>independent review</strong> (the originator can never review its own work),
+  and a signed merge envelope verified by Lethe.</li>
+<li><strong>Auditable proposals</strong> — every review decision and merge lands in a
+  hash-chained ledger.</li>
+<li><strong>Two credential surfaces</strong> — OAuth (PKCE) for browser connectors like
+  ChatGPT, and Obol bearer tokens for local agents and reviewer
+  automation. Obols are audience-bound and minted per gateway.</li>
 </ul>
-<div class="pn"><a class="p" href="api.html">← HTTP API Reference</a><a class="n" href="integrations.html">Client Integrations →</a></div>
+<h2 id="principals-and-scopes">Principals and scopes</h2>
+<table>
+<thead>
+<tr>
+<th>Principal profile</th>
+<th>Scopes</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Author (proposer)</td>
+<td><code>memory.read</code> <code>memory.search</code> <code>memory.branch</code> <code>memory.commit</code> <code>memory.propose</code></td>
+<td>Writes owned refs, proposes merges</td>
+</tr>
+<tr>
+<td>Reviewer</td>
+<td><code>memory.read</code> <code>memory.search</code> <code>memory.review</code> <code>memory.merge</code> <code>proposal.review</code></td>
+<td>Independent review and merge</td>
+</tr>
+<tr>
+<td>Reader</td>
+<td><code>memory.read</code> <code>memory.search</code> <code>thread.read</code></td>
+<td>Accepted-memory recall only</td>
+</tr>
+</tbody>
+</table>
+<p>The review-separation property is structural: the gateway identifies the
+principal and refuses self-review no matter what the client asks.</p>
+<h2 id="where-to-go-next">Where to go next</h2>
+<ul>
+<li><a href="full-run.html">Full Run: End to End</a> — bootstrap, credentials, three
+  agent roles, and a complete propose → review → merge cycle.</li>
+<li><a href="operations.html">Operations</a> — running and maintaining the gateway.</li>
+<li><a href="reviewer.html">Local Reviewer Setup</a> — the isolated reviewer
+  deployment used for protected-ref merges.</li>
+</ul>
+<div class="pn"><a class="n" href="full-run.html">Full Run: End to End →</a></div>
 </main>
 </div>
 <footer>
-  <div class="fl">Lethe<i>.</i></div>
+  <div class="fl">Charon<i>.</i></div>
   <div>
-    <a href="https://github.com/openlethe/lethe" style="margin-left:0">GitHub</a>
-    <a href="../index.html">Lethe</a>
-    <a href="../charon.html">Charon</a>
-    <a href="../matapan.html">Matapan</a>
+    <a href="https://github.com/openlethe/charon" style="margin-left:0">GitHub</a>
+    <a href="../../index.html">Lethe</a>
+    <a href="../../charon.html">Charon</a>
+    <a href="../../matapan.html">Matapan</a>
   </div>
   <div class="fc">openlethe.com · 2026</div>
 </footer>

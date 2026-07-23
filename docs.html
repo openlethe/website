@@ -1,12 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="refresh" content="0; url=docs/index.html">
-<link rel="canonical" href="docs/index.html">
-<title>Docs — Lethe</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Documentation — Lethe · Charon · Matapan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#05070a; --bg2:#080d12; --ink:#e8f2f5; --dim:#7d99a3; --faint:#41565e; --line:#12242c;
+    --lethe:#39d0e8; --charon:#d9a441; --matapan:#3ddc97; --serif:'Cormorant Garamond',serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;min-height:100vh;display:flex;flex-direction:column}
+  ::selection{background:var(--lethe);color:#04141a}
+  nav{display:flex;align-items:center;justify-content:space-between;padding:18px 40px;border-bottom:1px solid var(--line)}
+  .logo{font-weight:700;font-size:20px;letter-spacing:-.02em;text-decoration:none;color:var(--ink)}
+  .logo i{font-style:normal;color:var(--lethe)}
+  .navlinks{display:flex;gap:28px}
+  .navlinks a{color:var(--dim);text-decoration:none;font-size:13px;letter-spacing:.08em}
+  .navlinks a:hover{color:var(--lethe)}
+  main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px}
+  .kick{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.4em;color:var(--faint);text-transform:uppercase;margin-bottom:22px}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(40px,6vw,72px);line-height:1.05;margin-bottom:18px;text-align:center}
+  p.sub{color:var(--dim);font-weight:300;max-width:520px;text-align:center;line-height:1.7;margin-bottom:64px}
+  .cards{display:grid;grid-template-columns:repeat(3,minmax(220px,300px));gap:2px;background:var(--line);border:1px solid var(--line);width:min(960px,100%)}
+  .card{background:var(--bg);padding:48px 36px;text-decoration:none;color:var(--ink);transition:background .3s;position:relative;overflow:hidden}
+  .card:hover{background:var(--bg2)}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--pc)}
+  .card .gk{font-family:var(--serif);font-size:14px;letter-spacing:.35em;color:var(--pc);margin-bottom:18px}
+  .card h3{font-family:var(--serif);font-size:32px;font-weight:400;margin-bottom:6px}
+  .card .role{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--faint);text-transform:uppercase;margin-bottom:20px}
+  .card p{color:var(--dim);font-size:14px;line-height:1.75;font-weight:300}
+  .card .go{display:inline-block;margin-top:22px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:var(--pc);text-transform:uppercase}
+  .lethe-c{--pc:var(--lethe)} .charon-c{--pc:var(--charon)} .matapan-c{--pc:var(--matapan)}
+  footer{border-top:1px solid var(--line);padding:28px 40px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  footer a{color:var(--faint);text-decoration:none;font-size:13px;margin-left:24px}
+  footer a:hover{color:var(--lethe)}
+  footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);letter-spacing:.15em}
+  @media(max-width:900px){.cards{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
-<p>The documentation has moved to <a href="docs/index.html">the Lethe wiki</a>.</p>
+<nav>
+  <a class="logo" href="index.html">Lethe<i>.</i></a>
+  <div class="navlinks">
+    <a href="index.html">Lethe</a>
+    <a href="charon.html">Charon</a>
+    <a href="matapan.html">Matapan</a>
+  </div>
+</nav>
+<main>
+  <div class="kick">Documentation</div>
+  <h1>Pick a project.</h1>
+  <p class="sub">Each project keeps its own wiki, in its own color. Content mirrors the <code>docs/</code> directory of each repository.</p>
+  <div class="cards">
+    <a class="card lethe-c" href="docs/index.html">
+      <div class="gk">ΛΉΘΗ</div>
+      <h3>Lethe</h3>
+      <div class="role">Agent memory layer</div>
+      <p>Sessions, events, memory git, compaction, and the OpenClaw plugin. Install, runtime modes, API reference, integrations.</p>
+      <span class="go">Open the wiki →</span>
+    </a>
+    <a class="card charon-c" href="docs/charon/index.html">
+      <div class="gk">ΧΆΡΩΝ</div>
+      <h3>Charon</h3>
+      <div class="role">MCP authorization gateway</div>
+      <p>Principals, scopes, owned refs, CAS changesets, and the protected shared-memory merge flow — end to end.</p>
+      <span class="go">Open the wiki →</span>
+    </a>
+    <a class="card matapan-c" href="docs/matapan/index.html">
+      <div class="gk">ΤΑΙΝΑΡΟΝ</div>
+      <h3>Matapan</h3>
+      <div class="role">Agent execution broker</div>
+      <p>Workspaces, sealed proposals, the hardened git runner, and the full per-model Docker Compose deployment with env reference.</p>
+      <span class="go">Open the wiki →</span>
+    </a>
+  </div>
+</main>
+<footer>
+  <div class="fc">openlethe.com · 2026</div>
+  <div>
+    <a href="https://github.com/openlethe" style="margin-left:0">GitHub</a>
+  </div>
+</footer>
 </body>
 </html>

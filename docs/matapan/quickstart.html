@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quickstart — Matapan Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#040806;--bg2:#081209;--ink:#e6f5ec;--dim:#82a392;--faint:#3f5c4c;--cyan:#3ddc97;--cyan-soft:rgba(61,220,151,.12);--line:#122a1c;--serif:'Cormorant Garamond',serif}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;overflow-x:hidden;font-size:15px;line-height:1.65}
+::selection{background:var(--cyan);color:#04140c}
+nav.top{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:#040806d9;backdrop-filter:blur(14px);border-bottom:1px solid rgba(61,220,151,.08)}
+.logo{font-weight:700;font-size:20px;letter-spacing:-.02em;text-decoration:none;color:var(--ink)}
+.logo i{font-style:normal;color:var(--cyan)}
+.navlinks{display:flex;gap:32px;align-items:center}
+.navlinks a{color:var(--dim);text-decoration:none;font-size:13px;letter-spacing:.08em;transition:color .25s}
+.navlinks a:hover{color:var(--cyan)}
+.navlinks a.here{color:var(--cyan)}
+.cta{border:1px solid var(--cyan);color:var(--cyan)!important;padding:9px 20px;font-size:12px!important;letter-spacing:.15em!important;text-transform:uppercase;text-decoration:none;transition:all .25s}
+.cta:hover{background:var(--cyan);color:#04140c!important}
+.dd{position:relative}
+.ddt{cursor:pointer}
+.ddm{display:none;position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%);min-width:200px;background:var(--bg2);border:1px solid var(--line);padding:6px;z-index:60;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.dd:hover .ddm,.dd:focus-within .ddm{display:block}
+.ddm a{display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:13px;color:var(--dim);text-decoration:none;letter-spacing:.04em}
+.ddm a:hover{background:var(--bg);color:var(--ink)}
+.ddm .sw{width:8px;height:8px;border-radius:50%;flex:none}
+.wiki{display:grid;grid-template-columns:270px minmax(0,1fr);gap:64px;max-width:1320px;margin:0 auto;padding:110px 32px 60px}
+aside{position:sticky;top:96px;align-self:start;max-height:calc(100vh - 126px);overflow-y:auto;padding-right:14px;scrollbar-width:thin}
+aside .proj{display:flex;gap:6px;margin-bottom:22px}
+aside .proj a{flex:1;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:7px 4px;border:1px solid var(--line);color:var(--faint);transition:all .2s}
+aside .proj a:hover{color:var(--ink);border-color:var(--dim)}
+aside .proj a.onl{color:#39d0e8;border-color:#39d0e8}
+aside .proj a.onc{color:#d9a441;border-color:#d9a441}
+aside .proj a.onm{color:#3ddc97;border-color:#3ddc97}
+aside .grp{margin-bottom:26px}
+aside .gt{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--faint);text-transform:uppercase;margin-bottom:10px}
+aside a{display:block;color:var(--dim);text-decoration:none;font-size:13px;padding:5px 0 5px 16px;border-left:1px solid var(--line);transition:all .2s;line-height:1.4}
+aside a:hover{color:var(--cyan)}
+aside a.on{color:var(--cyan);border-left-color:var(--cyan)}
+main{min-width:0;max-width:860px}
+main h1{font-family:var(--serif);font-weight:400;font-size:clamp(32px,4.5vw,46px);line-height:1.1;margin:14px 0 18px}
+main h2{font-family:var(--serif);font-weight:400;font-size:clamp(24px,3vw,32px);line-height:1.15;margin:40px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
+main h2:first-of-type{border-top:none;padding-top:0}
+main h3{font-size:18px;font-weight:600;margin:28px 0 8px}
+main p{color:var(--dim);margin:12px 0;font-weight:300}
+main b,main strong{color:var(--ink);font-weight:500}
+main a{color:var(--cyan)}
+main ul,main ol{color:var(--dim);margin:12px 0 16px 22px;font-weight:300}
+main li{margin:6px 0}
+main code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);background:var(--cyan-soft);padding:2px 7px;border-radius:4px}
+main pre{background:#030a06;border:1px solid var(--line);border-radius:6px;padding:18px 20px;overflow-x:auto;margin:16px 0}
+main pre code{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.8;color:#9fcdb2;background:none;padding:0}
+main table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+main th{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--faint);text-align:left;padding:11px 12px;border-bottom:1px solid var(--line)}
+main td{padding:11px 12px;border-bottom:1px solid var(--line);color:var(--dim);line-height:1.55;vertical-align:top;font-weight:300}
+main td code{white-space:nowrap}
+main tr:hover td{background:rgba(61,220,151,.03)}
+main blockquote{border-left:2px solid var(--cyan);padding:8px 0 8px 18px;margin:16px 0;color:var(--dim);font-weight:300}
+main hr{border:none;border-top:1px solid var(--line);margin:28px 0}
+.kick{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.28em;color:var(--cyan);text-transform:uppercase}
+.pn{display:flex;justify-content:space-between;gap:16px;margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-size:13px}
+.pn a{color:var(--dim);text-decoration:none}
+.pn a:hover{color:var(--cyan)}
+.pn .n{margin-left:auto}
+footer{border-top:1px solid var(--line);padding:40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-top:40px}
+footer .fl{font-weight:700;font-size:18px}
+footer .fl i{font-style:normal;color:var(--cyan)}
+footer a{color:var(--faint);text-decoration:none;font-size:13px;margin-left:24px;transition:color .25s}
+footer a:hover{color:var(--cyan)}
+footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);letter-spacing:.15em}
+@media(max-width:1000px){.wiki{grid-template-columns:1fr;gap:0;padding-top:100px}aside{position:static;max-height:none;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}aside .grp{margin:0}aside .gt{display:none}aside a{border:1px solid var(--line);padding:6px 12px;font-size:12px}.navlinks a:not(.cta){display:none}.ddm{position:static;transform:none;display:block;box-shadow:none;background:none;border:none;padding:0}}
+</style>
+</head>
+<body>
+<nav class="top">
+  <a class="logo" href="../../index.html">Matapan<i>.</i></a>
+  <div class="navlinks">
+    <a href="../../index.html">Lethe</a>
+    <a href="../../charon.html">Charon</a>
+    <a href="../../matapan.html">Matapan</a>
+    <div class="dd">
+      <a class="ddt here" href="../../docs.html">Docs ▾</a>
+      <div class="ddm">
+<a href="../index.html"><span class="sw" style="background:#39d0e8"></span>Lethe docs</a>
+<a href="../charon/index.html"><span class="sw" style="background:#d9a441"></span>Charon docs</a>
+<a href="../matapan/index.html"><span class="sw" style="background:#3ddc97"></span>Matapan docs</a>
+      </div>
+    </div>
+    <a href="https://github.com/openlethe/matapan">GitHub</a>
+    <a class="cta" href="quickstart.html">Get started</a>
+  </div>
+</nav>
+<div class="wiki">
+<aside>
+<div class="proj"><a class="" href="../index.html">Lethe</a>
+<a class="" href="../charon/index.html">Charon</a>
+<a class="onm" href="index.html">Matapan</a></div>
+<div class="grp"><div class="gt">Start</div>
+<a href="overview.html">Overview</a>
+<a href="quickstart.html" class="on">Quickstart</a>
+<div class="grp"><div class="gt">Deploy</div>
+<a href="docker-compose.html">Docker Compose Setup</a>
+<a href="operations.html">Operations</a>
+<a href="docker-limitations.html">Docker Limitations</a>
+<div class="grp"><div class="gt">Security</div>
+<a href="threat-model.html">Threat Model</a>
+<div class="grp"><div class="gt">Project</div>
+<a href="comparison-devspace.html">vs DevSpace</a>
+</div>
+</aside>
+<main>
+<div class="kick">Matapan docs · Quickstart</div>
+<h1 id="quickstart">Quickstart</h1>
+<p>From zero, on macOS or Linux. Requires git, Go 1.25.12+ (to build from
+source), and a local Docker daemon for <code>workspace_run</code>.</p>
+<h2 id="1-install-and-verify">1. Install and verify</h2>
+<pre><code class="language-sh"># Install (builds and installs to /usr/local/bin, or --user for ~/.local/bin)
+scripts/install.sh
+
+# Verify the environment
+matapan doctor
+# git                    ok   git version 2.50.1
+# config                 ok   ~/.matapan/config.json
+# database               ok   ~/.matapan/matapan.db (schema current)
+# obol key               ok   ~/.matapan/obol.key (perms 600)
+# docker                 ok   daemon reachable
+# runtime image          ok   present, digest matches
+# runtime spawn          ok   hardened container ran, exit 0
+
+# Pre-pull the digest-pinned runtime image
+matapan runtime pull
+</code></pre>
+<h2 id="2-create-a-workspace">2. Create a workspace</h2>
+<pre><code class="language-sh"># From a git repo — a linked worktree at an exact commit
+matapan workspace create --repo ~/src/my-app --base main
+# {&quot;ID&quot;: &quot;019f…&quot;, &quot;State&quot;: &quot;ready&quot;, &quot;Branch&quot;: &quot;matapan/019f…&quot;, …}
+</code></pre>
+<p>Other source types: <code>--source snapshot --path /dir</code> (defended copy of a
+non-Git directory), <code>--source fresh [--git-init]</code> (empty scaffold).
+Useful flags: <code>--profile restricted</code> (policy profile), <code>--lease 24h</code>
+(GC expiry), <code>--egress proxy.example.com</code> (human egress grant).</p>
+<h2 id="3-start-the-daemon-and-connect-an-agent">3. Start the daemon and connect an agent</h2>
+<pre><code class="language-sh">matapand &amp;   # HTTP on 127.0.0.1:18777
+</code></pre>
+<ul>
+<li><strong>Claude Code / local agents (stdio):</strong> <code>matapand --stdio</code> with
+  <code>MATAPAN_OBOL</code> set. Mint one with <code>matapan config obol</code> — use it as a
+  bearer token for <code>/mcp</code>, or export it as <code>MATAPAN_OBOL</code> for stdio mode.</li>
+<li><strong>ChatGPT / remote connectors (HTTPS):</strong> put a user-managed tunnel
+  (cloudflared, tailscale funnel) in front of the loopback listener and
+  complete the OAuth flow — see
+  <a href="docker-compose.html">Docker Compose Setup</a> for the full deployment.</li>
+</ul>
+<p>The agent then drives <code>workspace_file_edit</code> / <code>workspace_run</code> /
+<code>workspace_commit</code> against the workspace ID.</p>
+<h2 id="4-seal-review-apply">4. Seal, review, apply</h2>
+<pre><code class="language-sh"># The agent seals the workspace into an immutable proposal. Review it:
+matapan proposal list
+matapan proposal show &lt;id&gt;            # diff, digests, evidence, lineage
+
+# Apply with compare-and-swap against the expected base:
+matapan proposal apply &lt;id&gt; --expected-base &lt;commit&gt;
+# {&quot;ProposalID&quot;: &quot;019f…&quot;, &quot;AppliedHead&quot;: &quot;7f84…&quot;, &quot;Strategy&quot;: &quot;auto&quot;,
+#  &quot;Rollback&quot;: &quot;git -C ~/src/my-app reset --hard &lt;commit&gt;&quot;}
+</code></pre>
+<p>Apply verifies the sealed content digest, the HMAC-authenticated target
+anchor, and the source identity before anything moves. A stale base is a
+typed error — <code>matapan proposal revise &lt;id&gt;</code> seeds a fresh workspace from
+the proposal and re-seals.</p>
+<h2 id="5-housekeeping">5. Housekeeping</h2>
+<pre><code class="language-sh">matapan workspace destroy &lt;id&gt;        # verified teardown
+matapan gc --dry-run                  # what idle/expired GC would collect
+matapan workspace diagnose &lt;id&gt;       # one workspace, full detail
+</code></pre>
+<p>Destroy requires verified container absence: labeled containers are
+killed and re-listed before anything is deleted, and a process without
+Docker visibility refuses workspaces that have ever run.</p>
+<div class="pn"><a class="p" href="overview.html">← Overview</a><a class="n" href="docker-compose.html">Docker Compose Setup →</a></div>
+</main>
+</div>
+<footer>
+  <div class="fl">Matapan<i>.</i></div>
+  <div>
+    <a href="https://github.com/openlethe/matapan" style="margin-left:0">GitHub</a>
+    <a href="../../index.html">Lethe</a>
+    <a href="../../charon.html">Charon</a>
+    <a href="../../matapan.html">Matapan</a>
+  </div>
+  <div class="fc">openlethe.com · 2026</div>
+</footer>
+</body>
+</html>

@@ -7,12 +7,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#05070a;--bg2:#080d12;--ink:#e8f2f5;--dim:#7d99a3;--faint:#41565e;--cyan:#39d0e8;--cyan-soft:rgba(57,208,232,.12);--line:#12242c;--serif:'Cormorant Garamond',serif;--gold:#d9a441;--gold-soft:rgba(217,164,65,.12)}
+:root{--bg:#05070a;--bg2:#080d12;--ink:#e8f2f5;--dim:#7d99a3;--faint:#41565e;--cyan:#39d0e8;--cyan-soft:rgba(57,208,232,.12);--line:#12242c;--serif:'Cormorant Garamond',serif}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;overflow-x:hidden;font-size:15px;line-height:1.65}
 ::selection{background:var(--cyan);color:#04141a}
-nav.top{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:rgba(5,7,10,.55);backdrop-filter:blur(14px);border-bottom:1px solid rgba(57,208,232,.08)}
+nav.top{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:#05070ad9;backdrop-filter:blur(14px);border-bottom:1px solid rgba(57,208,232,.08)}
 .logo{font-weight:700;font-size:20px;letter-spacing:-.02em;text-decoration:none;color:var(--ink)}
 .logo i{font-style:normal;color:var(--cyan)}
 .navlinks{display:flex;gap:32px;align-items:center}
@@ -21,8 +21,21 @@ nav.top{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:
 .navlinks a.here{color:var(--cyan)}
 .cta{border:1px solid var(--cyan);color:var(--cyan)!important;padding:9px 20px;font-size:12px!important;letter-spacing:.15em!important;text-transform:uppercase;text-decoration:none;transition:all .25s}
 .cta:hover{background:var(--cyan);color:#04141a!important}
+.dd{position:relative}
+.ddt{cursor:pointer}
+.ddm{display:none;position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%);min-width:200px;background:var(--bg2);border:1px solid var(--line);padding:6px;z-index:60;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.dd:hover .ddm,.dd:focus-within .ddm{display:block}
+.ddm a{display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:13px;color:var(--dim);text-decoration:none;letter-spacing:.04em}
+.ddm a:hover{background:var(--bg);color:var(--ink)}
+.ddm .sw{width:8px;height:8px;border-radius:50%;flex:none}
 .wiki{display:grid;grid-template-columns:270px minmax(0,1fr);gap:64px;max-width:1320px;margin:0 auto;padding:110px 32px 60px}
 aside{position:sticky;top:96px;align-self:start;max-height:calc(100vh - 126px);overflow-y:auto;padding-right:14px;scrollbar-width:thin}
+aside .proj{display:flex;gap:6px;margin-bottom:22px}
+aside .proj a{flex:1;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:7px 4px;border:1px solid var(--line);color:var(--faint);transition:all .2s}
+aside .proj a:hover{color:var(--ink);border-color:var(--dim)}
+aside .proj a.onl{color:#39d0e8;border-color:#39d0e8}
+aside .proj a.onc{color:#d9a441;border-color:#d9a441}
+aside .proj a.onm{color:#3ddc97;border-color:#3ddc97}
 aside .grp{margin-bottom:26px}
 aside .gt{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--faint);text-transform:uppercase;margin-bottom:10px}
 aside a{display:block;color:var(--dim);text-decoration:none;font-size:13px;padding:5px 0 5px 16px;border-left:1px solid var(--line);transition:all .2s;line-height:1.4}
@@ -46,7 +59,7 @@ main th{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.2
 main td{padding:11px 12px;border-bottom:1px solid var(--line);color:var(--dim);line-height:1.55;vertical-align:top;font-weight:300}
 main td code{white-space:nowrap}
 main tr:hover td{background:rgba(57,208,232,.03)}
-main blockquote{border-left:2px solid var(--gold);padding:8px 0 8px 18px;margin:16px 0;color:var(--dim);font-weight:300}
+main blockquote{border-left:2px solid var(--cyan);padding:8px 0 8px 18px;margin:16px 0;color:var(--dim);font-weight:300}
 main hr{border:none;border-top:1px solid var(--line);margin:28px 0}
 .kick{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.28em;color:var(--cyan);text-transform:uppercase}
 .pn{display:flex;justify-content:space-between;gap:16px;margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-size:13px}
@@ -59,7 +72,7 @@ footer .fl i{font-style:normal;color:var(--cyan)}
 footer a{color:var(--faint);text-decoration:none;font-size:13px;margin-left:24px;transition:color .25s}
 footer a:hover{color:var(--cyan)}
 footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);letter-spacing:.15em}
-@media(max-width:1000px){.wiki{grid-template-columns:1fr;gap:0;padding-top:100px}aside{position:static;max-height:none;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}aside .grp{margin:0}aside .gt{display:none}aside a{border:1px solid var(--line);padding:6px 12px;font-size:12px}.navlinks a:not(.cta){display:none}}
+@media(max-width:1000px){.wiki{grid-template-columns:1fr;gap:0;padding-top:100px}aside{position:static;max-height:none;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}aside .grp{margin:0}aside .gt{display:none}aside a{border:1px solid var(--line);padding:6px 12px;font-size:12px}.navlinks a:not(.cta){display:none}.ddm{position:static;transform:none;display:block;box-shadow:none;background:none;border:none;padding:0}}
 </style>
 </head>
 <body>
@@ -68,13 +81,24 @@ footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--fai
   <div class="navlinks">
     <a href="../index.html">Lethe</a>
     <a href="../charon.html">Charon</a>
-    <a href="index.html" class="here">Docs</a>
+    <a href="../matapan.html">Matapan</a>
+    <div class="dd">
+      <a class="ddt here" href="../docs.html">Docs ▾</a>
+      <div class="ddm">
+<a href="index.html"><span class="sw" style="background:#39d0e8"></span>Lethe docs</a>
+<a href="charon/index.html"><span class="sw" style="background:#d9a441"></span>Charon docs</a>
+<a href="matapan/index.html"><span class="sw" style="background:#3ddc97"></span>Matapan docs</a>
+      </div>
+    </div>
     <a href="https://github.com/openlethe/lethe">GitHub</a>
     <a class="cta" href="installation.html">Get started</a>
   </div>
 </nav>
 <div class="wiki">
 <aside>
+<div class="proj"><a class="onl" href="index.html">Lethe</a>
+<a class="" href="charon/index.html">Charon</a>
+<a class="" href="matapan/index.html">Matapan</a></div>
 <div class="grp"><div class="gt">Start</div>
 <a href="overview.html">Overview</a>
 <a href="installation.html">Installation</a>
@@ -255,6 +279,7 @@ Obols, and startup in one pass.)</p>
     <a href="https://github.com/openlethe/lethe" style="margin-left:0">GitHub</a>
     <a href="../index.html">Lethe</a>
     <a href="../charon.html">Charon</a>
+    <a href="../matapan.html">Matapan</a>
   </div>
   <div class="fc">openlethe.com · 2026</div>
 </footer>
