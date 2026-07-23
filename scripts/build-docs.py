@@ -267,6 +267,7 @@ def page(project, slug, title, body):
 {dd_links(docs_prefix)}
       </div>
     </div>
+    <a href="{docs_prefix}skills/index.html">Skills</a>
     <a href="{PROJECT_GITHUB[project]}">GitHub</a>
     <a class="cta" href="{topics[1][0] if len(topics) > 1 else 'index'}.html">Get started</a>
   </div>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HTTP API Reference — Lethe Docs</title>
+<title>Skills — openlethe</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -73,177 +73,61 @@ footer a{color:var(--faint);text-decoration:none;font-size:13px;margin-left:24px
 footer a:hover{color:var(--cyan)}
 footer .fc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);letter-spacing:.15em}
 @media(max-width:1000px){.wiki{grid-template-columns:1fr;gap:0;padding-top:100px}aside{position:static;max-height:none;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}aside .grp{margin:0}aside .gt{display:none}aside a{border:1px solid var(--line);padding:6px 12px;font-size:12px}.navlinks a:not(.cta){display:none}.ddm{position:static;transform:none;display:block;box-shadow:none;background:none;border:none;padding:0}}
+
+.skillgrp{margin-top:36px}
+.skillgrp h2{margin-top:0;border-top:none;padding-top:0}
+.skgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2px;background:var(--line);border:1px solid var(--line);margin-top:16px}
+a.sk{display:block;background:var(--bg);padding:20px 22px;text-decoration:none;color:var(--ink)}
+a.sk:hover{background:var(--bg2)}
+a.sk .skname{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500}
+a.sk .skp{color:var(--dim);font-size:13px;line-height:1.6;margin-top:8px;font-weight:300;display:block}
+a.sk .skopen{display:inline-block;margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase}
+aside a .sw{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:8px}
 </style>
 </head>
 <body>
 <nav class="top">
-  <a class="logo" href="../index.html">Lethe<i>.</i></a>
+  <a class="logo" href="../../index.html">Lethe<i>.</i></a>
   <div class="navlinks">
-    <a href="../index.html">Lethe</a>
-    <a href="../charon.html">Charon</a>
-    <a href="../matapan.html">Matapan</a>
-    <div class="dd">
-      <a class="ddt here" href="../docs.html">Docs ▾</a>
-      <div class="ddm">
-<a href="index.html"><span class="sw" style="background:#39d0e8"></span>Lethe docs</a>
-<a href="charon/index.html"><span class="sw" style="background:#d9a441"></span>Charon docs</a>
-<a href="matapan/index.html"><span class="sw" style="background:#3ddc97"></span>Matapan docs</a>
-      </div>
-    </div>
-    <a href="skills/index.html">Skills</a>
-    <a href="https://github.com/openlethe/lethe">GitHub</a>
-    <a class="cta" href="installation.html">Get started</a>
+    <a href="../../index.html">Lethe</a>
+    <a href="../../charon.html">Charon</a>
+    <a href="../../matapan.html">Matapan</a>
+    <a href="../../docs.html">Docs</a>
+    <a href="index.html" class="here">Skills</a>
+    <a href="https://github.com/openlethe">GitHub</a>
   </div>
 </nav>
 <div class="wiki">
 <aside>
-<div class="proj"><a class="onl" href="index.html">Lethe</a>
-<a class="" href="charon/index.html">Charon</a>
-<a class="" href="matapan/index.html">Matapan</a></div>
-<div class="grp"><div class="gt">Start</div>
-<a href="overview.html">Overview</a>
-<a href="installation.html">Installation</a>
-<a href="runtime-modes.html">Runtime Modes</a>
-<div class="grp"><div class="gt">Memory Systems</div>
-<a href="memory-git.html">Memory Git</a>
-<a href="legacy-mode.html">Legacy Mode</a>
-<div class="grp"><div class="gt">Platform</div>
-<a href="architecture.html">Architecture</a>
-<a href="configuration.html">Configuration</a>
-<a href="deployment.html">Deployment &amp; Ops</a>
-<a href="docker-compose.html">Compose Variations</a>
-<div class="grp"><div class="gt">Reference</div>
-<a href="api.html" class="on">HTTP API Reference</a>
-<div class="grp"><div class="gt">Integrations</div>
-<a href="openclaw.html">OpenClaw</a>
-<a href="integrations.html">Client Integrations</a>
-<div class="grp"><div class="gt">Project</div>
-<a href="migration.html">Migration &amp; Upgrading</a>
-<a href="faq.html">FAQ</a>
-<div class="grp"><div class="gt">Deep Dive</div>
-<a href="memory-git-v1.html">Protocol · memory_git/v1</a>
-<a href="memory-context-bridge.html">Context Projection</a>
-<a href="observability.html">Observability</a>
+<div class="grp"><div class="gt">Projects</div><a href="../index.html">Lethe docs</a><a href="../charon/index.html">Charon docs</a><a href="../matapan/index.html">Matapan docs</a></div><div class="grp"><div class="gt">Lethe</div>
+<a href="#lethe-lethe-memory"><span class="sw" style="background:#39d0e8"></span>lethe-memory</a>
+</div>
+<div class="grp"><div class="gt">Charon</div>
+<a href="#charon-charon"><span class="sw" style="background:#d9a441"></span>charon</a>
+<a href="#charon-charon-proposer"><span class="sw" style="background:#d9a441"></span>charon-proposer</a>
+<a href="#charon-charon-reviewer"><span class="sw" style="background:#d9a441"></span>charon-reviewer</a>
+<a href="#charon-charon-maintainer"><span class="sw" style="background:#d9a441"></span>charon-maintainer</a>
+</div>
+<div class="grp"><div class="gt">Matapan</div>
+<a href="#matapan-matapan"><span class="sw" style="background:#3ddc97"></span>matapan</a>
 </div>
 </aside>
 <main>
-<div class="kick">Lethe docs · HTTP API Reference</div>
-<h1 id="http-api-reference">HTTP API Reference</h1>
-<p>All routes require <code>Authorization: Bearer $LETHE_API_KEY</code> when a key is
-configured (strict Bearer parsing). Without a key, trusted peers
-(<code>LETHE_TRUST</code>) are admitted.</p>
-<h2 id="memory-git-api-githybrid-mode">Memory Git API — git/hybrid mode</h2>
-<p>Base: <code>/api/memory</code></p>
-<table>
-<thead>
-<tr>
-<th>Route</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>GET /projects</code></td>
-<td>List registered projects</td>
-</tr>
-<tr>
-<td><code>POST /{project}/legacy-root</code></td>
-<td>Create the synthetic root and freeze the baseline</td>
-</tr>
-<tr>
-<td><code>POST /{project}/branches</code> · <code>GET /{project}/refs</code> · <code>GET /{project}/refs/resolve?name=</code></td>
-<td>Ref creation, listing, resolution</td>
-</tr>
-<tr>
-<td><code>POST /{project}/refs/advance</code></td>
-<td>CAS advance of an unprotected ref (protected refs refused: 403)</td>
-</tr>
-<tr>
-<td><code>POST /{project}/refs/merge</code></td>
-<td>Protected-ref advance with a valid <code>memory-git-merge/v2</code> signed envelope; nonce consumed atomically with the CAS</td>
-</tr>
-<tr>
-<td><code>POST /changesets</code> · <code>GET /changesets/{id}</code> · <code>GET /{project}/changesets?ref=&amp;limit=</code></td>
-<td>Changeset creation (idempotency-keyed, digest-bound replay) and retrieval; list defaults to <code>limit=20</code>, max <code>200</code></td>
-</tr>
-<tr>
-<td><code>POST /changesets/{id}/diff</code></td>
-<td>Semantic diff against another changeset</td>
-</tr>
-<tr>
-<td><code>GET · POST /{project}/context?ref=&amp;head=&amp;query=&amp;limit=</code></td>
-<td>Accepted-context projection at an exact ref/head; manifest pinning on POST with commit/write authority</td>
-</tr>
-<tr>
-<td><code>POST /{project}/conflicts/detect</code> · <code>GET /{project}/conflicts</code> · <code>POST /conflicts/persist</code> · <code>POST /conflicts/retire</code> · <code>POST /conflicts/{id}/resolve</code></td>
-<td>Conflict analysis (pure) and lifecycle management</td>
-</tr>
-<tr>
-<td><code>POST /manifests</code> · <code>GET /manifests/{id}</code></td>
-<td>Context manifests — reproducibility receipts for exactly what was loaded</td>
-</tr>
-</tbody>
-</table>
-<h2 id="legacy-session-api-legacyhybrid-mode">Legacy session API — legacy/hybrid mode</h2>
-<p>Base: <code>/api</code></p>
-<table>
-<thead>
-<tr>
-<th>Route</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>GET /api/health</code> · <code>/readyz</code> · <code>/api/metrics</code> · <code>/api/stats</code></td>
-<td>Health, readiness, Prometheus metrics, stats</td>
-</tr>
-<tr>
-<td>Sessions CRUD + <code>GET /api/sessions/{key}/summary</code> · <code>POST .../compact</code> · <code>.../heartbeat</code> · <code>.../interrupt</code> · <code>.../resume</code> · <code>.../complete</code></td>
-<td>Session lifecycle and the two-stage resume payload</td>
-</tr>
-<tr>
-<td><code>GET · POST /api/sessions/{key}/events</code> · <code>/checkpoints</code> · <code>/threads</code> · <code>/assemblies</code></td>
-<td>Per-session memory objects</td>
-</tr>
-<tr>
-<td><code>GET /api/events/search</code> · <code>POST /api/events</code></td>
-<td>Recall and record</td>
-</tr>
-<tr>
-<td><code>GET /api/threads?status=&amp;limit=</code> · <code>PATCH /api/threads/{id}</code></td>
-<td>Cross-session open-thread board</td>
-</tr>
-<tr>
-<td><code>GET /api/flags</code> · <code>PUT /api/flags/{id}/review</code></td>
-<td>Flag review board</td>
-</tr>
-<tr>
-<td><code>GET /api/assemblies/{id}</code> · <code>POST /api/assemblies/{id}/feedback</code></td>
-<td>Assembly retrieval and quality feedback</td>
-</tr>
-<tr>
-<td><code>GET /api/live</code> (SSE) · <code>/ui/</code></td>
-<td>Live event stream and the dashboards</td>
-</tr>
-</tbody>
-</table>
-<h2 id="errors">Errors</h2>
-<p>Named, stable error classes: <code>400</code> validation (closed payload keys, size
-caps, unknown ref, malformed envelope), <code>401</code> bearer, <code>403</code> protected-ref
-direct write / invalid merge authorization, <code>404</code> unknown object, <code>409</code>
-CAS conflict or replay/shape rejection. A <code>409</code> is always recoverable:
-reread the head, reconcile, resubmit with a new idempotency key.</p>
-<div class="pn"><a class="p" href="docker-compose.html">← Compose Variations</a><a class="n" href="openclaw.html">OpenClaw →</a></div>
+<div class="kick">openlethe · skills</div>
+
+<h1>Skills.</h1>
+<p style="max-width:640px">Agent-facing skills for the openlethe projects — drop-in <code>SKILL.md</code> files that teach an agent how to use each product. Every skill follows the same structure: frontmatter (name, description, metadata), then the workflow, rules, and recovery playbook. Each opens as raw markdown in a new tab.</p>
+<div class="skillgrp"><h2 style="color:#39d0e8">Lethe</h2><div class="skgrid"><a class="sk" id="lethe-lethe-memory" href="lethe/lethe-memory.md" target="_blank" rel="noopener"><span class="skname" style="color:#39d0e8">lethe-memory</span><span class="skp">Startup orientation, recall, logging, flags, and session compaction with Lethe memory.</span><span class="skopen" style="color:#39d0e8">Open raw SKILL.md &nearr;</span></a></div></div><div class="skillgrp"><h2 style="color:#d9a441">Charon</h2><div class="skgrid"><a class="sk" id="charon-charon" href="charon/charon.md" target="_blank" rel="noopener"><span class="skname" style="color:#d9a441">charon</span><span class="skp">Versioned Lethe memory through the Charon gateway: recall, record, owned refs, CAS changesets.</span><span class="skopen" style="color:#d9a441">Open raw SKILL.md &nearr;</span></a><a class="sk" id="charon-charon-proposer" href="charon/charon-proposer.md" target="_blank" rel="noopener"><span class="skname" style="color:#d9a441">charon-proposer</span><span class="skp">Author durable memory as a proposer: branches, commits, merge proposals.</span><span class="skopen" style="color:#d9a441">Open raw SKILL.md &nearr;</span></a><a class="sk" id="charon-charon-reviewer" href="charon/charon-reviewer.md" target="_blank" rel="noopener"><span class="skname" style="color:#d9a441">charon-reviewer</span><span class="skp">Independently review and merge protected-ref proposals.</span><span class="skopen" style="color:#d9a441">Open raw SKILL.md &nearr;</span></a><a class="sk" id="charon-charon-maintainer" href="charon/charon-maintainer.md" target="_blank" rel="noopener"><span class="skname" style="color:#d9a441">charon-maintainer</span><span class="skp">Operate a local Charon + Lethe Memory Git deployment end to end.</span><span class="skopen" style="color:#d9a441">Open raw SKILL.md &nearr;</span></a></div></div><div class="skillgrp"><h2 style="color:#3ddc97">Matapan</h2><div class="skgrid"><a class="sk" id="matapan-matapan" href="matapan/matapan.md" target="_blank" rel="noopener"><span class="skname" style="color:#3ddc97">matapan</span><span class="skp">Work inside a Matapan workspace: scoped edits, hardened runs, seal a proposal, hand off.</span><span class="skopen" style="color:#3ddc97">Open raw SKILL.md &nearr;</span></a></div></div>
+
 </main>
 </div>
 <footer>
   <div class="fl">Lethe<i>.</i></div>
   <div>
-    <a href="https://github.com/openlethe/lethe" style="margin-left:0">GitHub</a>
-    <a href="../index.html">Lethe</a>
-    <a href="../charon.html">Charon</a>
-    <a href="../matapan.html">Matapan</a>
+    <a href="https://github.com/openlethe" style="margin-left:0">GitHub</a>
+    <a href="../../index.html">Lethe</a>
+    <a href="../../charon.html">Charon</a>
+    <a href="../../matapan.html">Matapan</a>
   </div>
   <div class="fc">openlethe.com · 2026</div>
 </footer>
